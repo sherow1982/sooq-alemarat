@@ -1,0 +1,339 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سوق الإمارات | أفضل المنتجات والعروض الحصرية 2025</title>
+    <meta name="description" content="اكتشف أفضل المنتجات والعروض الحصرية في سوق الإمارات. إلكترونيات، أجهزة منزلية، موضة، وأكثر مع الشحن السريع 1-3 أيام عمل والدفع عند الاستلام.">
+    
+    <!-- SEO Meta Tags -->
+    <meta name="keywords" content="تسوق إلكتروني, الإمارات, عروض حصرية, إلكترونيات, أجهزة منزلية, موضة, دفع عند الاستلام">
+    <meta name="robots" content="index, follow">
+    <meta name="author" content="سوق الإمارات">
+    <link rel="canonical" href="https://sherow1982.github.io/sooq-alemarat/">
+    
+    <!-- Open Graph -->
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="سوق الإمارات | أفضل المنتجات والعروض الحصرية">
+    <meta property="og:description" content="اكتشف أفضل المنتجات والعروض الحصرية في سوق الإمارات. إلكترونيات، أجهزة منزلية، موضة، وأكثر.">
+    <meta property="og:url" content="https://sherow1982.github.io/sooq-alemarat/">
+    <meta property="og:site_name" content="سوق الإمارات">
+    <meta property="og:locale" content="ar_AE">
+    
+    <!-- Twitter Cards -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:title" content="سوق الإمارات | أفضل المنتجات والعروض الحصرية">
+    <meta name="twitter:description" content="اكتشف أفضل المنتجات والعروض الحصرية في سوق الإمارات.">
+    
+    <!-- Language Alternatives -->
+    <link rel="alternate" hreflang="en-AE" href="https://sherow1982.github.io/sooq-alemarat/en/">
+    <link rel="alternate" hreflang="ar-AE" href="https://sherow1982.github.io/sooq-alemarat/">
+    <link rel="alternate" hreflang="x-default" href="https://sherow1982.github.io/sooq-alemarat/">
+    
+    <!-- Favicon -->
+    <link rel="icon" type="image/x-icon" href="assets/img/favicon.ico">
+    <link rel="apple-touch-icon" href="assets/img/apple-touch-icon.png">
+    <link rel="manifest" href="manifest.webmanifest">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@200..1000&display=swap" rel="stylesheet">
+    
+    <!-- Stylesheets -->
+    <link rel="stylesheet" href="assets/css/base.css">
+    <link rel="stylesheet" href="assets/css/theme-3d.css">
+    <link rel="stylesheet" href="assets/css/responsive.css">
+    
+    <!-- Service Worker -->
+    <script>
+        if ('serviceWorker' in navigator) {
+            navigator.serviceWorker.register('/sooq-alemarat/service-worker.js');
+        }
+    </script>
+</head>
+<body class="rtl-layout">
+    <!-- Header -->
+    <header class="main-header glass-effect">
+        <div class="container">
+            <div class="header-content">
+                <div class="logo-section">
+                    <h1 class="logo">🛒 سوق الإمارات</h1>
+                    <p class="tagline">أفضل العروض في دولة الإمارات</p>
+                </div>
+                
+                <div class="search-container">
+                    <div class="search-wrapper floating-3d">
+                        <input type="text" id="searchInput" placeholder="ابحث عن منتجاتك المفضلة..." class="search-input">
+                        <button class="search-btn" onclick="performSearch()">
+                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
+                            </svg>
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="header-actions">
+                    <div class="language-switcher">
+                        <a href="en/" class="lang-btn floating-3d">English</a>
+                    </div>
+                    <div class="shipping-info">
+                        <span class="shipping-badge">🚚 شحن سريع 1-3 أيام</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    
+    <!-- Hero Section -->
+    <section class="hero-section">
+        <div class="hero-3d-bg">
+            <canvas id="heroCanvas" class="hero-canvas"></canvas>
+            <div class="hero-overlay"></div>
+        </div>
+        <div class="container">
+            <div class="hero-content">
+                <h2 class="hero-title animate-slide-up">مرحباً بك في سوق الإمارات</h2>
+                <p class="hero-subtitle animate-slide-up delay-1">اكتشف آلاف المنتجات بأفضل الأسعار مع الشحن السريع والدفع عند الاستلام</p>
+                <div class="hero-features animate-slide-up delay-2">
+                    <div class="feature-badge">
+                        <span class="icon">✅</span>
+                        <span class="text">دفع عند الاستلام</span>
+                    </div>
+                    <div class="feature-badge">
+                        <span class="icon">🚚</span>
+                        <span class="text">شحن مجاني للطلبات +100 درهم</span>
+                    </div>
+                    <div class="feature-badge">
+                        <span class="icon">↩️</span>
+                        <span class="text">إرجاع مجاني خلال 14 يوم</span>
+                    </div>
+                    <div class="feature-badge">
+                        <span class="icon">🇦🇪</span>
+                        <span class="text">متوافق مع معايير الإمارات</span>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Categories Section -->
+    <section class="categories-section">
+        <div class="container">
+            <h2 class="section-title">تسوق حسب التصنيف</h2>
+            <div class="categories-grid" id="categoriesGrid">
+                <!-- Categories will be loaded dynamically -->
+            </div>
+        </div>
+    </section>
+    
+    <!-- Featured Products Section -->
+    <section class="products-section">
+        <div class="container">
+            <h2 class="section-title">المنتجات المميزة</h2>
+            <div class="products-grid" id="productsGrid">
+                <!-- Products will be loaded dynamically -->
+            </div>
+            <div class="load-more-section">
+                <button class="btn-load-more floating-3d" onclick="loadMoreProducts()">عرض المزيد من المنتجات</button>
+            </div>
+        </div>
+    </section>
+    
+    <!-- Footer -->
+    <footer class="main-footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3 class="footer-title">سوق الإمارات</h3>
+                    <p class="footer-description">منصتك الموثوقة للتسوق الإلكتروني في دولة الإمارات العربية المتحدة</p>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">خدمة العملاء</h4>
+                    <ul class="footer-links">
+                        <li><a href="#">تواصل معنا</a></li>
+                        <li><a href="#">الأسئلة الشائعة</a></li>
+                        <li><a href="#">سياسة الإرجاع</a></li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">معلومات الشحن</h4>
+                    <ul class="footer-info">
+                        <li>⏱️ التوصيل: 1-3 أيام عمل</li>
+                        <li>💰 دفع عند الاستلام متاح</li>
+                        <li>📦 شحن مجاني للطلبات +100 درهم</li>
+                        <li>↩️ إرجاع مجاني خلال 14 يوم</li>
+                    </ul>
+                </div>
+                
+                <div class="footer-section">
+                    <h4 class="footer-subtitle">تابعنا</h4>
+                    <div class="social-links">
+                        <a href="#" class="social-link">📘 فيسبوك</a>
+                        <a href="#" class="social-link">📷 إنستغرام</a>
+                        <a href="#" class="social-link">🐦 تويتر</a>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="footer-bottom">
+                <p>&copy; 2025 سوق الإمارات. جميع الحقوق محفوظة.</p>
+                <div class="footer-links">
+                    <a href="#">الشروط والأحكام</a> |
+                    <a href="#">سياسة الخصوصية</a> |
+                    <a href="en/">English</a>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <!-- Promotional Popup -->
+    <div id="promoPopup" class="promo-popup hidden">
+        <div class="popup-content floating-3d">
+            <button class="popup-close" onclick="closePromoPopup()">&times;</button>
+            <div class="popup-header">
+                <h3>🎉 عرض خاص!</h3>
+                <p>خصم إضافي على جميع المنتجات</p>
+            </div>
+            <div class="popup-body">
+                <div class="offer-text">شحن مجاني + دفع عند الاستلام</div>
+                <button class="popup-cta" onclick="closePromoPopup()">تسوق الآن</button>
+            </div>
+        </div>
+        <div class="popup-overlay" onclick="closePromoPopup()"></div>
+    </div>
+    
+    <!-- Loading Spinner -->
+    <div id="loadingSpinner" class="loading-spinner hidden">
+        <div class="spinner-3d"></div>
+        <p>جاري التحميل...</p>
+    </div>
+    
+    <!-- Scripts -->
+    <script src="assets/js/data-loader.js"></script>
+    <script src="assets/js/router.js"></script>
+    <script src="assets/js/seo.js"></script>
+    <script src="assets/js/i18n.js"></script>
+    
+    <!-- JSON-LD Structured Data -->
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "WebSite",
+        "name": "سوق الإمارات",
+        "url": "https://sherow1982.github.io/sooq-alemarat/",
+        "potentialAction": {
+            "@type": "SearchAction",
+            "target": {
+                "@type": "EntryPoint",
+                "urlTemplate": "https://sherow1982.github.io/sooq-alemarat/?q={search_term_string}"
+            },
+            "query-input": "required name=search_term_string"
+        },
+        "inLanguage": ["ar-AE", "en-AE"]
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": "سوق الإمارات",
+        "description": "منصة التسوق الإلكتروني الرائدة في دولة الإمارات العربية المتحدة",
+        "url": "https://sherow1982.github.io/sooq-alemarat/",
+        "logo": "https://sherow1982.github.io/sooq-alemarat/assets/img/logo.png",
+        "sameAs": [],
+        "address": {
+            "@type": "PostalAddress",
+            "addressCountry": "AE",
+            "addressRegion": "دبي"
+        },
+        "areaServed": "AE",
+        "currenciesAccepted": "AED",
+        "priceRange": "$$"
+    }
+    </script>
+    
+    <!-- Initialize App -->
+    <script>
+        // Initialize the application
+        document.addEventListener('DOMContentLoaded', function() {
+            initializeApp();
+            setupPromoPopup();
+            setup3DCanvas();
+        });
+        
+        // Search functionality
+        function performSearch() {
+            const query = document.getElementById('searchInput').value.trim();
+            if (query) {
+                window.location.href = `?q=${encodeURIComponent(query)}`;
+            }
+        }
+        
+        // Enter key search
+        document.getElementById('searchInput').addEventListener('keypress', function(e) {
+            if (e.key === 'Enter') {
+                performSearch();
+            }
+        });
+        
+        // Promo popup functionality
+        let promoShown = false;
+        
+        function setupPromoPopup() {
+            if (!promoShown) {
+                setTimeout(showPromoPopup, 20000); // Show after 20 seconds
+            }
+        }
+        
+        function showPromoPopup() {
+            if (!promoShown) {
+                document.getElementById('promoPopup').classList.remove('hidden');
+                promoShown = true;
+                // Show again after 20 seconds
+                setTimeout(() => {
+                    promoShown = false;
+                    setupPromoPopup();
+                }, 20000);
+            }
+        }
+        
+        function closePromoPopup() {
+            document.getElementById('promoPopup').classList.add('hidden');
+        }
+        
+        // Simple 3D canvas setup
+        function setup3DCanvas() {
+            const canvas = document.getElementById('heroCanvas');
+            const ctx = canvas.getContext('2d');
+            
+            function resizeCanvas() {
+                canvas.width = canvas.offsetWidth;
+                canvas.height = canvas.offsetHeight;
+            }
+            
+            function animate() {
+                ctx.clearRect(0, 0, canvas.width, canvas.height);
+                
+                // Simple animated gradient background
+                const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
+                const time = Date.now() * 0.001;
+                gradient.addColorStop(0, `hsl(${200 + Math.sin(time) * 20}, 70%, 60%)`);
+                gradient.addColorStop(1, `hsl(${280 + Math.cos(time) * 20}, 70%, 40%)`);
+                
+                ctx.fillStyle = gradient;
+                ctx.fillRect(0, 0, canvas.width, canvas.height);
+                
+                requestAnimationFrame(animate);
+            }
+            
+            resizeCanvas();
+            window.addEventListener('resize', resizeCanvas);
+            animate();
+        }
+    </script>
+</body>
+</html>
