@@ -1,0 +1,22 @@
+{
+  "name": "سوق الإمارات للهدايا",
+  "short_name": "سوق الإمارات",
+  "start_url": "/",
+  "display": "standalone",
+  "background_color": "#ffffff",
+  "theme_color": "#DAA520",
+  "description": "متجر إلكتروني إماراتي متميز بعروض قوية وشحن سريع ودفع عند الاستلام",
+  "icons": [
+    {
+      "src": "https://user-gen-media-assets.s3.amazonaws.com/seedream_images/e1029c77-e4a0-4b40-a278-4b4996e2ee05.png",
+      "sizes": "192x192",
+      "type": "image/png"
+    },
+    {
+      "src": "https://user-gen-media-assets.s3.amazonaws.com/seedream_images/b1f430c1-8aa0-4082-8bec-59935fddfaa2.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any maskable"
+    }
+  ]
+}
