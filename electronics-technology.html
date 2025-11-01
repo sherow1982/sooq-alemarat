@@ -9,6 +9,15 @@
     <link rel="icon" href="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/e1029c77-e4a0-4b40-a278-4b4996e2ee05.png">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/improved-theme.css">
+    
+    <!-- SEO and Social Meta -->
+    <meta property="og:title" content="الإلكترونيات والتكنولوجيا - سوق الإمارات">
+    <meta property="og:description" content="أحدث الأجهزة الإلكترونية والتقنية في الإمارات">
+    <meta property="og:type" content="website">
+    <meta property="og:image" content="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/b1f430c1-8aa0-4082-8bec-59935fddfaa2.png">
+    
+    <!-- Content Security Policy for extension compatibility -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https: http:; font-src 'self' https:; connect-src 'self' https:; frame-src 'none'; object-src 'none'; base-uri 'self';">
 </head>
 <body>
     <header class="header">
@@ -36,7 +45,19 @@
             <section class="section">
                 <h1 class="category-title">📱 الإلكترونيات والتكنولوجيا</h1>
                 
-                <div class="filter-options" style="text-align: center; margin: 2rem 0;">
+                <div class="category-intro" style="text-align: center; margin: 2rem 0; padding: 2rem; background: linear-gradient(135deg, #1e40af, #3b82f6); color: white; border-radius: 16px;">
+                    <h2 style="margin: 0 0 1rem 0; font-size: 1.5rem;">✨ اكتشف عالم التقنية</h2>
+                    <p style="margin: 0; opacity: 0.9;">أحدث الأجهزة الإلكترونية والتقنية الذكية بأفضل الأسعار في الإمارات</p>
+                </div>
+                
+                <!-- Loading State -->
+                <div id="loading-state" style="text-align: center; padding: 3rem; display: block;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem; animation: pulse 2s infinite;">📱</div>
+                    <h3 style="color: #1e40af; margin-bottom: 1rem;">جاري تحميل أحدث التقنيات...</h3>
+                    <p style="color: #6b7280;">نجهز لك مجموعة متميزة من المنتجات التقنية</p>
+                </div>
+                
+                <div class="filter-options" style="text-align: center; margin: 2rem 0; display: none;" id="filter-section">
                     <div style="margin-bottom: 1rem; font-weight: 600;">🔍 تصفية حسب السعر:</div>
                     <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
                         <button class="btn filter-btn active" data-filter="all" onclick="filterByPrice('all', this)">جميع المنتجات</button>
@@ -47,10 +68,7 @@
                 </div>
                 
                 <div class="products-grid" id="category-products">
-                    <div class="loading">
-                        <div class="loading-spinner"></div>
-                        <h3>جاري تحميل الإلكترونيات...</h3>
-                    </div>
+                    <!-- Products will be loaded here by JavaScript -->
                 </div>
             </section>
         </div>
@@ -61,19 +79,105 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>🏪 سوق الإمارات</h3>
-                    <p>رائدون في عالم التسوق الرقمي</p>
+                    <p>متجرك الموثوق للتقنية والإلكترونيات</p>
                 </div>
                 <div class="footer-section">
-                    <h3>📞 تواصل</h3>
-                    <div><a href="https://wa.me/201110760081" target="_blank">📱 واتساب</a></div>
+                    <h3>📞 تواصل معنا</h3>
+                    <div><a href="https://wa.me/201110760081" target="_blank">📱 واتساب للاستفسارات</a></div>
                 </div>
+                <div class="footer-section">
+                    <h3>🔗 مزيد من الفئات</h3>
+                    <div><a href="home-appliances-electrical.html">🏠 أجهزة منزلية</a></div>
+                    <div><a href="personal-care-health-beauty.html">💄 عناية شخصية</a></div>
+                    <div><a href="shoes-clothing-accessories.html">👟 ملابس وأحذية</a></div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px;">
+                <p>© 2025 سوق الإمارات - جميع الحقوق محفوظة | متجر إلكتروني متطور</p>
             </div>
         </div>
     </footer>
     
-    <a href="https://wa.me/201110760081" class="whatsapp-float" target="_blank">📱</a>
+    <a href="https://wa.me/201110760081" class="whatsapp-float" target="_blank" title="تواصل عبر واتساب للاستفسار عن المنتجات التقنية">📱</a>
     
+    <!-- Scripts in optimal loading order -->
+    <script src="js/extension-detector.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/category-handler.js"></script>
+    
+    <!-- Enhanced Loading Animations -->
+    <style>
+        @keyframes pulse {
+            0%, 100% { transform: scale(1); opacity: 1; }
+            50% { transform: scale(1.1); opacity: 0.7; }
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .products-fade-in {
+            animation: fadeIn 0.6s ease-out;
+        }
+        
+        .loading-fade-out {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: all 0.5s ease-out;
+        }
+        
+        /* Electronics-specific styling */
+        .category-title {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+    </style>
+    
+    <!-- Page-specific Enhancement Script -->
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            // Enhanced loading experience for electronics page
+            setTimeout(() => {
+                const loadingState = document.getElementById('loading-state');
+                const filterSection = document.getElementById('filter-section');
+                const productsGrid = document.getElementById('category-products');
+                
+                if (loadingState && window.filteredProducts && window.filteredProducts.length > 0) {
+                    // Smooth transition from loading to content
+                    loadingState.classList.add('loading-fade-out');
+                    
+                    setTimeout(() => {
+                        loadingState.style.display = 'none';
+                        if (filterSection) {
+                            filterSection.style.display = 'block';
+                            filterSection.style.animation = 'fadeIn 0.5s ease-out';
+                        }
+                        if (productsGrid) {
+                            productsGrid.classList.add('products-fade-in');
+                        }
+                    }, 500);
+                }
+            }, 1800);
+            
+            // Add electronics-specific features
+            if (window.categoryProducts) {
+                // Sort by tech relevance (cameras, phones, etc. first)
+                const techKeywords = ['هاتف', 'كاميرا', 'شاحن', 'سماعة', 'bluetooth'];
+                
+                window.categoryProducts.sort((a, b) => {
+                    const aScore = techKeywords.reduce((score, keyword) => 
+                        score + (a.title.includes(keyword) ? 1 : 0), 0);
+                    const bScore = techKeywords.reduce((score, keyword) => 
+                        score + (b.title.includes(keyword) ? 1 : 0), 0);
+                    
+                    if (aScore !== bScore) return bScore - aScore;
+                    return (b.average_rating || 0) - (a.average_rating || 0);
+                });
+            }
+        });
+    </script>
 </body>
 </html>
