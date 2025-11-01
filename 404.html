@@ -1,0 +1,472 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>404 - الصفحة غير موجودة | سوق الإمارات</title>
+    <meta name="description" content="الصفحة المطلوبة غير موجودة. ارجع إلى سوق الإمارات وتصفح أحدث المنتجات والعروض">
+    <meta name="robots" content="noindex, nofollow">
+    
+    <link rel="icon" type="image/png" href="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/e1029c77-e4a0-4b40-a278-4b4996e2ee05.png">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/dkhoon-inspired-theme.css">
+    
+    <style>
+        .error-page {
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: 
+                radial-gradient(ellipse at 30% 30%, rgba(212, 175, 55, 0.1) 0%, transparent 60%),
+                radial-gradient(ellipse at 70% 70%, rgba(255, 225, 53, 0.08) 0%, transparent 50%),
+                linear-gradient(135deg, var(--bg-primary) 0%, var(--champagne) 30%, var(--pearl-white) 70%, var(--bg-secondary) 100%);
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .error-page::before {
+            content: '';
+            position: absolute;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg at 50% 50%, transparent, rgba(212, 175, 55, 0.05), transparent);
+            animation: rotate 60s linear infinite;
+            pointer-events: none;
+        }
+        
+        @keyframes rotate {
+            to { transform: rotate(360deg); }
+        }
+        
+        .error-content {
+            text-align: center;
+            max-width: 600px;
+            padding: 3rem;
+            background: var(--bg-card);
+            border-radius: 30px;
+            box-shadow: var(--shadow-premium);
+            border: 3px solid var(--gold-primary);
+            position: relative;
+            z-index: 2;
+            backdrop-filter: blur(20px);
+        }
+        
+        .error-number {
+            font-size: 8rem;
+            font-weight: 900;
+            background: var(--gradient-gold);
+            background-clip: text;
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            line-height: 1;
+            margin-bottom: 1rem;
+            text-shadow: 0 10px 30px rgba(212, 175, 55, 0.3);
+            animation: float 4s ease-in-out infinite;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-10px); }
+        }
+        
+        .error-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: var(--text-primary);
+            margin-bottom: 1.5rem;
+        }
+        
+        .error-description {
+            font-size: 1.3rem;
+            color: var(--text-secondary);
+            margin-bottom: 3rem;
+            line-height: 1.6;
+        }
+        
+        .error-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 1.5rem;
+            align-items: center;
+        }
+        
+        .error-buttons {
+            display: flex;
+            gap: 1.5rem;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .error-btn {
+            padding: 1.2rem 2.5rem;
+            border: none;
+            border-radius: 25px;
+            font-weight: 700;
+            font-size: 1.1rem;
+            cursor: pointer;
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            text-decoration: none;
+            text-align: center;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.8rem;
+            position: relative;
+            overflow: hidden;
+            min-width: 200px;
+            justify-content: center;
+        }
+        
+        .error-btn::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s ease;
+            z-index: 1;
+        }
+        
+        .error-btn:hover::before {
+            width: 300px;
+            height: 300px;
+        }
+        
+        .error-btn span {
+            position: relative;
+            z-index: 2;
+        }
+        
+        .primary-btn {
+            background: var(--gradient-gold);
+            color: white;
+            box-shadow: var(--shadow-gold);
+        }
+        
+        .primary-btn::before {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .primary-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: var(--shadow-premium);
+            color: white;
+        }
+        
+        .secondary-btn {
+            background: var(--gradient-emerald);
+            color: white;
+            box-shadow: 0 6px 25px rgba(80, 200, 120, 0.4);
+        }
+        
+        .secondary-btn::before {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .secondary-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(80, 200, 120, 0.6);
+            color: white;
+        }
+        
+        .tertiary-btn {
+            background: var(--gradient-sky);
+            color: white;
+            box-shadow: 0 6px 25px rgba(135, 206, 235, 0.4);
+        }
+        
+        .tertiary-btn::before {
+            background: rgba(255, 255, 255, 0.2);
+        }
+        
+        .tertiary-btn:hover {
+            transform: translateY(-5px) scale(1.05);
+            box-shadow: 0 15px 40px rgba(135, 206, 235, 0.6);
+            color: white;
+        }
+        
+        .search-suggestion {
+            background: rgba(212, 175, 55, 0.1);
+            border: 2px solid var(--gold-light);
+            border-radius: 20px;
+            padding: 2rem;
+            margin-top: 2rem;
+        }
+        
+        .search-suggestion h3 {
+            color: var(--gold-primary);
+            font-weight: 700;
+            margin-bottom: 1rem;
+        }
+        
+        .suggestions-list {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+            justify-content: center;
+            margin-top: 1rem;
+        }
+        
+        .suggestion-tag {
+            background: white;
+            color: var(--gold-primary);
+            padding: 0.6rem 1.2rem;
+            border-radius: 20px;
+            font-weight: 600;
+            border: 2px solid var(--gold-light);
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            font-size: 0.9rem;
+        }
+        
+        .suggestion-tag:hover {
+            background: var(--gradient-gold);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+        
+        .contact-info {
+            background: rgba(80, 200, 120, 0.1);
+            border: 2px solid var(--emerald-green);
+            border-radius: 20px;
+            padding: 1.5rem;
+            margin-top: 2rem;
+        }
+        
+        .contact-info h4 {
+            color: var(--emerald-green);
+            font-weight: 700;
+            margin-bottom: 1rem;
+            text-align: center;
+        }
+        
+        .contact-methods {
+            display: flex;
+            justify-content: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .contact-method {
+            background: white;
+            color: var(--emerald-green);
+            padding: 0.8rem 1.5rem;
+            border-radius: 15px;
+            font-weight: 600;
+            border: 2px solid rgba(80, 200, 120, 0.3);
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-size: 0.9rem;
+        }
+        
+        .contact-method:hover {
+            background: var(--gradient-emerald);
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(80, 200, 120, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .error-content {
+                margin: 2rem;
+                padding: 2rem;
+            }
+            
+            .error-number {
+                font-size: 6rem;
+            }
+            
+            .error-title {
+                font-size: 2rem;
+            }
+            
+            .error-description {
+                font-size: 1.1rem;
+            }
+            
+            .error-buttons {
+                flex-direction: column;
+                width: 100%;
+            }
+            
+            .error-btn {
+                width: 100%;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="error-page">
+        <div class="error-content">
+            <div class="error-number">404</div>
+            <h1 class="error-title">⚠️ الصفحة غير موجودة</h1>
+            <p class="error-description">
+                عذراً، لم نتمكن من العثور على الصفحة أو المنتج الذي تبحث عنه.
+                لعل الرابط قد تغير أو أن المنتج غير متوفر حالياً.
+            </p>
+            
+            <div class="error-actions">
+                <div class="error-buttons">
+                    <a href="./" class="error-btn primary-btn">
+                        <span>🏠 العودة للرئيسية</span>
+                    </a>
+                    <a href="https://wa.me/201110760081?text=مرحبا،%20واجهت%20مشكلة%20في%20الوصول%20لصفحة%20معينة.%20هل%20يمكنكم%20مساعدتي%3F" 
+                       target="_blank" class="error-btn secondary-btn">
+                        <span>📱 تواصل معنا</span>
+                    </a>
+                    <button onclick="history.back()" class="error-btn tertiary-btn">
+                        <span>⏮️ الصفحة السابقة</span>
+                    </button>
+                </div>
+                
+                <!-- اقتراحات البحث -->
+                <div class="search-suggestion">
+                    <h3>🔍 ربما تبحث عن:</h3>
+                    <div class="suggestions-list">
+                        <a href="./#categories" class="suggestion-tag">🏪 جميع الفئات</a>
+                        <a href="./#featured" class="suggestion-tag">💎 المنتجات المميزة</a>
+                        <a href="./cart.html" class="suggestion-tag">🛒 سلة التسوق</a>
+                        <a href="./checkout.html" class="suggestion-tag">💳 إتمام الطلب</a>
+                        <a href="./en/" target="_blank" class="suggestion-tag">🇺🇸 English</a>
+                        <a href="legal/terms.html" target="_blank" class="suggestion-tag">📋 الشروط</a>
+                    </div>
+                </div>
+                
+                <!-- معلومات التواصل -->
+                <div class="contact-info">
+                    <h4>📞 أو تواصل معنا مباشرة</h4>
+                    <div class="contact-methods">
+                        <a href="https://wa.me/201110760081" target="_blank" class="contact-method">
+                            📱 واتساب
+                        </a>
+                        <a href="tel:+201110760081" class="contact-method">
+                            ☎️ اتصال
+                        </a>
+                        <a href="mailto:info@sooq-alemarat.com" class="contact-method">
+                            📧 بريد
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Floating Elements -->
+    <a href="https://wa.me/201110760081" class="whatsapp-float" target="_blank" rel="noopener" title="تواصل معنا عبر واتساب">
+        📱
+    </a>
+    
+    <script>
+        // تأثير دخول ناعم
+        document.addEventListener('DOMContentLoaded', function() {
+            const content = document.querySelector('.error-content');
+            content.style.animation = 'bounceIn 1s ease-out';
+            
+            // تأثيرات متدرجة للعناصر
+            const buttons = document.querySelectorAll('.error-btn');
+            buttons.forEach((btn, index) => {
+                btn.style.animationDelay = `${0.5 + index * 0.1}s`;
+                btn.style.animation = 'fadeInUp 0.6s ease-out forwards';
+                btn.style.opacity = '0';
+            });
+            
+            // تتبع 404 لتحليلات جوجل
+            if (typeof gtag === 'function') {
+                gtag('event', 'page_not_found', {
+                    event_category: 'Navigation',
+                    event_label: window.location.pathname,
+                    value: 1
+                });
+            }
+            
+            console.log('❌ صفحة 404 - الرابط:', window.location.href);
+        });
+        
+        // فحص الروابط المكسورة ومحاولة إعادة التوجيه
+        function tryRedirectFixes() {
+            const currentPath = window.location.pathname.toLowerCase();
+            
+            // محاولة إصلاح مسارات شائعة
+            const commonFixes = {
+                '/home': './',
+                '/index': './',
+                '/products': './#featured',
+                '/categories': './#categories',
+                '/contact': 'https://wa.me/201110760081',
+                '/about': './',
+                '/shop': './',
+                '/store': './'
+            };
+            
+            if (commonFixes[currentPath]) {
+                console.log(`✅ إعادة توجيه إلى: ${commonFixes[currentPath]}`);
+                window.location.href = commonFixes[currentPath];
+                return;
+            }
+            
+            // فحص منتجات قد تكون موجودة
+            if (currentPath.includes('product') && currentPath.includes('.html')) {
+                // استخراج اسم الملف
+                const fileName = currentPath.split('/').pop().replace('.html', '');
+                const possibleRedirect = `./product.html?id=${fileName}`;
+                
+                console.log(`محاولة إعادة التوجيه لمنتج: ${possibleRedirect}`);
+                
+                // فحص وجود المنتج في الداتا
+                fetch('./data/uae-products.json')
+                    .then(response => response.json())
+                    .then(products => {
+                        const found = products.find(p => p.id === fileName || p.url_slug === fileName);
+                        if (found) {
+                            window.location.href = `./product.html?id=${found.id}`;
+                        }
+                    })
+                    .catch(() => {
+                        console.log('لم يتم العثور على المنتج');
+                    });
+            }
+        }
+        
+        // محاولة الإصلاح عند تحميل الصفحة
+        setTimeout(tryRedirectFixes, 1000);
+        
+        // إضافة الأنماط
+        const style = document.createElement('style');
+        style.textContent = `
+            @keyframes bounceIn {
+                0% {
+                    opacity: 0;
+                    transform: scale(0.3) translateY(50px);
+                }
+                50% {
+                    opacity: 0.8;
+                    transform: scale(1.05) translateY(-10px);
+                }
+                100% {
+                    opacity: 1;
+                    transform: scale(1) translateY(0);
+                }
+            }
+            
+            @keyframes fadeInUp {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px);
+                }
+                to {
+                    opacity: 1;
+                    transform: translateY(0);
+                }
+            }
+        `;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
