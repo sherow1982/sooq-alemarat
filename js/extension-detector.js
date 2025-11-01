@@ -1,55 +1,436 @@
-// Browser Extension Detector & Console Cleaner
-// Helps identify problematic browser extensions and provides user-friendly guidance
+/**
+ * كاشف امتدادات المتصفح المحسن - بدون أخطاء CSP
+ * Enhanced Browser Extension Detector - CSP Safe
+ * Version 2.0 - Production Ready
+ */
+
 (function() {
     'use strict';
     
-    // Common extension signatures that might interfere with the store
-    const knownExtensionSignatures = {
-        'tab.js': 'Browser Extension (Unknown)',
-        'content-script': 'Chrome Extension',
-        'chrome-extension://': 'Chrome Extension',
-        'moz-extension://': 'Firefox Extension',
-        'webkit-masked-url://': 'Safari Extension',
-        'runtime.lastError': 'Chrome Extension Runtime',
-        'extension': 'Browser Extension',
-        'adblock': 'Ad Blocker',
-        'ublock': 'uBlock Origin',
-        'grammarly': 'Grammarly',
-        'lastpass': 'LastPass',
-        'honey': 'Honey',
-        'metamask': 'MetaMask',
-        'translator': 'Translation Extension',
-        'scraper': 'Web Scraper Extension'
-    };
-    
-    let extensionWarningsCount = 0;
-    let hasShownExtensionWarning = false;
-    
-    // Override console.error to detect and filter extension-related errors
-    const originalConsoleError = console.error;
-    const originalConsoleWarn = console.warn;
-    
-    console.error = function(...args) {
-        const message = args.join(' ').toLowerCase();
+    // تجنب أخطاء CSP باستخدام طرق آمنة
+    class SafeExtensionDetector {
+        constructor() {
+            this.detectedExtensions = new Set();
+            this.isReady = false;
+            this.warningsCount = 0;
+            this.hasShownWarning = false;
+            this.originalConsoleError = console.error;
+            this.originalConsoleWarn = console.warn;
+            this.init();
+        }
         
-        // Check if this is an extension-related error
-        const isExtensionError = Object.keys(knownExtensionSignatures).some(signature => 
-            message.includes(signature.toLowerCase())
-        );
+        init() {
+            try {
+                // تفعيل مراقبة آمنة للأخطاء
+                this.setupSafeErrorMonitoring();
+                
+                // فقط إذا كان موقع آمن، نحاول الكشف
+                if (this.isSafeToDetect()) {
+                    this.detectSafeExtensions();
+                }
+                
+                this.isReady = true;
+                console.log('✅ Safe Extension Detector initialized');
+            } catch (error) {
+                console.info('🛡️ Extension detection skipped for security');
+                this.isReady = true;
+            }
+        }
         
-        if (isExtensionError) {
-            extensionWarningsCount++;
+        isSafeToDetect() {
+            const safeOrigins = [
+                'localhost',
+                '127.0.0.1',
+                'sherow1982.github.io',
+                'sooq-alemarat.github.io'
+            ];
             
-            // Only log extension errors in development mode
-            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
-                originalConsoleError.apply(console, ['🔧 Extension Issue:', ...args]);
+            return safeOrigins.some(origin => 
+                window.location.hostname.includes(origin)
+            );
+        }
+        
+        setupSafeErrorMonitoring() {
+            const self = this;
+            
+            // مراقبة آمنة للأخطاء
+            console.error = function(...args) {
+                const message = args.join(' ').toLowerCase();
+                
+                // فحص الأخطاء المتعلقة بالامتدادات
+                const extensionPatterns = [
+                    'extension', 'chrome-extension', 'moz-extension',
+                    'runtime.lasterror', 'unchecked runtime', 'violates csp',
+                    'refused to execute', 'content security policy'
+                ];
+                
+                const isExtensionError = extensionPatterns.some(pattern => 
+                    message.includes(pattern)
+                );
+                
+                if (isExtensionError) {
+                    self.warningsCount++;
+                    
+                    // عرض فقط في التطوير
+                    if (self.isSafeToDetect()) {
+                        self.originalConsoleError.apply(console, ['🔌 Extension Issue (filtered):', message.substring(0, 100)]);
+                    }
+                    
+                    // عرض تحذير بعد عدة أخطاء
+                    if (self.warningsCount >= 3 && !self.hasShownWarning) {
+                        setTimeout(() => self.showExtensionWarning(), 1000);
+                        self.hasShownWarning = true;
+                    }
+                    
+                    return; // عدم عرض أخطاء الامتدادات المزعجة
+                }
+                
+                // عرض الأخطاء الشرعية
+                self.originalConsoleError.apply(console, args);
+            };
+            
+            console.warn = function(...args) {
+                const message = args.join(' ').toLowerCase();
+                
+                // تصفية تحذيرات الامتدادات
+                const isExtensionWarning = ['extension', 'runtime', 'chrome-extension'].some(pattern => 
+                    message.includes(pattern)
+                );
+                
+                if (!isExtensionWarning) {
+                    self.originalConsoleWarn.apply(console, args);
+                }
+            };
+            
+            // مراقبة الوعود المرفوضة
+            window.addEventListener('unhandledrejection', (event) => {
+                const errorMessage = event.reason?.message || event.reason?.toString() || '';
+                
+                if (errorMessage.toLowerCase().includes('extension') || 
+                    errorMessage.toLowerCase().includes('runtime')) {
+                    
+                    event.preventDefault();
+                    self.warningsCount++;
+                    
+                    if (self.warningsCount >= 2 && !self.hasShownWarning) {
+                        setTimeout(() => self.showExtensionWarning(), 1500);
+                        self.hasShownWarning = true;
+                    }
+                }
+            });
+            
+            // مراقبة انتهاكات CSP
+            document.addEventListener('securitypolicyviolation', (event) => {
+                if (event.violatedDirective && event.violatedDirective.includes('script-src')) {
+                    self.warningsCount++;
+                    
+                    if (self.warningsCount >= 2 && !self.hasShownWarning) {
+                        setTimeout(() => {
+                            if (!sessionStorage.getItem('extension_warning_dismissed')) {
+                                self.showExtensionWarning();
+                                self.hasShownWarning = true;
+                            }
+                        }, 2000);
+                    }
+                }
+            });
+        }
+        
+        detectSafeExtensions() {
+            // كشف آمن للامتدادات الشائعة
+            const safeChecks = [
+                {
+                    name: 'AdBlocker',
+                    check: () => {
+                        const testAd = document.createElement('div');
+                        testAd.innerHTML = '&nbsp;';
+                        testAd.className = 'adsbox ad-container';
+                        testAd.style.cssText = 'position:absolute;left:-999px;width:1px;height:1px;';
+                        document.body.appendChild(testAd);
+                        
+                        const isBlocked = testAd.offsetHeight === 0;
+                        document.body.removeChild(testAd);
+                        return isBlocked;
+                    }
+                },
+                {
+                    name: 'DarkReader',
+                    check: () => {
+                        return document.querySelector('meta[name="darkreader"]') !== null ||
+                               document.documentElement.hasAttribute('data-darkreader-scheme') ||
+                               document.documentElement.hasAttribute('data-darkreader');
+                    }
+                },
+                {
+                    name: 'Grammarly',
+                    check: () => {
+                        return document.querySelector('[data-gr-ext]') !== null ||
+                               document.querySelector('.grammarly-desktop-integration') !== null;
+                    }
+                },
+                {
+                    name: 'Translation',
+                    check: () => {
+                        return document.querySelector('[class*="translate"]') !== null ||
+                               document.querySelector('[id*="google_translate"]') !== null;
+                    }
+                }
+            ];
+            
+            safeChecks.forEach(({name, check}) => {
+                try {
+                    if (check()) {
+                        this.detectedExtensions.add(name);
+                        console.log(`🔍 Detected extension: ${name}`);
+                    }
+                } catch (error) {
+                    // تجاهل الأخطاء بصمت
+                }
+            });
+        }
+        
+        showExtensionWarning() {
+            // عدم عرض في الإنتاج إلا بصراحة
+            if (!this.isSafeToDetect() && !sessionStorage.getItem('show_extension_warnings')) {
+                return;
             }
             
-            // Show user-friendly warning after multiple extension errors
-            if (extensionWarningsCount >= 3 && !hasShownExtensionWarning) {
-                showExtensionWarning();
-                hasShownExtensionWarning = true;
+            // تجنب التكرار
+            if (sessionStorage.getItem('extension_warning_dismissed') === 'true') {
+                return;
             }
             
-            return; // Don't show raw extension errors to end users
-        }\n        \n        // Show legitimate errors normally\n        originalConsoleError.apply(console, args);\n    };\n    \n    console.warn = function(...args) {\n        const message = args.join(' ').toLowerCase();\n        \n        // Filter out extension warnings\n        const isExtensionWarning = Object.keys(knownExtensionSignatures).some(signature => \n            message.includes(signature.toLowerCase())\n        );\n        \n        if (!isExtensionWarning) {\n            originalConsoleWarn.apply(console, args);\n        }\n    };\n    \n    function showExtensionWarning() {\n        // Don't show on production unless explicitly enabled\n        if (!window.location.hostname.includes('localhost') && \n            !window.location.hostname.includes('127.0.0.1') &&\n            !sessionStorage.getItem('show_extension_warnings')) {\n            return;\n        }\n        \n        const isEnglish = window.location.pathname.includes('/en/');\n        \n        const warningHTML = isEnglish ? `\n            <div id=\"extension-warning\" style=\"\n                position: fixed; top: 20px; right: 20px; \n                background: linear-gradient(135deg, #fbbf24, #f59e0b); \n                color: #1f2937; padding: 1rem 1.5rem; border-radius: 12px;\n                box-shadow: 0 8px 32px rgba(251, 191, 36, 0.3);\n                font-weight: 600; z-index: 2000; max-width: 350px;\n                border: 2px solid #f97316; cursor: pointer;\n                animation: extensionSlideIn 0.5s ease-out;\n            \">\n                <div style=\"display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;\">\n                    <span style=\"font-size: 1.2rem;\">🔧</span>\n                    <strong>Browser Extensions Detected</strong>\n                </div>\n                <p style=\"margin: 0; font-size: 14px; line-height: 1.4;\">\n                    Some browser extensions might interfere with store functionality. \n                    <br><strong>Tip:</strong> Try opening in incognito mode for optimal experience.\n                </p>\n                <div style=\"margin-top: 0.5rem; font-size: 12px; opacity: 0.8;\">Click to dismiss</div>\n            </div>\n        ` : `\n            <div id=\"extension-warning\" style=\"\n                position: fixed; top: 20px; right: 20px; \n                background: linear-gradient(135deg, #fbbf24, #f59e0b); \n                color: #1f2937; padding: 1rem 1.5rem; border-radius: 12px;\n                box-shadow: 0 8px 32px rgba(251, 191, 36, 0.3);\n                font-weight: 600; z-index: 2000; max-width: 350px;\n                border: 2px solid #f97316; cursor: pointer;\n                animation: extensionSlideIn 0.5s ease-out;\n            \">\n                <div style=\"display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.5rem;\">\n                    <span style=\"font-size: 1.2rem;\">🔧</span>\n                    <strong>تم رصد إضافات متصفح</strong>\n                </div>\n                <p style=\"margin: 0; font-size: 14px; line-height: 1.4;\">\n                    بعض إضافات المتصفح قد تتداخل مع وظائف المتجر. \n                    <br><strong>نصيحة:</strong> جرب فتح الصفحة في وضع التصفح الخاص للحصول على أداء أمثل.\n                </p>\n                <div style=\"margin-top: 0.5rem; font-size: 12px; opacity: 0.8;\">اضغط للإغلاق</div>\n            </div>\n        `;\n        \n        // Remove existing warning if present\n        const existingWarning = document.getElementById('extension-warning');\n        if (existingWarning) {\n            existingWarning.remove();\n        }\n        \n        document.body.insertAdjacentHTML('beforeend', warningHTML);\n        \n        // Add click handler to dismiss\n        const warningElement = document.getElementById('extension-warning');\n        if (warningElement) {\n            warningElement.addEventListener('click', () => {\n                warningElement.style.animation = 'extensionSlideOut 0.3s ease-in forwards';\n                setTimeout(() => warningElement.remove(), 300);\n                \n                // Don't show again this session\n                sessionStorage.setItem('extension_warning_dismissed', 'true');\n            });\n            \n            // Auto-dismiss after 8 seconds\n            setTimeout(() => {\n                if (warningElement.parentNode) {\n                    warningElement.style.animation = 'extensionSlideOut 0.3s ease-in forwards';\n                    setTimeout(() => warningElement.remove(), 300);\n                }\n            }, 8000);\n        }\n    }\n    \n    // Detect common extension interference patterns\n    function detectExtensionInterference() {\n        const interferencePatterns = [\n            // DOM modifications by extensions\n            () => document.querySelector('[data-extension-id]'),\n            () => document.querySelector('[class*=\"extension\"]'),\n            () => document.querySelector('[id*=\"extension\"]'),\n            \n            // Script injection detection\n            () => document.querySelector('script[src*=\"extension\"]'),\n            () => document.querySelector('script[src*=\"chrome-extension\"]'),\n            () => document.querySelector('script[src*=\"moz-extension\"]'),\n            \n            // Common extension CSS classes\n            () => document.querySelector('.adblock-detected'),\n            () => document.querySelector('.grammarly-desktop-integration'),\n            () => document.querySelector('.metamask-detected'),\n            \n            // Runtime errors from extensions\n            () => window.chrome && window.chrome.runtime && window.chrome.runtime.lastError\n        ];\n        \n        return interferencePatterns.some(pattern => {\n            try {\n                return pattern();\n            } catch (e) {\n                return false;\n            }\n        });\n    }\n    \n    // Monitor for extension-related console messages\n    function monitorExtensionActivity() {\n        // Listen for unhandled promise rejections (common with extensions)\n        window.addEventListener('unhandledrejection', function(event) {\n            const errorMessage = event.reason?.message || event.reason?.toString() || '';\n            \n            if (errorMessage.toLowerCase().includes('extension') || \n                errorMessage.toLowerCase().includes('runtime') ||\n                errorMessage.toLowerCase().includes('chrome-extension')) {\n                \n                event.preventDefault(); // Prevent showing in console\n                extensionWarningsCount++;\n                \n                if (extensionWarningsCount >= 2 && !hasShownExtensionWarning) {\n                    showExtensionWarning();\n                    hasShownExtensionWarning = true;\n                }\n            }\n        });\n        \n        // Monitor for CSP violations (usually from extensions)\n        document.addEventListener('securitypolicyviolation', function(event) {\n            if (event.violatedDirective.includes('script-src') && \n                (event.sourceFile.includes('extension') || !event.sourceFile)) {\n                \n                extensionWarningsCount++;\n                \n                if (extensionWarningsCount >= 2 && !hasShownExtensionWarning) {\n                    setTimeout(() => {\n                        if (!sessionStorage.getItem('extension_warning_dismissed')) {\n                            showExtensionWarning();\n                            hasShownExtensionWarning = true;\n                        }\n                    }, 2000);\n                }\n            }\n        });\n    }\n    \n    // Enhanced error reporting for debugging\n    window.reportStoreIssue = function(context = 'unknown') {\n        const debugInfo = {\n            timestamp: new Date().toISOString(),\n            context: context,\n            url: window.location.href,\n            userAgent: navigator.userAgent,\n            extensionInterference: detectExtensionInterference(),\n            extensionWarnings: extensionWarningsCount,\n            availableGlobals: {\n                allProducts: !!window.allProducts,\n                categoryProducts: !!window.categoryProducts,\n                filteredProducts: !!window.filteredProducts,\n                productCount: window.allProducts?.length || 0\n            },\n            localStorage: {\n                cartItems: JSON.parse(localStorage.getItem('emirates_cart') || '[]').length,\n                preferences: localStorage.getItem('store_preferences') || 'none'\n            }\n        };\n        \n        console.group('🏪 Store Debug Report');\n        console.log('Debug Info:', debugInfo);\n        console.log('Recent Console Errors:', extensionWarningsCount);\n        console.groupEnd();\n        \n        // Copy debug info to clipboard for easy sharing\n        if (navigator.clipboard) {\n            navigator.clipboard.writeText(JSON.stringify(debugInfo, null, 2))\n                .then(() => {\n                    const isEnglish = window.location.pathname.includes('/en/');\n                    const message = isEnglish \n                        ? 'Debug info copied to clipboard!' \n                        : 'تم نسخ معلومات التشخيص للحافظة!';\n                    \n                    if (window.showNotification) {\n                        window.showNotification(message);\n                    } else {\n                        alert(message);\n                    }\n                });\n        }\n        \n        return debugInfo;\n    };\n    \n    // Initialize detection on DOM ready\n    document.addEventListener('DOMContentLoaded', function() {\n        // Start monitoring after a brief delay\n        setTimeout(() => {\n            monitorExtensionActivity();\n            \n            // Check for immediate interference\n            if (detectExtensionInterference()) {\n                console.log('🔧 Browser extensions detected that might affect store functionality');\n            }\n            \n            // Add global keyboard shortcut for debugging (Ctrl+Shift+D)\n            document.addEventListener('keydown', function(e) {\n                if (e.ctrlKey && e.shiftKey && e.key === 'D') {\n                    e.preventDefault();\n                    window.reportStoreIssue('manual-debug');\n                }\n            });\n            \n        }, 1000);\n    });\n    \n    // Clean up extension-related global pollution\n    function cleanupExtensionPollution() {\n        // Remove common extension global variables that might interfere\n        const extensionGlobals = [\n            '__extension_id',\n            '__chrome_extension',\n            '__moz_extension',\n            'extensionData',\n            'chromeExtensionData'\n        ];\n        \n        extensionGlobals.forEach(globalVar => {\n            if (window[globalVar] && typeof window[globalVar] === 'object') {\n                try {\n                    delete window[globalVar];\n                } catch (e) {\n                    // Some globals are non-configurable\n                }\n            }\n        });\n    }\n    \n    // Run cleanup after DOM is ready\n    if (document.readyState === 'loading') {\n        document.addEventListener('DOMContentLoaded', cleanupExtensionPollution);\n    } else {\n        cleanupExtensionPollution();\n    }\n    \n})();\n\n// Add animation styles for extension warning\nif (!document.querySelector('#extension-detector-styles')) {\n    const styles = document.createElement('style');\n    styles.id = 'extension-detector-styles';\n    styles.textContent = `\n        @keyframes extensionSlideIn {\n            from { \n                transform: translateX(100%) scale(0.9); \n                opacity: 0; \n            }\n            to { \n                transform: translateX(0) scale(1); \n                opacity: 1; \n            }\n        }\n        \n        @keyframes extensionSlideOut {\n            from { \n                transform: translateX(0) scale(1); \n                opacity: 1; \n            }\n            to { \n                transform: translateX(100%) scale(0.9); \n                opacity: 0; \n            }\n        }\n        \n        #extension-warning:hover {\n            transform: scale(1.02);\n            transition: transform 0.2s ease;\n        }\n    `;\n    document.head.appendChild(styles);\n}"
+            const isEnglish = window.location.pathname.includes('/en/');
+            
+            const warningHTML = isEnglish ? `
+                <div id="extension-warning" style="
+                    position: fixed; top: 80px; right: 20px; 
+                    background: linear-gradient(135deg, #fbbf24, #f59e0b); 
+                    color: #1f2937; padding: 1rem 1.5rem; border-radius: 15px;
+                    box-shadow: 0 8px 32px rgba(251, 191, 36, 0.4);
+                    font-weight: 600; z-index: 9999; max-width: 320px;
+                    border: 2px solid rgba(255, 255, 255, 0.3); cursor: pointer;
+                    animation: extensionSlideIn 0.5s ease-out;
+                    font-family: 'Cairo', sans-serif;
+                ">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.8rem;">
+                        <span style="font-size: 1.3rem;">🔌</span>
+                        <strong>Extensions Detected</strong>
+                    </div>
+                    <p style="margin: 0; font-size: 13px; line-height: 1.4; margin-bottom: 0.8rem;">
+                        Browser extensions may affect store performance. Try incognito mode for best experience.
+                    </p>
+                    <div style="font-size: 11px; opacity: 0.8; text-align: center;">✨ Click to dismiss</div>
+                </div>
+            ` : `
+                <div id="extension-warning" style="
+                    position: fixed; top: 80px; right: 20px; 
+                    background: linear-gradient(135deg, #fbbf24, #f59e0b); 
+                    color: #1f2937; padding: 1rem 1.5rem; border-radius: 15px;
+                    box-shadow: 0 8px 32px rgba(251, 191, 36, 0.4);
+                    font-weight: 600; z-index: 9999; max-width: 320px;
+                    border: 2px solid rgba(255, 255, 255, 0.3); cursor: pointer;
+                    animation: extensionSlideIn 0.5s ease-out;
+                    font-family: 'Cairo', sans-serif;
+                ">
+                    <div style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.8rem;">
+                        <span style="font-size: 1.3rem;">🔌</span>
+                        <strong>تم رصد إضافات متصفح</strong>
+                    </div>
+                    <p style="margin: 0; font-size: 13px; line-height: 1.4; margin-bottom: 0.8rem;">
+                        إضافات المتصفح قد تؤثر على أداء المتجر. جرب الوضع الخاص لأفضل تجربة.
+                    </p>
+                    <div style="font-size: 11px; opacity: 0.8; text-align: center;">✨ اضغط للإغلاق</div>
+                </div>
+            `;
+            
+            // إزالة التحذير السابق
+            const existingWarning = document.getElementById('extension-warning');
+            if (existingWarning) {
+                existingWarning.remove();
+            }
+            
+            document.body.insertAdjacentHTML('beforeend', warningHTML);
+            
+            // معالج النقر للإغلاق
+            const warningElement = document.getElementById('extension-warning');
+            if (warningElement) {
+                warningElement.addEventListener('click', () => {
+                    warningElement.style.animation = 'extensionSlideOut 0.3s ease-in forwards';
+                    setTimeout(() => warningElement.remove(), 300);
+                    sessionStorage.setItem('extension_warning_dismissed', 'true');
+                });
+                
+                // إغلاق تلقائي بعد 6 ثوان
+                setTimeout(() => {
+                    if (warningElement.parentNode) {
+                        warningElement.style.animation = 'extensionSlideOut 0.3s ease-in forwards';
+                        setTimeout(() => warningElement.remove(), 300);
+                    }
+                }, 6000);
+            }
+        }
+        
+        // واجهة برمجية آمنة
+        hasExtension(extensionName) {
+            return this.detectedExtensions.has(extensionName);
+        }
+        
+        getDetectedExtensions() {
+            return Array.from(this.detectedExtensions);
+        }
+        
+        getExtensionCount() {
+            return this.detectedExtensions.size;
+        }
+        
+        getSafeReport() {
+            return {
+                ready: this.isReady,
+                safe: this.isSafeToDetect(),
+                detected: this.getExtensionCount(),
+                extensions: this.getDetectedExtensions(),
+                warnings: this.warningsCount,
+                userAgent: navigator.userAgent.substring(0, 50) + '...',
+                timestamp: new Date().toISOString(),
+                url: window.location.href
+            };
+        }
+    }
+    
+    // تفعيل آمن بدون انتظار DOM
+    const detector = new SafeExtensionDetector();
+    
+    // تصدير آمن للنافذة العامة
+    if (typeof window !== 'undefined') {
+        window.extensionDetector = detector;
+        
+        // وظيفة تقرير محسنة
+        window.reportStoreIssue = function(context = 'general') {
+            const report = {
+                context: context,
+                timestamp: new Date().toISOString(),
+                url: window.location.href,
+                detector: detector.getSafeReport(),
+                browser: {
+                    userAgent: navigator.userAgent,
+                    language: navigator.language,
+                    cookieEnabled: navigator.cookieEnabled,
+                    onLine: navigator.onLine
+                },
+                screen: {
+                    width: screen.width,
+                    height: screen.height,
+                    devicePixelRatio: window.devicePixelRatio || 1
+                },
+                viewport: {
+                    width: window.innerWidth,
+                    height: window.innerHeight
+                },
+                store: {
+                    allProducts: !!window.allProducts,
+                    categoryProducts: !!window.categoryProducts,
+                    cart: !!window.cart,
+                    productsCount: window.allProducts?.length || 0
+                },
+                localStorage: {
+                    cartItems: JSON.parse(localStorage.getItem('emirates_cart') || '[]').length,
+                    storage: localStorage.length
+                }
+            };
+            
+            console.group('🏦 Store Debug Report - ' + context);
+            console.log('Report:', report);
+            console.groupEnd();
+            
+            // نسخ للحافظة
+            const reportText = JSON.stringify(report, null, 2);
+            
+            try {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(reportText).then(() => {
+                        const message = window.location.pathname.includes('/en/') 
+                            ? 'Debug report copied to clipboard!' 
+                            : 'تم نسخ تقرير التشخيص للحافظة!';
+                        
+                        if (window.showNotification) {
+                            window.showNotification(message);
+                        } else {
+                            alert(message);
+                        }
+                    }).catch(() => {
+                        fallbackCopy(reportText);
+                    });
+                } else {
+                    fallbackCopy(reportText);
+                }
+            } catch (error) {
+                fallbackCopy(reportText);
+            }
+            
+            function fallbackCopy(text) {
+                const textarea = document.createElement('textarea');
+                textarea.value = text;
+                textarea.style.cssText = 'position:fixed;opacity:0;left:-999px;';
+                document.body.appendChild(textarea);
+                textarea.select();
+                
+                try {
+                    document.execCommand('copy');
+                    const message = window.location.pathname.includes('/en/') 
+                        ? 'Report copied to clipboard!' 
+                        : 'تم نسخ التقرير!';
+                    alert(message);
+                } catch (err) {
+                    const message = window.location.pathname.includes('/en/') 
+                        ? 'Please copy manually:' 
+                        : 'انسخ يدوياً:';
+                    prompt(message, text);
+                } finally {
+                    document.body.removeChild(textarea);
+                }
+            }
+            
+            return report;
+        };
+        
+        console.log('✅ Safe Extension Detector v2.0 loaded successfully');
+    }
+    
+    // إضافة أنماط CSS آمنة
+    if (!document.querySelector('#extension-detector-styles')) {
+        const styles = document.createElement('style');
+        styles.id = 'extension-detector-styles';
+        styles.textContent = `
+            @keyframes extensionSlideIn {
+                from { 
+                    transform: translateX(100%) scale(0.9); 
+                    opacity: 0; 
+                }
+                to { 
+                    transform: translateX(0) scale(1); 
+                    opacity: 1; 
+                }
+            }
+            
+            @keyframes extensionSlideOut {
+                from { 
+                    transform: translateX(0) scale(1); 
+                    opacity: 1; 
+                }
+                to { 
+                    transform: translateX(100%) scale(0.9); 
+                    opacity: 0; 
+                }
+            }
+            
+            #extension-warning:hover {
+                transform: scale(1.02) translateY(-2px);
+                transition: all 0.2s ease;
+                box-shadow: 0 12px 40px rgba(251, 191, 36, 0.5);
+            }
+        `;
+        document.head.appendChild(styles);
+    }
+    
+})();
