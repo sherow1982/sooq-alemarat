@@ -1,0 +1,567 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Category - Emirates Souq | Best Products at Great Prices</title>
+    <meta name="description" content="Browse products by category at Emirates Souq. Free shipping and cash on delivery across the UAE.">
+    <meta name="keywords" content="UAE shopping, category products, electronics, home appliances, fashion">
+    
+    <!-- Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    
+    <!-- Theme -->
+    <link rel="stylesheet" href="../css/improved-theme.css">
+    
+    <!-- LTR Overrides -->
+    <style>
+        body {
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            direction: ltr;
+            text-align: left;
+        }
+        .hero-section, .section-title, .footer {
+            text-align: left;
+        }
+        .logo img {
+            margin-right: 12px;
+            margin-left: 0;
+        }
+        .search-input::placeholder {
+            text-align: left;
+        }
+        .product-actions {
+            gap: 0.5rem;
+        }
+        .btn {
+            font-family: 'Inter', sans-serif;
+        }
+        .category-header {
+            background: linear-gradient(135deg, #1e40af, #3b82f6);
+            padding: 3rem 0;
+            text-align: center;
+            color: white;
+            margin-bottom: 2rem;
+        }
+        .category-title {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 1rem;
+            text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+        }
+        .category-description {
+            font-size: 1.2rem;
+            opacity: 0.9;
+            max-width: 600px;
+            margin: 0 auto;
+        }
+        .filters-bar {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.1);
+            margin-bottom: 2rem;
+            border: 2px solid rgba(212, 175, 55, 0.1);
+        }
+        .filters-title {
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin-bottom: 1rem;
+            color: #111827;
+        }
+        .filter-buttons {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.8rem;
+        }
+        .filter-btn {
+            padding: 0.7rem 1.2rem;
+            border: 2px solid #d4af37;
+            background: white;
+            color: #d4af37;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: all 0.3s ease;
+            font-family: 'Inter', sans-serif;
+        }
+        .filter-btn:hover, .filter-btn.active {
+            background: #d4af37;
+            color: white;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
+        }
+        .category-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+        .stat-card {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 15px;
+            text-align: center;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.1);
+            border: 2px solid rgba(212, 175, 55, 0.1);
+        }
+        .stat-value {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #d4af37;
+            margin-bottom: 0.5rem;
+        }
+        .stat-label {
+            color: #6b7280;
+            font-weight: 600;
+        }
+        
+        @media (max-width: 768px) {
+            .category-title {
+                font-size: 1.8rem;
+            }
+            .filter-buttons {
+                justify-content: center;
+            }
+            .filter-btn {
+                font-size: 0.9rem;
+                padding: 0.6rem 1rem;
+            }
+        }
+    </style>
+</head>
+<body class="ltr">
+    <!-- Header -->
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="./" class="logo">
+                    <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/b1f430c1-8aa0-4082-8bec-59935fddfaa2.png" alt="Emirates Souq" style="height: 40px; margin-right: 12px;">
+                    <span>Emirates Souq</span>
+                </a>
+                
+                <nav>
+                    <ul class="nav-list">
+                        <li><a href="./">🏠 Home</a></li>
+                        <li><a href="./#categories">🏪 Categories</a></li>
+                        <li><a href="../cart.html" target="_blank">🛒 Cart</a></li>
+                        <li><a href="../">العربية</a></li>
+                        <li><a href="../legal/terms.html" target="_blank">📋 Terms</a></li>
+                        <li><a href="../legal/privacy.html" target="_blank">🔒 Privacy</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <!-- Category Header -->
+    <section class="category-header">
+        <div class="container">
+            <div class="category-icon" id="category-icon" style="font-size: 4rem; margin-bottom: 1rem;">🏪</div>
+            <h1 class="category-title" id="category-title">Browse Products</h1>
+            <p class="category-description" id="category-description">Discover amazing products at great prices with free shipping across the UAE.</p>
+        </div>
+    </section>
+
+    <!-- Main Content -->
+    <main class="container">
+        <!-- Category Stats -->
+        <div class="category-stats">
+            <div class="stat-card">
+                <div class="stat-value" id="total-products">0</div>
+                <div class="stat-label">Products</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="avg-price">0</div>
+                <div class="stat-label">Avg Price (AED)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="min-price">0</div>
+                <div class="stat-label">From (AED)</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-value" id="max-price">0</div>
+                <div class="stat-label">Up to (AED)</div>
+            </div>
+        </div>
+
+        <!-- Price Filters -->
+        <div class="filters-bar">
+            <div class="filters-title">🔍 Filter by Price Range:</div>
+            <div class="filter-buttons">
+                <button class="filter-btn active" data-filter="all">All Products</button>
+                <button class="filter-btn" data-filter="under200">Under AED 200</button>
+                <button class="filter-btn" data-filter="200to400">AED 200 - 400</button>
+                <button class="filter-btn" data-filter="over400">Over AED 400</button>
+            </div>
+        </div>
+
+        <!-- Products Grid -->
+        <section class="section">
+            <div class="products-grid" id="products-container">
+                <div class="loading" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+                    <div class="loading-spinner" style="width: 40px; height: 40px; border: 4px solid #f3f3f3; border-top: 4px solid #d4af37; border-radius: 50%; animation: spin 1s linear infinite; margin: 0 auto 1rem;"></div>
+                    <h3>Loading products...</h3>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>🏪 Emirates Souq</h3>
+                    <p>Leading digital shopping experience</p>
+                    <p>100% UAE Product 🇦🇪</p>
+                </div>
+                <div class="footer-section">
+                    <h3>🔗 Important Links</h3>
+                    <div>
+                        <a href="../legal/terms.html" target="_blank">📋 Terms</a><br>
+                        <a href="../legal/privacy.html" target="_blank">🔒 Privacy</a><br>
+                        <a href="../legal/shipping.html" target="_blank">📦 Shipping</a><br>
+                        <a href="../legal/returns.html" target="_blank">↩️ Returns</a><br>
+                        <a href="../">العربية</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>📞 Contact</h3>
+                    <div>
+                        <a href="https://wa.me/201110760081" target="_blank">📱 WhatsApp</a><br>
+                        <a href="tel:+201110760081">☎️ Call</a><br>
+                        <a href="../cart.html" target="_blank">🛒 Cart</a><br>
+                        <a href="../checkout.html" target="_blank">💳 Checkout</a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>✨ Our Services</h3>
+                    <div>
+                        🚚 Free Shipping<br>
+                        💰 Cash on Delivery<br>
+                        🔄 7-day Returns<br>
+                        ⭐ 24/7 Support
+                    </div>
+                </div>
+            </div>
+            <div style="border-top: 1px solid #666; padding-top: 1.5rem; margin-top: 1.5rem; text-align: left;">
+                <p>&copy; 2025 Emirates Souq. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- WhatsApp Float -->
+    <a href="https://wa.me/201110760081?text=Hello%2C%20I%20want%20to%20contact%20Emirates%20Souq%20team" 
+       class="whatsapp-float" target="_blank" title="WhatsApp">📱</a>
+
+    <!-- Scripts -->
+    <script src="../js/cart.js"></script>
+    <script>
+        // English Category Data
+        const CATEGORY_DATA = {
+            'الأجهزة المنزلية والكهربائية': {
+                en: 'Home Appliances & Electrical',
+                icon: '🏠',
+                description: 'Smart home appliances, electrical devices, kitchen equipment and more'
+            },
+            'الإلكترونيات والتكنولوجيا': {
+                en: 'Electronics & Technology', 
+                icon: '📱',
+                description: 'Latest smartphones, tablets, computers, gaming and tech accessories'
+            },
+            'العناية الشخصية والصحة والجمال': {
+                en: 'Personal Care, Health & Beauty',
+                icon: '💄',
+                description: 'Beauty products, skincare, health supplements and personal care items'
+            },
+            'الأحذية والملابس والإكسسوارات': {
+                en: 'Shoes, Clothing & Accessories',
+                icon: '👟',
+                description: 'Fashion footwear, trendy clothing and stylish accessories'
+            },
+            'الرياضة واللياقة والصحة': {
+                en: 'Sports, Fitness & Health',
+                icon: '🏅',
+                description: 'Fitness equipment, sports gear and health-focused products'
+            },
+            'الأثاث والأدوات المنزلية': {
+                en: 'Furniture & Home Tools',
+                icon: '🛋️',
+                description: 'Home furniture, decor, organization tools and household essentials'
+            },
+            'الأدوات والصيانة': {
+                en: 'Tools & Maintenance',
+                icon: '🔧',
+                description: 'Professional tools, hardware, maintenance equipment and supplies'
+            },
+            'منتجات متنوعة': {
+                en: 'Miscellaneous Products',
+                icon: '🛑',
+                description: 'Various unique products, novelty items and special collections'
+            }
+        };
+
+        let allProducts = [];
+        let filteredProducts = [];
+        let currentCategory = null;
+
+        // Initialize page
+        document.addEventListener('DOMContentLoaded', async function() {
+            console.log('✅ English Category Page - Loading...');
+            
+            const urlParams = new URLSearchParams(window.location.search);
+            const categoryName = urlParams.get('name');
+            const categorySlug = urlParams.get('slug');
+            
+            console.log('📋 Category:', categoryName, '| Slug:', categorySlug);
+            
+            try {
+                await loadProductData();
+                
+                if (categoryName && CATEGORY_DATA[categoryName]) {
+                    setupCategoryPage(categoryName);
+                    showCategoryProducts(categoryName);
+                } else {
+                    setupDefaultPage();
+                    showAllProducts();
+                }
+                
+                setupFilters();
+                
+            } catch (error) {
+                console.error('❌ Error loading category:', error);
+                showErrorState();
+            }
+        });
+
+        async function loadProductData() {
+            console.log('📦 Loading product data...');
+            
+            const response = await fetch('../data/uae-products.json');
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: Failed to load products`);
+            }
+            
+            allProducts = await response.json();
+            console.log(`✅ Loaded ${allProducts.length} products`);
+        }
+
+        function setupCategoryPage(categoryName) {
+            const categoryInfo = CATEGORY_DATA[categoryName];
+            currentCategory = categoryName;
+            
+            // Update page elements
+            document.getElementById('category-icon').textContent = categoryInfo.icon;
+            document.getElementById('category-title').textContent = categoryInfo.en;
+            document.getElementById('category-description').textContent = categoryInfo.description;
+            document.title = `${categoryInfo.en} - Emirates Souq | Best Products at Great Prices`;
+        }
+
+        function setupDefaultPage() {
+            document.getElementById('category-icon').textContent = '🛍️';
+            document.getElementById('category-title').textContent = 'All Products';
+            document.getElementById('category-description').textContent = 'Browse our complete collection of premium products with free shipping across the UAE.';
+        }
+
+        function showCategoryProducts(categoryName) {
+            filteredProducts = allProducts.filter(product => product.category === categoryName);
+            console.log(`🏷️ Found ${filteredProducts.length} products in category: ${CATEGORY_DATA[categoryName].en}`);
+            
+            updateStats(filteredProducts);
+            renderProducts(filteredProducts);
+        }
+
+        function showAllProducts() {
+            filteredProducts = [...allProducts];
+            console.log(`📦 Showing all ${filteredProducts.length} products`);
+            
+            updateStats(filteredProducts);
+            renderProducts(filteredProducts);
+        }
+
+        function updateStats(products) {
+            const prices = products.map(p => p.sale_price || p.regular_price || 0).filter(p => p > 0);
+            
+            const totalProducts = products.length;
+            const avgPrice = prices.length ? Math.round(prices.reduce((a, b) => a + b, 0) / prices.length) : 0;
+            const minPrice = prices.length ? Math.min(...prices) : 0;
+            const maxPrice = prices.length ? Math.max(...prices) : 0;
+            
+            document.getElementById('total-products').textContent = totalProducts;
+            document.getElementById('avg-price').textContent = avgPrice;
+            document.getElementById('min-price').textContent = minPrice;
+            document.getElementById('max-price').textContent = maxPrice;
+        }
+
+        function renderProducts(products) {
+            const container = document.getElementById('products-container');
+            
+            if (products.length === 0) {
+                container.innerHTML = `
+                    <div style="grid-column: 1 / -1; text-align: center; padding: 4rem;">
+                        <div style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.5;">🔍</div>
+                        <h3>No products found</h3>
+                        <p style="color: #6b7280; margin-bottom: 2rem;">No products match your current filters.</p>
+                        <button onclick="resetFilters()" style="
+                            padding: 1rem 2rem; background: linear-gradient(135deg, #d4af37, #b8941f);
+                            color: white; border: none; border-radius: 10px; font-weight: 600; cursor: pointer;
+                        ">View All Products</button>
+                    </div>
+                `;
+                return;
+            }
+            
+            container.innerHTML = products.map(createProductCard).join('');
+            console.log(`✅ Rendered ${products.length} products`);
+        }
+
+        function createProductCard(product) {
+            const currentPrice = product.sale_price || product.regular_price || 0;
+            const originalPrice = product.sale_price && product.regular_price > product.sale_price 
+                ? `<span class="original-price">${product.regular_price} AED</span>` 
+                : '';
+            const title = product.title.length > 60 ? product.title.slice(0, 60) + '…' : product.title;
+            const categoryInfo = CATEGORY_DATA[product.category];
+            const englishCategory = categoryInfo ? categoryInfo.en : product.category;
+            
+            const discountPercent = product.sale_price && product.regular_price > product.sale_price
+                ? Math.round((1 - product.sale_price / product.regular_price) * 100)
+                : 0;
+            
+            const whatsappMsg = `Hello, I'm interested in: ${product.title} (Price: ${currentPrice} AED)`;
+            
+            return `
+                <div class="product-card" data-product-id="${product.id}">
+                    ${discountPercent > 0 ? `<div class="discount-badge">-${discountPercent}%</div>` : ''}
+                    
+                    <div class="product-image" onclick="openProduct('${product.id}')" style="cursor: pointer;">
+                        <img src="${product.image_url}" alt="${title}" loading="lazy" 
+                             onerror="this.src='https://via.placeholder.com/400x300/1e40af/FFFFFF?text=Product'" />
+                    </div>
+                    
+                    <div class="product-info">
+                        <div class="product-category">${englishCategory}</div>
+                        
+                        <h3 class="product-title" onclick="openProduct('${product.id}')" style="cursor: pointer;">
+                            ${title}
+                        </h3>
+                        
+                        <div class="product-rating">
+                            <span class="stars">⭐⭐⭐⭐⭐</span>
+                            <span>(4.8)</span>
+                        </div>
+                        
+                        <div class="product-price">
+                            ${originalPrice}
+                            <span class="current-price">${currentPrice} AED</span>
+                        </div>
+                        
+                        <div class="product-features">
+                            <div class="feature">🇦🇪 UAE Product</div>
+                            <div class="feature">🚚 Free Shipping</div>
+                            <div class="feature">💰 Cash on Delivery</div>
+                        </div>
+                        
+                        <div class="product-actions">
+                            <button class="btn add-to-cart" data-product-id="${product.id}">
+                                🛒 Add to Cart
+                            </button>
+                            
+                            <a class="btn whatsapp-btn" 
+                               href="https://wa.me/201110760081?text=${encodeURIComponent(whatsappMsg)}" 
+                               target="_blank" rel="noopener">
+                                📱 WhatsApp
+                            </a>
+                            
+                            <button class="btn view-details" onclick="openProduct('${product.id}')">
+                                👁 View Details
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            `;
+        }
+
+        function setupFilters() {
+            document.querySelectorAll('.filter-btn').forEach(btn => {
+                btn.addEventListener('click', () => {
+                    // Update active state
+                    document.querySelectorAll('.filter-btn').forEach(b => b.classList.remove('active'));
+                    btn.classList.add('active');
+                    
+                    // Apply filter
+                    const filter = btn.getAttribute('data-filter');
+                    applyPriceFilter(filter);
+                });
+            });
+        }
+
+        function applyPriceFilter(filter) {
+            let baseProducts = currentCategory 
+                ? allProducts.filter(p => p.category === currentCategory)
+                : allProducts;
+            
+            let filtered;
+            switch (filter) {
+                case 'under200':
+                    filtered = baseProducts.filter(p => (p.sale_price || p.regular_price || 0) < 200);
+                    break;
+                case '200to400':
+                    filtered = baseProducts.filter(p => {
+                        const price = p.sale_price || p.regular_price || 0;
+                        return price >= 200 && price <= 400;
+                    });
+                    break;
+                case 'over400':
+                    filtered = baseProducts.filter(p => (p.sale_price || p.regular_price || 0) > 400);
+                    break;
+                default:
+                    filtered = baseProducts;
+            }
+            
+            console.log(`🔍 Applied filter '${filter}': ${filtered.length} products`);
+            filteredProducts = filtered;
+            updateStats(filtered);
+            renderProducts(filtered);
+        }
+
+        function resetFilters() {
+            document.querySelector('.filter-btn[data-filter="all"]').click();
+        }
+
+        function openProduct(id) {
+            window.open(`../product.html?id=${encodeURIComponent(id)}`, '_blank', 'noopener');
+        }
+
+        function showErrorState() {
+            const container = document.getElementById('products-container');
+            container.innerHTML = `
+                <div style="grid-column: 1 / -1; text-align: center; padding: 4rem;">
+                    <div style="font-size: 4rem; margin-bottom: 1rem;">⚠️</div>
+                    <h3>Unable to load products</h3>
+                    <p style="color: #6b7280; margin-bottom: 2rem;">Please try again later or contact support.</p>
+                    <a href="../" style="
+                        display: inline-block; padding: 1rem 2rem; 
+                        background: linear-gradient(135deg, #1e40af, #3b82f6);
+                        color: white; text-decoration: none; border-radius: 10px; font-weight: 600;
+                    ">🏠 Back to Home</a>
+                </div>
+            `;
+        }
+
+        // Animation styles
+        const spinKeyframes = `
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        const style = document.createElement('style');
+        style.textContent = spinKeyframes;
+        document.head.appendChild(style);
+    </script>
+</body>
+</html>
