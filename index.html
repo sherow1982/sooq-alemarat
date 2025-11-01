@@ -24,8 +24,8 @@
     <!-- Enhanced Theme -->
     <link rel="stylesheet" href="css/improved-theme.css">
     
-    <!-- Content Security Policy -->
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https: http:; font-src 'self' https:; connect-src 'self' https:; frame-src 'none'; object-src 'none'; base-uri 'self';">
+    <!-- Enhanced Content Security Policy - Allows necessary resources -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: blob: https:; script-src 'self' 'unsafe-inline' 'unsafe-eval' https: data: blob:; style-src 'self' 'unsafe-inline' https: data:; img-src 'self' data: blob: https: http: *.amazonaws.com *.cloudinary.com *.placeholder.com *.googleusercontent.com *.githubusercontent.com; font-src 'self' data: https: *.googleapis.com *.gstatic.com; connect-src 'self' https: wss: data:; media-src 'self' data: blob: https:; object-src 'none'; child-src 'self' https:; frame-src 'self' https:; worker-src 'self' blob:; manifest-src 'self'; base-uri 'self';">
 </head>
 <body>
     <!-- Header -->
@@ -131,20 +131,20 @@
                 <div class="footer-section">
                     <h3>🔗 روابط مهمة</h3>
                     <div>
-                        <a href="legal/terms.html" target="_blank">📋 الشروط</a><br>
-                        <a href="legal/privacy.html" target="_blank">🔒 الخصوصية</a><br>
-                        <a href="legal/shipping.html" target="_blank">📦 الشحن</a><br>
-                        <a href="legal/returns.html" target="_blank">↩️ الإرجاع</a><br>
-                        <a href="./en/" target="_blank">🇺🇸 English</a>
+                        <a href="legal/terms.html" target="_blank" rel="noopener">📋 الشروط</a><br>
+                        <a href="legal/privacy.html" target="_blank" rel="noopener">🔒 الخصوصية</a><br>
+                        <a href="legal/shipping.html" target="_blank" rel="noopener">📦 الشحن</a><br>
+                        <a href="legal/returns.html" target="_blank" rel="noopener">↩️ الإرجاع</a><br>
+                        <a href="./en/" target="_blank" rel="noopener">🇺🇸 English</a>
                     </div>
                 </div>
                 <div class="footer-section">
                     <h3>📞 تواصل</h3>
                     <div>
-                        <a href="https://wa.me/201110760081" target="_blank">📱 واتساب</a><br>
+                        <a href="https://wa.me/201110760081" target="_blank" rel="noopener">📱 واتساب</a><br>
                         <a href="tel:+201110760081">☎️ اتصال</a><br>
-                        <a href="cart.html" target="_blank">🛒 السلة</a><br>
-                        <a href="checkout.html" target="_blank">💳 إتمام طلب</a>
+                        <a href="cart.html" target="_blank" rel="noopener">🛒 السلة</a><br>
+                        <a href="checkout.html" target="_blank" rel="noopener">💳 إتمام طلب</a>
                     </div>
                 </div>
                 <div class="footer-section">
@@ -157,7 +157,7 @@
                     </div>
                 </div>
             </div>
-            <div style="border-top: 1px solid #666; padding-top: 1.5rem; margin-top: 1.5rem; text-align: center;">
+            <div class="footer-bottom">
                 <p>&copy; 2025 سوق الإمارات. جميع الحقوق محفوظة.</p>
             </div>
         </div>
@@ -165,7 +165,7 @@
 
     <!-- Floating WhatsApp Button -->
     <a href="https://wa.me/201110760081?text=مرحبا،%20أريد%20التواصل%20مع%20فريق%20سوق%20الإمارات" 
-       class="whatsapp-float" target="_blank" title="تواصل عبر واتساب">
+       class="whatsapp-float" target="_blank" rel="noopener" title="تواصل عبر واتساب">
         📱
     </a>
 
@@ -217,7 +217,7 @@
         
         // Performance optimizations
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('✅ سوق الإمارات - تم التحميل مع البطاقات المتجاوبة');
+            console.log('✅ سوق الإمارات - تم التحميل بنجاح');
             
             // Add search functionality
             const searchBtn = document.getElementById('search-btn');
@@ -271,6 +271,7 @@
                 cursor: pointer; max-width: 350px;
                 backdrop-filter: blur(20px);
                 border: 2px solid rgba(255, 255, 255, 0.2);
+                font-family: 'Cairo', sans-serif;
             `;
             notification.textContent = message;
             
@@ -337,6 +338,15 @@
             padding: 3rem;
             color: var(--text-secondary, #6b7280);
             grid-column: 1 / -1;
+        }
+        
+        .footer-bottom {
+            border-top: 1px solid #666;
+            padding-top: 1.5rem;
+            margin-top: 1.5rem;
+            text-align: center;
+            color: #6b7280;
+            font-size: 0.9rem;
         }
         
         /* تحسين الشريط الجانبي للسلة */
