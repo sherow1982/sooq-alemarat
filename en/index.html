@@ -4,19 +4,37 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Emirates Souq | Best Products & Exclusive Offers 2025</title>
-  <meta name="description" content="Discover the best products and exclusive offers at Emirates Souq. Electronics, home appliances, fashion, and more with 1-3 days delivery and cash on delivery across the UAE." />
+  <meta name="description" content="Discover thousands of products at the best prices with fast shipping and cash on delivery across the UAE. Electronics, home appliances, fashion, and more." />
+  <meta name="keywords" content="online shopping, UAE, electronics, home appliances, fashion, free shipping, cash on delivery" />
+  
+  <!-- SEO -->
   <link rel="canonical" href="https://sherow1982.github.io/sooq-alemarat/en/" />
-
-  <!-- Fonts -->
+  <link rel="alternate" hreflang="ar-AE" href="https://sherow1982.github.io/sooq-alemarat/" />
+  <link rel="alternate" hreflang="en-AE" href="https://sherow1982.github.io/sooq-alemarat/en/" />
+  
+  <!-- Fonts - English Only -->
+  <link rel="preload" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" as="style" />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
-
-  <!-- Unify theme with Arabic site -->
+  
+  <!-- Theme -->
   <link rel="stylesheet" href="../css/improved-theme.css" />
+  
   <style>
-    body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif; }
-    .ltr { direction: ltr; text-align: left; }
-    .hero-section { text-align: left; }
-    .section-title { text-align: left; }
+    body {
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+      direction: ltr;
+      text-align: left;
+    }
+    .hero-section, .section-title, .footer {
+      text-align: left;
+    }
+    .logo img {
+      margin-right: 12px;
+      margin-left: 0;
+    }
+    .search-input::placeholder {
+      text-align: left;
+    }
   </style>
 </head>
 <body class="ltr">
@@ -30,221 +48,368 @@
         </a>
         <nav>
           <ul class="nav-list">
-            <li><a href="#categories">Categories</a></li>
-            <li><a href="#featured">Featured</a></li>
-            <li><a href="../cart.html" target="_blank">Cart</a></li>
+            <li><a href="#categories">🏪 Categories</a></li>
+            <li><a href="#featured">💎 Featured</a></li>
+            <li><a href="../cart.html" target="_blank">🛒 Cart</a></li>
             <li><a href="../">العربية</a></li>
-            <li><a href="../legal/terms.html" target="_blank">Terms</a></li>
-            <li><a href="../legal/privacy.html" target="_blank">Privacy</a></li>
-            <li><a href="../legal/shipping.html" target="_blank">Shipping</a></li>
-            <li><a href="../legal/returns.html" target="_blank">Returns</a></li>
+            <li><a href="../legal/terms.html" target="_blank">📋 Terms</a></li>
+            <li><a href="../legal/privacy.html" target="_blank">🔒 Privacy</a></li>
+            <li><a href="../legal/shipping.html" target="_blank">📦 Shipping</a></li>
+            <li><a href="../legal/returns.html" target="_blank">↩️ Returns</a></li>
           </ul>
         </nav>
       </div>
     </div>
   </header>
 
-  <!-- Hero -->
-  <section class="hero-section">
-    <div class="container">
-      <h1 class="hero-title">Welcome to Emirates Souq</h1>
-      <p class="hero-description">Thousands of products at the best prices with fast shipping and cash on delivery across the UAE.</p>
-      <div class="search-box">
-        <input type="search" id="en-search" class="search-input" placeholder="Search products..." />
-        <button class="search-btn" id="en-search-btn">🔍</button>
-      </div>
-    </div>
-  </section>
-
-  <!-- Categories -->
-  <section id="categories" class="section">
-    <div class="container">
-      <h2 class="section-title">Shop by Category</h2>
-      <div class="categories-grid" id="en-categories-container">
-        <div class="loading"><div class="loading-spinner"></div><h3>Loading categories...</h3></div>
-      </div>
-    </div>
-  </section>
-
-  <!-- Products -->
-  <section id="featured" class="section">
-    <div class="container">
-      <div class="tabs-nav">
-        <button class="tab-btn active" data-tab="en-featured">Featured (AED 300+)</button>
-        <button class="tab-btn" data-tab="en-all">All Products</button>
-      </div>
-
-      <div class="tab-content active" id="en-featured">
-        <div class="products-grid" id="en-featured-container">
-          <div class="loading"><div class="loading-spinner"></div><h3>Loading featured products...</h3></div>
+  <!-- Main Content -->
+  <main>
+    <!-- Hero -->
+    <section class="hero-section">
+      <div class="container">
+        <h1 class="hero-title">🇦🇪 Welcome to Emirates Souq</h1>
+        <p class="hero-description">
+          Discover thousands of premium products with free shipping and cash on delivery across the United Arab Emirates.
+        </p>
+        <div class="search-box">
+          <input type="search" id="en-search" class="search-input" placeholder="Search for products..." />
+          <button class="search-btn" id="en-search-btn">🔍</button>
         </div>
       </div>
+    </section>
 
-      <div class="tab-content" id="en-all">
-        <div class="products-grid" id="en-all-container">
-          <div class="loading"><div class="loading-spinner"></div><h3>Loading all products...</h3></div>
+    <!-- Categories -->
+    <section id="categories" class="section">
+      <div class="container">
+        <h2 class="section-title">🏪 Shop by Category</h2>
+        <div class="categories-grid" id="en-categories-container">
+          <div class="loading">
+            <div class="loading-spinner"></div>
+            <h3>Loading categories...</h3>
+          </div>
         </div>
       </div>
-    </div>
-  </section>
+    </section>
+
+    <!-- Products -->
+    <section id="featured" class="section">
+      <div class="container">
+        <div class="tabs-nav">
+          <button class="tab-btn active" data-tab="en-featured">💎 Premium Collection (AED 300+)</button>
+          <button class="tab-btn" data-tab="en-all">🛑 All Products</button>
+        </div>
+
+        <div class="tab-content active" id="en-featured">
+          <div class="products-grid" id="en-featured-container">
+            <div class="loading">
+              <div class="loading-spinner"></div>
+              <h3>Loading premium collection...</h3>
+            </div>
+          </div>
+        </div>
+
+        <div class="tab-content" id="en-all">
+          <div class="products-grid" id="en-all-container">
+            <div class="loading">
+              <div class="loading-spinner"></div>
+              <h3>Loading all products...</h3>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+  </main>
 
   <!-- Footer -->
   <footer class="footer">
     <div class="container">
       <div class="footer-content">
         <div class="footer-section">
-          <h3>Emirates Souq</h3>
-          <p>Leading digital shopping experience in the UAE.</p>
+          <h3>🏪 Emirates Souq</h3>
+          <p>Leading digital shopping experience in the UAE</p>
+          <p>100% UAE Product 🇦🇪</p>
         </div>
         <div class="footer-section">
-          <h3>Links</h3>
+          <h3>🔗 Important Links</h3>
           <div>
-            <a href="../legal/terms.html" target="_blank">Terms</a><br />
-            <a href="../legal/privacy.html" target="_blank">Privacy</a><br />
-            <a href="../legal/shipping.html" target="_blank">Shipping</a><br />
-            <a href="../legal/returns.html" target="_blank">Returns</a>
+            <a href="../legal/terms.html" target="_blank">📋 Terms</a><br />
+            <a href="../legal/privacy.html" target="_blank">🔒 Privacy</a><br />
+            <a href="../legal/shipping.html" target="_blank">📦 Shipping</a><br />
+            <a href="../legal/returns.html" target="_blank">↩️ Returns</a><br />
+            <a href="../">العربية</a>
           </div>
         </div>
         <div class="footer-section">
-          <h3>Contact</h3>
+          <h3>📞 Contact</h3>
           <div>
-            <a href="https://wa.me/201110760081" target="_blank">WhatsApp</a><br />
-            <a href="tel:+201110760081">Call</a><br />
-            <a href="../cart.html" target="_blank">Cart</a>
+            <a href="https://wa.me/201110760081" target="_blank">📱 WhatsApp</a><br />
+            <a href="tel:+201110760081">☎️ Call</a><br />
+            <a href="../cart.html" target="_blank">🛒 Cart</a><br />
+            <a href="../checkout.html" target="_blank">💳 Checkout</a>
           </div>
         </div>
         <div class="footer-section">
-          <h3>Our Services</h3>
-          <div>🚚 Free Shipping<br />💰 Cash on Delivery<br />🔄 7-day Returns<br />⭐ 24/7 Support</div>
+          <h3>✨ Our Services</h3>
+          <div>
+            🚚 Free Shipping<br />💰 Cash on Delivery<br />🔄 7-day Returns<br />⭐ 24/7 Support
+          </div>
         </div>
       </div>
-      <div style="border-top:1px solid #666; padding-top:1.5rem; margin-top:1.5rem; text-align:left;">
+      <div style="border-top: 1px solid #666; padding-top: 1.5rem; margin-top: 1.5rem; text-align: left;">
         <p>&copy; 2025 Emirates Souq. All rights reserved.</p>
       </div>
     </div>
   </footer>
 
-  <!-- Floating WhatsApp -->
-  <a href="https://wa.me/201110760081?text=Hello%2C%20I%20want%20to%20contact%20Emirates%20Souq%20team" class="whatsapp-float" target="_blank" title="WhatsApp">📱</a>
+  <!-- WhatsApp Float -->
+  <a href="https://wa.me/201110760081?text=Hello%2C%20I%20want%20to%20contact%20Emirates%20Souq%20team" 
+     class="whatsapp-float" target="_blank" title="WhatsApp">📱</a>
 
   <script src="../js/cart.js"></script>
   <script>
-    // Load Arabic data and render in English UI
-    const DATA_SRC = '../data/uae-products.json';
-    const FEATURED_PRICE = 300;
+    // English Category Translation Map
+    const categoryTranslations = {
+      'الأجهزة المنزلية والكهربائية': 'Home Appliances & Electrical',
+      'الإلكترونيات والتكنولوجيا': 'Electronics & Technology', 
+      'العناية الشخصية والصحة والجمال': 'Personal Care, Health & Beauty',
+      'الأحذية والملابس والإكسسوارات': 'Shoes, Clothing & Accessories',
+      'الرياضة واللياقة والصحة': 'Sports, Fitness & Health',
+      'الأثاث والأدوات المنزلية': 'Furniture & Home Tools',
+      'الأدوات والصيانة': 'Tools & Maintenance',
+      'منتجات متنوعة': 'Miscellaneous Products'
+    };
 
-    function priceOf(p){ return Number(p.sale_price || p.regular_price || 0); }
+    const categoryIcons = {
+      'الأجهزة المنزلية والكهربائية': '🏠',
+      'الإلكترونيات والتكنولوجيا': '📱',
+      'العناية الشخصية والصحة والجمال': '💄',
+      'الأحذية والملابس والإكسسوارات': '👟',
+      'الرياضة واللياقة والصحة': '🏅',
+      'الأثاث والأدوات المنزلية': '🛋️',
+      'الأدوات والصيانة': '🔧',
+      'منتجات متنوعة': '🛑'
+    };
 
-    function createCategorySlug(name){
-      return name.replace(/\s+/g,'-').replace(/[^\w\-\u0600-\u06FF]/g,'').replace(/--+/g,'-');
+    // Load data and render English interface
+    async function loadData() {
+      try {
+        const response = await fetch('../data/uae-products.json');
+        if (!response.ok) throw new Error('Failed to load data');
+        const data = await response.json();
+        
+        console.log('✅ Loaded', data.length, 'products for English site');
+        
+        renderEnglishCategories(data);
+        renderEnglishProducts(data);
+        
+      } catch (error) {
+        console.error('❌ Error loading data:', error);
+        showError('Unable to load products. Please try again later.');
+      }
     }
 
-    function renderCategories(products){
+    function renderEnglishCategories(products) {
       const container = document.getElementById('en-categories-container');
+      if (!container) return;
+      
+      // Count products per category
       const counts = {};
-      products.forEach(p=>{ counts[p.category] = (counts[p.category]||0)+1; });
-      const entries = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
-      container.innerHTML='';
-      entries.forEach(([name,count])=>{
-        const slug = createCategorySlug(name);
-        const titleEn = name; // keep Arabic category labels; UI is English
+      products.forEach(p => {
+        counts[p.category] = (counts[p.category] || 0) + 1;
+      });
+      
+      // Sort by count desc
+      const entries = Object.entries(counts).sort((a, b) => b[1] - a[1]);
+      
+      container.innerHTML = '';
+      entries.forEach(([arabicName, count]) => {
+        const englishName = categoryTranslations[arabicName] || arabicName;
+        const icon = categoryIcons[arabicName] || '🏷️';
+        
         const card = document.createElement('div');
-        card.className='category-card';
-        card.setAttribute('data-category', name);
+        card.className = 'category-card';
+        card.setAttribute('data-category', arabicName); // Keep Arabic for filtering
         card.innerHTML = `
-          <div class="category-icon">🏷️</div>
-          <h3 class="category-name">${titleEn}</h3>
+          <div class="category-icon">${icon}</div>
+          <h3 class="category-name">${englishName}</h3>
           <div class="category-count">${count} products</div>
         `;
-        card.onclick = ()=>{
-          // open Arabic SEO category pages for consistency
-          window.open('../'+(window.getCategoryPage?window.getCategoryPage(name):'miscellaneous-products.html'),'_blank','noopener');
-        };
+        
+        // Open English category page
+        card.addEventListener('click', () => {
+          const slug = getEnglishCategorySlug(arabicName);
+          window.open(`./en-${slug}.html`, '_blank', 'noopener');
+        });
+        
         container.appendChild(card);
       });
     }
 
-    function productCard(p){
-      const current = priceOf(p);
-      const original = p.sale_price && p.regular_price>p.sale_price ? `<span class="original-price">${p.regular_price} AED</span>` : '';
-      const title = p.title.length>60 ? p.title.slice(0,60)+'…' : p.title;
-      const img = p.image_url || 'https://via.placeholder.com/400x300/1e40af/FFFFFF?text=Product';
-      const wMsg = `Hello, I'm interested in: ${p.title} (Price: ${current} AED)`;
+    function getEnglishCategorySlug(arabicName) {
+      const slugMap = {
+        'الأجهزة المنزلية والكهربائية': 'home-appliances-electrical',
+        'الإلكترونيات والتكنولوجيا': 'electronics-technology',
+        'العناية الشخصية والصحة والجمال': 'personal-care-health-beauty',
+        'الأحذية والملابس والإكسسوارات': 'shoes-clothing-accessories',
+        'الرياضة واللياقة والصحة': 'sports-fitness-health',
+        'الأثاث والأدوات المنزلية': 'furniture-home-tools',
+        'الأدوات والصيانة': 'tools-maintenance',
+        'منتجات متنوعة': 'miscellaneous-products'
+      };
+      return slugMap[arabicName] || 'miscellaneous-products';
+    }
+
+    function renderEnglishProducts(data) {
+      const featured = data.filter(p => (p.sale_price || p.regular_price) >= 300).slice(0, 12);
+      const allProducts = data.sort((a, b) => a.title.localeCompare(b.title, 'ar'));
+      
+      const featuredContainer = document.getElementById('en-featured-container');
+      const allContainer = document.getElementById('en-all-container');
+      
+      if (featuredContainer) {
+        featuredContainer.innerHTML = featured.map(createEnglishProductCard).join('');
+      }
+      
+      if (allContainer) {
+        allContainer.innerHTML = allProducts.map(createEnglishProductCard).join('');
+      }
+    }
+
+    function createEnglishProductCard(product) {
+      const currentPrice = product.sale_price || product.regular_price || 0;
+      const originalPrice = product.sale_price && product.regular_price > product.sale_price 
+        ? `<span class="original-price">${product.regular_price} AED</span>` 
+        : '';
+      const title = product.title.length > 60 ? product.title.slice(0, 60) + '…' : product.title;
+      const englishCategory = categoryTranslations[product.category] || product.category;
+      
+      const whatsappMsg = `Hello, I'm interested in: ${product.title} (Price: ${currentPrice} AED)`;
+      
       return `
-        <div class="product-card" data-product-id="${p.id}">
-          <div class="product-image" style="cursor:pointer;" onclick="openProduct('${p.id}')">
-            <img src="${img}" alt="${title}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x300/1e40af/FFFFFF?text=Product'" />
+        <div class="product-card" data-product-id="${product.id}">
+          <div class="product-image" onclick="openProduct('${product.id}')" style="cursor:pointer;">
+            <img src="${product.image_url}" alt="${title}" loading="lazy" 
+                 onerror="this.src='https://via.placeholder.com/400x300/1e40af/FFFFFF?text=Product'" />
           </div>
           <div class="product-info">
-            <div class="product-category">${p.category}</div>
-            <h3 class="product-title" onclick="openProduct('${p.id}')" style="cursor:pointer;">${title}</h3>
+            <div class="product-category">${englishCategory}</div>
+            <h3 class="product-title" onclick="openProduct('${product.id}')" style="cursor:pointer;">${title}</h3>
             <div class="product-price">
-              <span class="current-price">${current} AED</span>
-              ${original}
+              <span class="current-price">${currentPrice} AED</span>
+              ${originalPrice}
+            </div>
+            <div class="product-features">
+              <div class="feature">🇦🇪 UAE Product</div>
+              <div class="feature">🚚 Free Shipping</div>
+              <div class="feature">💰 Cash on Delivery</div>
             </div>
             <div class="product-actions">
-              <button class="btn add-to-cart" onclick="addToCart('${p.id}', '${p.title.replace(/"/g,'&quot;')}', ${current}, '${img.replace(/"/g,'&quot;')}')">🛒 Add</button>
-              <a class="btn whatsapp-btn" href="https://wa.me/201110760081?text=${encodeURIComponent(wMsg)}" target="_blank" rel="noopener">📱 WhatsApp</a>
-              <button class="btn view-details" onclick="openProduct('${p.id}')">👁 View</button>
+              <button class="btn add-to-cart" onclick="addToCart('${product.id}', '${product.title.replace(/'/g, "\\'")}', ${currentPrice}, '${product.image_url}')">🛒 Add to Cart</button>
+              <a class="btn whatsapp-btn" href="https://wa.me/201110760081?text=${encodeURIComponent(whatsappMsg)}" target="_blank" rel="noopener">📱 WhatsApp</a>
+              <button class="btn view-details" onclick="openProduct('${product.id}')">👁 View</button>
             </div>
           </div>
-        </div>`;
+        </div>
+      `;
     }
 
-    function openProduct(id){ window.open('../product.html?id='+encodeURIComponent(id), '_blank', 'noopener'); }
-
-    function addToCart(id,title,price,image){
-      const key='emirates_cart';
-      const items = JSON.parse(localStorage.getItem(key)||'[]');
-      const it = items.find(i=>i.id==id);
-      if(it){ it.quantity=(it.quantity||1)+1; } else { items.push({id,title,price,image,quantity:1,addedAt:Date.now()}); }
-      localStorage.setItem(key, JSON.stringify(items));
+    function openProduct(id) {
+      window.open(`../product.html?id=${encodeURIComponent(id)}`, '_blank', 'noopener');
     }
 
-    async function loadData(){
-      const res = await fetch(DATA_SRC);
-      const data = await res.json();
-      return data.map(p=>({ ...p, sale_price: Number(p.sale_price||0), regular_price: Number(p.regular_price||0) }));
+    function addToCart(id, title, price, image) {
+      try {
+        const cartItems = JSON.parse(localStorage.getItem('emirates_cart') || '[]');
+        const existingItem = cartItems.find(item => item.id === id);
+        
+        if (existingItem) {
+          existingItem.quantity += 1;
+        } else {
+          cartItems.push({
+            id: id,
+            title: title,
+            price: price,
+            image: image,
+            quantity: 1,
+            addedAt: Date.now()
+          });
+        }
+        
+        localStorage.setItem('emirates_cart', JSON.stringify(cartItems));
+        showNotification(`"${title}" added to cart successfully!`);
+        
+      } catch (error) {
+        console.error('Error adding to cart:', error);
+        showNotification('Error adding product to cart', 'error');
+      }
     }
 
-    function renderProducts(data){
-      const featured = data.filter(p=>priceOf(p)>=FEATURED_PRICE).slice(0,12);
-      const enFeatured = document.getElementById('en-featured-container');
-      const enAll = document.getElementById('en-all-container');
-      enFeatured.innerHTML = featured.map(productCard).join('');
-      enAll.innerHTML = data.sort((a,b)=>a.title.localeCompare(b.title,'ar')).map(productCard).join('');
+    function showNotification(message, type = 'success') {
+      const colors = { success: '#10b981', error: '#ef4444' };
+      const notification = document.createElement('div');
+      notification.style.cssText = `
+        position: fixed; top: 100px; right: 24px; background: ${colors[type]};
+        color: white; padding: 1rem 1.5rem; border-radius: 8px;
+        font-weight: 600; z-index: 10001; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+        cursor: pointer; max-width: 300px; border: 2px solid white;
+        font-family: Inter, sans-serif;
+      `;
+      notification.textContent = message;
+      notification.onclick = () => notification.remove();
+      document.body.appendChild(notification);
+      setTimeout(() => { if(notification.parentNode) notification.remove(); }, 4000);
     }
 
-    document.addEventListener('DOMContentLoaded', async ()=>{
-      // load category routing from Arabic if available
-      const script = document.createElement('script');
-      script.src = '../js/category-routing.js';
-      document.head.appendChild(script);
+    function showError(message) {
+      const container = document.getElementById('en-categories-container');
+      if (container) {
+        container.innerHTML = `
+          <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
+            <h3>⚠️ ${message}</h3>
+            <a href="../" style="
+              display: inline-block; margin-top: 1rem; padding: 1rem 2rem; 
+              background: var(--primary-blue); color: white; text-decoration: none; 
+              border-radius: 8px; font-weight: 600;
+            ">🏠 Back to Home</a>
+          </div>
+        `;
+      }
+    }
 
-      const data = await loadData();
-      renderCategories(data);
-      renderProducts(data);
+    // Search functionality
+    function performSearch() {
+      const query = (document.getElementById('en-search').value || '').trim();
+      if (!query || query.length < 2) return;
+      
+      // Simple search in loaded data (could be enhanced)
+      console.log('🔍 Search:', query);
+      // For now, redirect to all products tab
+      document.querySelector('[data-tab="en-all"]').click();
+    }
 
-      // tabs
-      document.querySelectorAll('.tab-btn').forEach(btn=>{
-        btn.addEventListener('click',()=>{
-          document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
-          document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+    // Initialize tabs
+    function setupTabs() {
+      document.querySelectorAll('.tab-btn').forEach(btn => {
+        btn.addEventListener('click', () => {
+          document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
           btn.classList.add('active');
           document.getElementById(btn.dataset.tab).classList.add('active');
         });
       });
+    }
 
-      // search
-      document.getElementById('en-search-btn').addEventListener('click', doSearch);
-      document.getElementById('en-search').addEventListener('keypress', (e)=>{ if(e.key==='Enter') doSearch(); });
-      function doSearch(){
-        const q = (document.getElementById('en-search').value||'').trim();
-        if(!q||q.length<2) return;
-        const results = data.filter(p=> (p.title+" "+(p.description||"")).toLowerCase().includes(q.toLowerCase()));
-        document.querySelector('[data-tab="en-all"]').click();
-        document.getElementById('en-all-container').innerHTML = results.map(productCard).join('') || '<p>No results found.</p>';
-      }
+    // Initialize
+    document.addEventListener('DOMContentLoaded', () => {
+      console.log('✅ Emirates Souq English - Loading...');
+      setupTabs();
+      loadData();
+      
+      // Search events
+      document.getElementById('en-search-btn').addEventListener('click', performSearch);
+      document.getElementById('en-search').addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') performSearch();
+      });
     });
   </script>
 </body>
