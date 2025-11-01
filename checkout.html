@@ -15,7 +15,7 @@
         .checkout-page {
             min-height: 100vh;
             padding: 140px 0 40px;
-            background: var(--bg-light);
+            background: var(--bg-light, #f8fafc);
         }
         
         .checkout-container {
@@ -28,19 +28,19 @@
         }
         
         .checkout-form {
-            background: var(--bg-white);
-            border-radius: var(--radius-lg);
+            background: var(--bg-white, white);
+            border-radius: 20px;
             padding: 3rem;
-            box-shadow: var(--shadow-lg);
-            border: 2px solid var(--border-light);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 2px solid rgba(212, 175, 55, 0.1);
         }
         
         .checkout-summary {
-            background: var(--bg-white);
-            border-radius: var(--radius-lg);
+            background: var(--bg-white, white);
+            border-radius: 20px;
             padding: 2.5rem;
-            box-shadow: var(--shadow-lg);
-            border: 2px solid var(--primary-blue);
+            box-shadow: 0 8px 32px rgba(0, 0, 0, 0.1);
+            border: 2px solid #3b82f6;
             height: fit-content;
             position: sticky;
             top: 160px;
@@ -49,7 +49,7 @@
         .page-title {
             font-size: 2.5rem;
             font-weight: 800;
-            color: var(--text-dark);
+            color: var(--text-dark, #111827);
             text-align: center;
             margin-bottom: 2rem;
         }
@@ -60,11 +60,11 @@
             justify-content: center;
             gap: 1rem;
             background: rgba(16,185,129,0.1);
-            border: 2px solid var(--success-green);
-            border-radius: var(--radius-md);
+            border: 2px solid #10b981;
+            border-radius: 15px;
             padding: 1rem 2rem;
             margin-bottom: 2rem;
-            color: var(--success-green);
+            color: #10b981;
             font-weight: 700;
         }
         
@@ -75,9 +75,9 @@
         .section-title {
             font-size: 1.5rem;
             font-weight: 800;
-            color: var(--text-dark);
+            color: var(--text-dark, #111827);
             margin-bottom: 1.5rem;
-            border-right: 4px solid var(--primary-blue);
+            border-right: 4px solid #3b82f6;
             padding-right: 1rem;
         }
         
@@ -88,59 +88,69 @@
         .form-label {
             display: block;
             font-weight: 700;
-            color: var(--text-dark);
+            color: var(--text-dark, #111827);
             margin-bottom: 0.5rem;
             font-size: 1.1rem;
         }
         
         .required {
-            color: var(--error-red);
+            color: #ef4444;
             font-weight: 900;
         }
         
         .form-input {
             width: 100%;
             padding: 1rem 1.5rem;
-            border: 2px solid var(--border-light);
-            border-radius: var(--radius-md);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 15px;
             font-size: 1rem;
-            background: var(--bg-white);
-            color: var(--text-dark);
-            transition: var(--transition);
+            background: var(--bg-white, white);
+            color: var(--text-dark, #111827);
+            transition: all 0.3s ease;
             font-family: 'Cairo', sans-serif;
         }
         
         .form-input:focus {
             outline: none;
-            border-color: var(--primary-blue);
-            box-shadow: var(--shadow-sm);
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 3px rgba(59, 130, 246, 0.1);
             background: rgba(255, 255, 255, 0.98);
         }
         
         .form-input.error {
-            border-color: var(--error-red);
+            border-color: #ef4444;
             box-shadow: 0 0 15px rgba(239, 68, 68, 0.2);
         }
         
-        .error-message {
-            color: var(--error-red);
+        .error-message, .success-message {
             font-size: 0.9rem;
             margin-top: 0.5rem;
             font-weight: 600;
         }
         
-        .success-message {
-            color: var(--success-green);
-            font-size: 0.9rem;
-            margin-top: 0.5rem;
-            font-weight: 600;
-        }
+        .error-message { color: #ef4444; }
+        .success-message { color: #10b981; }
         
         /* Order Summary */
         .order-items {
             max-height: 300px;
             overflow-y: auto;
             margin-bottom: 2rem;
+            padding-right: 0.5rem;
+        }
+        
+        .order-items::-webkit-scrollbar {
+            width: 6px;
+        }
+        
+        .order-items::-webkit-scrollbar-track {
+            background: rgba(212, 175, 55, 0.1);
+            border-radius: 10px;
+        }
+        
+        .order-items::-webkit-scrollbar-thumb {
+            background: linear-gradient(135deg, #d4af37, #b8941f);
+            border-radius: 10px;
         }
         
         .order-item {
@@ -148,26 +158,33 @@
             align-items: center;
             gap: 1rem;
             padding: 1rem;
-            border: 2px solid var(--border-light);
-            border-radius: var(--radius-md);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 15px;
             margin-bottom: 1rem;
-            background: var(--bg-white);
-            box-shadow: var(--shadow-sm);
+            background: var(--bg-white, white);
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            transition: all 0.3s ease;
+        }
+        
+        .order-item:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 20px rgba(212, 175, 55, 0.2);
+            border-color: #d4af37;
         }
         
         .item-image {
             width: 60px;
             height: 60px;
-            border-radius: var(--radius-sm);
+            border-radius: 10px;
             object-fit: cover;
-            border: 2px solid var(--border-light);
+            border: 2px solid rgba(212, 175, 55, 0.3);
         }
         
         .item-details { flex: 1; }
         
         .item-title {
             font-weight: 700;
-            color: var(--text-dark);
+            color: var(--text-dark, #111827);
             font-size: 0.95rem;
             line-height: 1.3;
             margin-bottom: 0.3rem;
@@ -175,22 +192,24 @@
         
         .item-price {
             font-weight: 800;
-            color: var(--primary-green);
+            color: #d4af37;
         }
         
         .item-quantity {
             font-weight: 800;
-            color: var(--text-medium);
+            color: var(--text-medium, #6b7280);
             font-size: 1rem;
+            min-width: 30px;
+            text-align: center;
         }
         
         /* Price Summary */
         .price-summary {
-            background: var(--bg-white);
-            border-radius: var(--radius-lg);
+            background: var(--bg-white, white);
+            border-radius: 20px;
             padding: 2rem;
-            box-shadow: var(--shadow-md);
-            border: 2px solid var(--border-light);
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+            border: 2px solid rgba(212, 175, 55, 0.1);
             margin-bottom: 2rem;
         }
         
@@ -205,36 +224,55 @@
             font-size: 1.5rem;
             font-weight: 900;
             padding: 1.5rem 0;
-            border-top: 3px solid var(--primary-blue);
+            border-top: 3px solid #3b82f6;
             margin-top: 1.5rem;
         }
         
-        .price-label { color: var(--text-dark); font-weight: 600; }
-        .price-value { color: var(--primary-blue); font-weight: 800; }
-        .free-badge { color: var(--success-green); font-weight: 800; }
+        .price-label { color: var(--text-dark, #111827); font-weight: 600; }
+        .price-value { color: #3b82f6; font-weight: 800; }
+        .free-badge { color: #10b981; font-weight: 800; }
         
         /* Submit Button */
         .submit-button {
             width: 100%;
             padding: 1.8rem;
-            background: var(--success-green);
-            color: var(--bg-white);
+            background: #10b981;
+            color: var(--bg-white, white);
             border: none;
-            border-radius: var(--radius-lg);
+            border-radius: 20px;
             font-size: 1.4rem;
             font-weight: 800;
             cursor: pointer;
-            transition: var(--transition);
-            box-shadow: var(--shadow-lg);
+            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 30px rgba(16, 185, 129, 0.3);
             text-shadow: none;
-            border: 2px solid var(--success-green);
+            border: 2px solid #10b981;
             position: relative;
             overflow: hidden;
         }
         
+        .submit-button::before {
+            content: '';
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            width: 0;
+            height: 0;
+            background: rgba(255, 255, 255, 0.2);
+            border-radius: 50%;
+            transform: translate(-50%, -50%);
+            transition: all 0.5s ease;
+            z-index: 1;
+        }
+        
+        .submit-button:hover::before {
+            width: 500px;
+            height: 500px;
+        }
+        
         .submit-button:hover {
-            transform: translateY(-3px);
-            box-shadow: 0 12px 30px rgba(16,185,129,0.4);
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 12px 40px rgba(16, 185, 129, 0.4);
             background: #059669;
             border-color: #059669;
         }
@@ -247,9 +285,9 @@
         
         /* Legal Agreement */
         .legal-agreement {
-            background: var(--bg-light);
-            border: 2px solid var(--border-light);
-            border-radius: var(--radius-md);
+            background: rgba(212, 175, 55, 0.05);
+            border: 2px solid rgba(212, 175, 55, 0.2);
+            border-radius: 15px;
             padding: 1.5rem;
             margin: 2rem 0;
             text-align: center;
@@ -258,32 +296,17 @@
         }
         
         .legal-agreement a {
-            color: var(--primary-blue);
+            color: #3b82f6;
             text-decoration: none;
             font-weight: 700;
-            border-bottom: 1px dotted var(--primary-blue);
+            border-bottom: 1px dotted #3b82f6;
+            transition: all 0.3s ease;
         }
         
         .legal-agreement a:hover {
-            color: var(--primary-green);
-            border-bottom-color: var(--primary-green);
+            color: #10b981;
+            border-bottom-color: #10b981;
         }
-        
-        /* Order Number Display */
-        .order-number {
-            background: var(--primary-blue);
-            color: var(--bg-white);
-            padding: 2rem;
-            border-radius: var(--radius-lg);
-            text-align: center;
-            margin: 2rem 0;
-            box-shadow: var(--shadow-md);
-            border: 3px solid rgba(255, 255, 255, 0.3);
-            display: none;
-        }
-        
-        .order-number h3 { font-size: 1.5rem; margin-bottom: 1rem; font-weight: 800; }
-        .order-id { font-size: 2rem; font-weight: 900; letter-spacing: 2px; }
         
         /* Success Animation */
         .success-animation {
@@ -292,12 +315,12 @@
             left: 50%;
             transform: translate(-50%, -50%);
             z-index: 10000;
-            background: var(--success-green);
-            color: var(--bg-white);
+            background: #10b981;
+            color: white;
             padding: 3rem;
-            border-radius: var(--radius-lg);
+            border-radius: 20px;
             text-align: center;
-            box-shadow: var(--shadow-lg);
+            box-shadow: 0 15px 50px rgba(16, 185, 129, 0.4);
             display: none;
         }
         
@@ -309,10 +332,33 @@
         
         /* Responsive Design */
         @media (max-width: 768px) {
-            .checkout-container { grid-template-columns: 1fr; gap: 2rem; padding: 0 1rem; }
-            .checkout-summary { position: static; order: -1; }
-            .checkout-form { padding: 2rem; }
-            .page-title { font-size: 2rem; }
+            .checkout-container { 
+                grid-template-columns: 1fr; 
+                gap: 2rem; 
+                padding: 0 1rem; 
+            }
+            .checkout-summary { 
+                position: static; 
+                order: -1; 
+            }
+            .checkout-form { 
+                padding: 2rem; 
+            }
+            .page-title { 
+                font-size: 2rem; 
+            }
+        }
+        
+        @media (max-width: 480px) {
+            .checkout-form {
+                padding: 1.5rem;
+            }
+            .checkout-summary {
+                padding: 2rem;
+            }
+            .page-title {
+                font-size: 1.8rem;
+            }
         }
     </style>
 </head>
@@ -355,12 +401,12 @@
                         
                         <div class="form-group">
                             <label for="customer-name" class="form-label">الاسم الكامل <span class="required">*</span></label>
-                            <input type="text" id="customer-name" name="customer-name" class="form-input" placeholder="أدخل اسمك الكامل بالعربية" required autocomplete="name">
+                            <input type="text" id="customer-name" name="customer-name" class="form-input" placeholder="مثال: محمد علي أحمد" required autocomplete="name">
                             <div class="error-message" id="name-error"></div>
                         </div>
                         
                         <div class="form-group">
-                            <label for="customer-phone" class="form-label">رقم الهاتف الإماراتي <span class="required">*</span></label>
+                            <label for="customer-phone" class="form-label">رقم الهاتف الإماراتي (UAE) <span class="required">*</span></label>
                             <input type="tel" id="customer-phone" name="customer-phone" class="form-input" placeholder="971501234567" pattern="^971(50|51|52|54|55|56|58)\d{7}$" required autocomplete="tel">
                             <div class="success-message" style="font-size: 0.85rem; margin-top: 0.3rem;">ℹ️ مثال: 971501234567 (يجب أن يبدأ بـ 971)</div>
                             <div class="error-message" id="phone-error"></div>
@@ -372,7 +418,7 @@
                         <h2 class="section-title">📦 عنوان التوصيل</h2>
                         <div class="form-group">
                             <label for="delivery-address" class="form-label">العنوان الكامل <span class="required">*</span></label>
-                            <textarea id="delivery-address" name="delivery-address" class="form-input" rows="3" placeholder="اسم الإمارة + المدينة + المنطقة + اسم الشارع + رقم المبنى\nمثال: دبي - مارينا مول - شارع الشيخ زايد - مبنى رقم 123 - شقة 45" required autocomplete="street-address"></textarea>
+                            <textarea id="delivery-address" name="delivery-address" class="form-input" rows="3" placeholder="اسم الإمارة + المدينة + المنطقة + اسم الشارع + رقم المبنى&#10;مثال: دبي - مارينا مول - شارع الشيخ زايد - مبنى رقم 123 - شقة 45" required autocomplete="street-address"></textarea>
                             <div class="error-message" id="address-error"></div>
                         </div>
                     </div>
@@ -381,7 +427,7 @@
                     <div class="form-section">
                         <h2 class="section-title">📝 ملاحظات الطلب (اختياري)</h2>
                         <div class="form-group">
-                            <textarea id="order-notes" name="order-notes" class="form-input" rows="2" placeholder="ملاحظات إضافية (اختياري)\nمثال: اتصال قبل التوصيل، التوصيل في وقت محدد، إلخ..."></textarea>
+                            <textarea id="order-notes" name="order-notes" class="form-input" rows="2" placeholder="ملاحظات إضافية (اختياري)&#10;مثال: اتصال قبل التوصيل، التوصيل في وقت محدد، إلخ..."></textarea>
                         </div>
                     </div>
                     
@@ -398,25 +444,18 @@
                     
                     <button type="submit" class="submit-button" id="submit-order">🚀 إرسال الطلب عبر واتساب</button>
                 </form>
-                
-                <!-- Order Number Display -->
-                <div class="order-number" id="order-number-display">
-                    <h3>🎉 تم إرسال طلبك بنجاح!</h3>
-                    <p>رقم طلبك هو:</p>
-                    <div class="order-id" id="generated-order-id"></div>
-                    <p style="margin-top: 1rem; font-size: 0.95rem; opacity: 0.9;">احتفظ بهذا الرقم لمتابعة طلبك</p>
-                </div>
             </div>
             
             <!-- Order Summary -->
             <div class="checkout-summary">
-                <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--text-dark); text-align: center; margin-bottom: 2rem; border-bottom: 2px solid var(--primary-blue); padding-bottom: 1rem;">📋 ملخص طلبك</h2>
+                <h2 style="font-size: 1.8rem; font-weight: 800; color: var(--text-dark, #111827); text-align: center; margin-bottom: 2rem; border-bottom: 2px solid #3b82f6; padding-bottom: 1rem;">📋 ملخص طلبك</h2>
                 
                 <!-- Cart Items -->
                 <div class="order-items" id="order-items">
-                    <div class="loading" style="text-align: center; padding: 3rem; color: var(--text-medium);">
-                        <div style="font-size: 3rem; margin-bottom: 1rem;">🛒</div>
+                    <div class="loading" style="text-align: center; padding: 3rem; color: var(--text-medium, #6b7280);">
+                        <div class="loading-spinner" style="margin: 0 auto 1rem;"></div>
                         <h4>جاري تحميل عناصر الطلب...</h4>
+                        <p>يرجى الانتظار...</p>
                     </div>
                 </div>
                 
@@ -430,9 +469,9 @@
                 </div>
                 
                 <!-- Service Guarantees -->
-                <div style="background: rgba(16,185,129,0.1); border: 2px solid var(--success-green); border-radius: var(--radius-md); padding: 1.5rem; text-align: center; margin-top: 2rem;">
-                    <h4 style="color: var(--success-green); margin-bottom: 1rem; font-weight: 700;">✅ ضمانات الأمان</h4>
-                    <div style="font-size: 0.95rem; color: var(--success-green); font-weight: 600; line-height: 1.6;">
+                <div style="background: rgba(16,185,129,0.1); border: 2px solid #10b981; border-radius: 15px; padding: 1.5rem; text-align: center; margin-top: 2rem;">
+                    <h4 style="color: #10b981; margin-bottom: 1rem; font-weight: 700;">✅ ضمانات الأمان</h4>
+                    <div style="font-size: 0.95rem; color: #10b981; font-weight: 600; line-height: 1.6;">
                         🚚 شحن مجاني 100%<br>💰 دفع آمن عند الاستلام<br>🔄 ضمان إرجاع 7 أيام<br>⭐ خدمة عملاء 24/7<br>🇦🇪 ضمان الجودة الإماراتية
                     </div>
                 </div>
@@ -445,7 +484,7 @@
         <div class="container">
             <div class="footer-content">
                 <div class="footer-section">
-                    <h3>🏪 سوق الإمارات</h3>
+                    <h3>🏦 سوق الإمارات</h3>
                     <p>رائدون في عالم التسوق الرقمي</p>
                     <p>منتج إماراتي 100% 🇦🇪</p>
                 </div>
@@ -480,19 +519,463 @@
     </footer>
 
     <!-- WhatsApp Float -->
-    <a href="https://wa.me/201110760081?text=مرحبا،%20أريد%20التواصل%20مع%20فريق%20سوق%20الإمارات" class="whatsapp-float" target="_blank" title="تواصل عبر واتساب">📱</a>
+    <a href="https://wa.me/201110760081?text=مرحبا،%20أريد%20التواصل%20مع%20فريق%20سوق%20الإمارات" class="whatsapp-float" target="_blank" title="تواصل عبر واتساب" style="
+        position: fixed;
+        bottom: 30px;
+        right: 30px;
+        width: 70px;
+        height: 70px;
+        background: linear-gradient(135deg, #25D366, #128C7E);
+        color: white;
+        border-radius: 50%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: none;
+        font-size: 2.2rem;
+        box-shadow: 0 8px 25px rgba(37, 211, 102, 0.4);
+        z-index: 1001;
+        transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        border: 3px solid rgba(255, 255, 255, 0.8);
+    ">📱</a>
 
-    <!-- Success Animation -->
-    <div class="success-animation" id="success-animation" style="animation: successPop 0.6s ease;"> 
-        <div style="font-size: 3.2rem; margin-bottom: 0.8rem;">🎉</div>
-        <h3>تم إرسال طلبك بنجاح!</h3>
-        <p>سيتم التواصل معك قريباً</p>
-    </div>
-
+    <!-- Scripts -->
+    <script src="js/app-config.js"></script>
+    <script src="js/cart.js"></script>
     <script>
-        class CheckoutPage { /* ... الكود كما في الملف السابق بدون تغيير كبير ... */ }
+        class CheckoutPage {
+            constructor() {
+                this.cart = null;
+                this.init();
+            }
+            
+            init() {
+                console.log('💳 بدء تفعيل صفحة إتمام الطلب...');
+                this.setupValidation();
+                this.loadCartData();
+                this.setupFormSubmission();
+            }
+            
+            loadCartData() {
+                // محاولة الحصول على بيانات السلة من عدة مصادر
+                try {
+                    // 1. من sessionStorage (بيانات انتقال)
+                    const sessionData = sessionStorage.getItem('checkout_cart_data');
+                    if (sessionData) {
+                        const cartData = JSON.parse(sessionData);
+                        console.log('✅ تم تحميل بيانات السلة من sessionStorage');
+                        this.renderOrderSummary(cartData);
+                        return;
+                    }
+                } catch (error) {
+                    console.warn('❌ خطأ في sessionStorage:', error);
+                }
+                
+                // 2. من localStorage المباشر
+                try {
+                    const cartItems = localStorage.getItem('emirates_cart');
+                    if (cartItems) {
+                        const items = JSON.parse(cartItems);
+                        if (items.length > 0) {
+                            const cartData = {
+                                items: items,
+                                totalItems: items.reduce((sum, item) => sum + item.quantity, 0),
+                                totalPrice: items.reduce((sum, item) => sum + (item.price * item.quantity), 0)
+                            };
+                            console.log('✅ تم تحميل بيانات السلة من localStorage');
+                            this.renderOrderSummary(cartData);
+                            return;
+                        }
+                    }
+                } catch (error) {
+                    console.warn('❌ خطأ في localStorage:', error);
+                }
+                
+                // 3. من window.cart إذا كان متاح
+                if (window.cart && typeof window.cart.getCartData === 'function') {
+                    const cartData = window.cart.getCartData();
+                    if (cartData.totalItems > 0) {
+                        console.log('✅ تم تحميل بيانات السلة من window.cart');
+                        this.renderOrderSummary(cartData);
+                        return;
+                    }
+                }
+                
+                // 4. انتظار تحميل cart.js ثم محاولة مرة أخرى
+                setTimeout(() => {
+                    if (window.cart) {
+                        const cartData = window.cart.getCartData();
+                        if (cartData.totalItems > 0) {
+                            console.log('✅ تم تحميل بيانات السلة بعد الانتظار');
+                            this.renderOrderSummary(cartData);
+                            return;
+                        }
+                    }
+                    
+                    // عرض حالة فارغة
+                    this.renderEmptyCart();
+                }, 2000);
+                
+                console.log('⚠️ لم يتم العثور على بيانات سلة فورية');
+            }
+            
+            renderOrderSummary(cartData) {
+                const orderItemsContainer = document.getElementById('order-items');
+                const itemsCountElement = document.getElementById('items-count');
+                const subtotalElement = document.getElementById('subtotal');
+                const vatElement = document.getElementById('vat-amount');
+                const finalTotalElement = document.getElementById('final-total');
+                
+                if (!cartData || !cartData.items || cartData.items.length === 0) {
+                    this.renderEmptyCart();
+                    return;
+                }
+                
+                // عرض عناصر الطلب
+                if (orderItemsContainer) {
+                    const itemsHTML = cartData.items.map(item => `
+                        <div class="order-item">
+                            <img class="item-image" src="${item.image || 'https://via.placeholder.com/60x60/D4AF37/FFFFFF?text=صورة'}" alt="${item.title}" 
+                                 onerror="this.src='https://via.placeholder.com/60x60/D4AF37/FFFFFF?text=صورة'">
+                            <div class="item-details">
+                                <div class="item-title">${item.title.length > 40 ? item.title.substring(0, 40) + '...' : item.title}</div>
+                                <div class="item-price">${(item.price * item.quantity).toFixed(0)} درهم</div>
+                            </div>
+                            <div class="item-quantity">×${item.quantity}</div>
+                        </div>
+                    `).join('');
+                    orderItemsContainer.innerHTML = itemsHTML;
+                }
+                
+                // تحديث الأرقام
+                const subtotal = cartData.totalPrice || 0;
+                const vat = Math.round(subtotal * 0.05);
+                const finalTotal = subtotal + vat;
+                
+                if (itemsCountElement) {
+                    const count = cartData.totalItems || 0;
+                    itemsCountElement.textContent = `${count} ${count === 1 ? 'عنصر' : 'عنصر'}`;
+                }
+                if (subtotalElement) subtotalElement.textContent = `${subtotal} درهم`;
+                if (vatElement) vatElement.textContent = `${vat} درهم`;
+                if (finalTotalElement) finalTotalElement.textContent = `${finalTotal} درهم`;
+                
+                // حفظ البيانات للاستخدام في النموذج
+                this.cart = cartData;
+                
+                // تفعيل زر الإرسال
+                const submitBtn = document.getElementById('submit-order');
+                if (submitBtn) {
+                    submitBtn.disabled = false;
+                    submitBtn.style.opacity = '1';
+                }
+                
+                console.log(`✅ تم عرض ${cartData.totalItems} عنصر بإجمالي ${finalTotal} درهم`);
+            }
+            
+            renderEmptyCart() {
+                const orderItemsContainer = document.getElementById('order-items');
+                if (orderItemsContainer) {
+                    orderItemsContainer.innerHTML = `
+                        <div style="text-align: center; padding: 3rem; color: #6b7280;">
+                            <div style="font-size: 3rem; margin-bottom: 1rem;">🛒</div>
+                            <h4>لا توجد منتجات في السلة</h4>
+                            <p>يرجى إضافة منتجات قبل إتمام الطلب</p>
+                            <a href="./" style="
+                                display: inline-block;
+                                margin-top: 1rem;
+                                padding: 0.8rem 1.5rem;
+                                background: linear-gradient(135deg, #d4af37, #b8941f);
+                                color: white;
+                                text-decoration: none;
+                                border-radius: 15px;
+                                font-weight: 700;
+                                transition: all 0.3s ease;
+                            " target="_blank">🏠 اذهب للمتجر</a>
+                        </div>
+                    `;
+                }
+                
+                // تعطيل زر الإرسال
+                const submitBtn = document.getElementById('submit-order');
+                if (submitBtn) {
+                    submitBtn.disabled = true;
+                    submitBtn.style.opacity = '0.5';
+                }
+            }
+            
+            setupValidation() {
+                const phoneInput = document.getElementById('customer-phone');
+                const nameInput = document.getElementById('customer-name');
+                const addressInput = document.getElementById('delivery-address');
+                
+                // تحقق من رقم الهاتف الإماراتي
+                if (phoneInput) {
+                    phoneInput.addEventListener('input', (e) => {
+                        const phone = e.target.value.trim();
+                        const errorElement = document.getElementById('phone-error');
+                        
+                        if (phone.length > 0) {
+                            if (this.isValidUAEPhone(phone)) {
+                                e.target.classList.remove('error');
+                                if (errorElement) errorElement.textContent = '';
+                            } else {
+                                e.target.classList.add('error');
+                                if (errorElement) {
+                                    errorElement.textContent = 'رقم هاتف غير صحيح. يجب أن يبدأ بـ 971 ويتبع بـ 50/51/52/54/55/56/58';
+                                }
+                            }
+                        }
+                    });
+                }
+                
+                // تحقق من الاسم
+                if (nameInput) {
+                    nameInput.addEventListener('input', (e) => {
+                        const name = e.target.value.trim();
+                        const errorElement = document.getElementById('name-error');
+                        
+                        if (name.length > 0 && name.length < 2) {
+                            e.target.classList.add('error');
+                            if (errorElement) {
+                                errorElement.textContent = 'الاسم يجب أن يكون حرفين على الأقل';
+                            }
+                        } else {
+                            e.target.classList.remove('error');
+                            if (errorElement) errorElement.textContent = '';
+                        }
+                    });
+                }
+            }
+            
+            isValidUAEPhone(phone) {
+                // UAE phone number validation: 971 + (50|51|52|54|55|56|58) + 7 digits
+                const uaePattern = /^971(50|51|52|54|55|56|58)\d{7}$/;
+                return uaePattern.test(phone.replace(/\s+/g, ''));
+            }
+            
+            setupFormSubmission() {
+                const form = document.getElementById('checkout-form');
+                if (!form) return;
+                
+                form.addEventListener('submit', (e) => {
+                    e.preventDefault();
+                    this.processOrder();
+                });
+            }
+            
+            processOrder() {
+                // تحقق من بيانات النموذج
+                const name = document.getElementById('customer-name').value.trim();
+                const phone = document.getElementById('customer-phone').value.trim();
+                const address = document.getElementById('delivery-address').value.trim();
+                const notes = document.getElementById('order-notes').value.trim();
+                
+                // تحقق من البيانات المطلوبة
+                if (!name || name.length < 2) {
+                    this.showFieldError('customer-name', 'يرجى إدخال اسم صحيح');
+                    return;
+                }
+                
+                if (!this.isValidUAEPhone(phone)) {
+                    this.showFieldError('customer-phone', 'رقم الهاتف غير صحيح. يجب أن يبدأ بـ 971');
+                    return;
+                }
+                
+                if (!address || address.length < 10) {
+                    this.showFieldError('delivery-address', 'يرجى إدخال عنوان مفصل');
+                    return;
+                }
+                
+                // تحقق من وجود عناصر في السلة
+                if (!this.cart || !this.cart.items || this.cart.items.length === 0) {
+                    alert('السلة فارغة! يرجى إضافة منتجات قبل إتمام الطلب.');
+                    return;
+                }
+                
+                // بناء رسالة الطلب
+                const subtotal = this.cart.totalPrice || 0;
+                const vat = Math.round(subtotal * 0.05);
+                const finalTotal = subtotal + vat;
+                
+                const orderText = [
+                    `🇦🇪 طلب جديد من سوق الإمارات 🇦🇪`,
+                    ``,
+                    `👤 بيانات العميل:`,
+                    `الاسم: ${name}`,
+                    `الهاتف: ${phone}`,
+                    `العنوان: ${address}`,
+                    notes ? `ملاحظات: ${notes}` : null,
+                    ``,
+                    `📋 ملخص الطلب:`,
+                    `عدد العناصر: ${this.cart.totalItems}`,
+                    `إجمالي المنتجات: ${subtotal} درهم`,
+                    `ضريبة قيمة مضافة (5%): ${vat} درهم`,
+                    `المجموع النهائي: ${finalTotal} درهم`,
+                    ``,
+                    `📦 المنتجات المطلوبة:`,
+                    ...this.cart.items.map(item => 
+                        `- ${item.title} ×${item.quantity} = ${(item.price * item.quantity).toFixed(0)} درهم`
+                    ),
+                    ``,
+                    `✨ شكراً لاختيارك سوق الإمارات!`
+                ].filter(Boolean).join('\n');
+                
+                // فتح واتساب مع الطلب
+                const whatsappUrl = `https://wa.me/201110760081?text=${encodeURIComponent(orderText)}`;
+                
+                try {
+                    const newWindow = window.open(whatsappUrl, '_blank', 'noopener,noreferrer');
+                    if (newWindow) {
+                        this.showOrderSuccess();
+                        // تفريغ السلة بعد الإرسال الناجح
+                        setTimeout(() => {
+                            this.clearCart();
+                        }, 3000);
+                    } else {
+                        // Fallback: copy to clipboard if popup blocked
+                        this.copyOrderToClipboard(orderText);
+                    }
+                } catch (error) {
+                    console.error('خطأ في فتح واتساب:', error);
+                    this.copyOrderToClipboard(orderText);
+                }
+            }
+            
+            copyOrderToClipboard(orderText) {
+                try {
+                    navigator.clipboard.writeText(orderText).then(() => {
+                        alert('تم نسخ بيانات الطلب! يرجى فتح واتساب ولصق الرسالة.');
+                        window.open('https://wa.me/201110760081', '_blank');
+                    });
+                } catch (error) {
+                    const textarea = document.createElement('textarea');
+                    textarea.value = orderText;
+                    document.body.appendChild(textarea);
+                    textarea.select();
+                    document.execCommand('copy');
+                    document.body.removeChild(textarea);
+                    
+                    alert('تم نسخ بيانات الطلب! يرجى فتح واتساب ولصق الرسالة.');
+                    window.open('https://wa.me/201110760081', '_blank');
+                }
+            }
+            
+            showFieldError(fieldId, message) {
+                const field = document.getElementById(fieldId);
+                const errorElement = document.getElementById(fieldId.replace('customer-', '').replace('delivery-', '') + '-error');
+                
+                if (field) {
+                    field.classList.add('error');
+                    field.focus();
+                    field.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                }
+                
+                if (errorElement) {
+                    errorElement.textContent = message;
+                }
+                
+                setTimeout(() => {
+                    if (field) field.classList.remove('error');
+                    if (errorElement) errorElement.textContent = '';
+                }, 5000);
+            }
+            
+            showOrderSuccess() {
+                const successDiv = document.createElement('div');
+                successDiv.style.cssText = `
+                    position: fixed;
+                    top: 50%;
+                    left: 50%;
+                    transform: translate(-50%, -50%);
+                    z-index: 10000;
+                    background: linear-gradient(135deg, #10b981, #059669);
+                    color: white;
+                    padding: 3rem;
+                    border-radius: 20px;
+                    text-align: center;
+                    box-shadow: 0 15px 50px rgba(16, 185, 129, 0.4);
+                    animation: successPop 0.6s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+                    max-width: 400px;
+                    border: 3px solid rgba(255, 255, 255, 0.3);
+                `;
+                
+                const orderNumber = 'UAE-' + Date.now().toString().substr(-8);
+                
+                successDiv.innerHTML = `
+                    <div style="font-size: 3.2rem; margin-bottom: 0.8rem;">🎉</div>
+                    <h3 style="margin-bottom: 1rem;">تم إرسال طلبك بنجاح!</h3>
+                    <p style="margin-bottom: 1rem; font-size: 1.1rem;">رقم الطلب: <strong>${orderNumber}</strong></p>
+                    <p style="font-size: 0.95rem; opacity: 0.9;">سيتم التواصل معك قريباً عبر واتساب</p>
+                    <button onclick="this.parentElement.remove()" style="
+                        margin-top: 1.5rem;
+                        padding: 0.8rem 2rem;
+                        background: rgba(255, 255, 255, 0.2);
+                        color: white;
+                        border: 2px solid rgba(255, 255, 255, 0.5);
+                        border-radius: 15px;
+                        cursor: pointer;
+                        font-weight: 700;
+                        transition: all 0.3s ease;
+                    " onmouseover="this.style.background='rgba(255, 255, 255, 0.3)';" 
+                       onmouseout="this.style.background='rgba(255, 255, 255, 0.2)';">
+                        ✅ موافق
+                    </button>
+                `;
+                
+                document.body.appendChild(successDiv);
+                
+                // إزالة بعد 8 ثوان
+                setTimeout(() => {
+                    if (successDiv.parentNode) {
+                        successDiv.remove();
+                    }
+                }, 8000);
+            }
+            
+            clearCart() {
+                try {
+                    localStorage.removeItem('emirates_cart');
+                    sessionStorage.removeItem('checkout_cart_data');
+                    
+                    if (window.cart && typeof window.cart.clearCart === 'function') {
+                        window.cart.items = [];
+                        window.cart.saveToStorage();
+                        window.cart.updateCartDisplay();
+                    }
+                    
+                    console.log('✅ تم تفريغ السلة بعد إرسال الطلب');
+                } catch (error) {
+                    console.error('خطأ في تفريغ السلة:', error);
+                }
+            }
+        }
         
-        // للحفاظ على التركيز على تغيير السمات، نبقي منطق JS كما هو
+        // Loading spinner styles
+        const spinnerStyles = document.createElement('style');
+        spinnerStyles.textContent = `
+            .loading-spinner {
+                width: 40px;
+                height: 40px;
+                border: 4px solid #f3f3f3;
+                border-top: 4px solid #d4af37;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+                margin: 0 auto 1rem;
+            }
+            
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
+        `;
+        document.head.appendChild(spinnerStyles);
+        
+        // تفعيل صفحة إتمام الطلب عند تحميل الصفحة
+        document.addEventListener('DOMContentLoaded', function() {
+            window.checkoutPage = new CheckoutPage();
+            console.log('✨ تم تفعيل صفحة إتمام الطلب بنجاح!');
+        });
     </script>
 </body>
 </html>
