@@ -35,6 +35,13 @@
     .search-input::placeholder {
       text-align: left;
     }
+    .category-card {
+      transition: all 0.3s ease;
+    }
+    .category-card:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 30px rgba(212, 175, 55, 0.3);
+    }
   </style>
 </head>
 <body class="ltr">
@@ -132,20 +139,20 @@
         <div class="footer-section">
           <h3>🔗 Important Links</h3>
           <div>
-            <a href="../legal/terms.html" target="_blank">📋 Terms</a><br />
-            <a href="../legal/privacy.html" target="_blank">🔒 Privacy</a><br />
-            <a href="../legal/shipping.html" target="_blank">📦 Shipping</a><br />
-            <a href="../legal/returns.html" target="_blank">↩️ Returns</a><br />
-            <a href="../">العربية</a>
+            <a href="../legal/terms.html" target="_blank" rel="noopener">📋 Terms</a><br />
+            <a href="../legal/privacy.html" target="_blank" rel="noopener">🔒 Privacy</a><br />
+            <a href="../legal/shipping.html" target="_blank" rel="noopener">📦 Shipping</a><br />
+            <a href="../legal/returns.html" target="_blank" rel="noopener">↩️ Returns</a><br />
+            <a href="../" rel="noopener">العربية</a>
           </div>
         </div>
         <div class="footer-section">
           <h3>📞 Contact</h3>
           <div>
-            <a href="https://wa.me/201110760081" target="_blank">📱 WhatsApp</a><br />
+            <a href="https://wa.me/201110760081" target="_blank" rel="noopener">📱 WhatsApp</a><br />
             <a href="tel:+201110760081">☎️ Call</a><br />
-            <a href="../cart.html" target="_blank">🛒 Cart</a><br />
-            <a href="../checkout.html" target="_blank">💳 Checkout</a>
+            <a href="../cart.html" target="_blank" rel="noopener">🛒 Cart</a><br />
+            <a href="../checkout.html" target="_blank" rel="noopener">💳 Checkout</a>
           </div>
         </div>
         <div class="footer-section">
@@ -163,40 +170,66 @@
 
   <!-- WhatsApp Float -->
   <a href="https://wa.me/201110760081?text=Hello%2C%20I%20want%20to%20contact%20Emirates%20Souq%20team" 
-     class="whatsapp-float" target="_blank" title="WhatsApp">📱</a>
+     class="whatsapp-float" target="_blank" rel="noopener" title="WhatsApp">📱</a>
 
+  <!-- Scripts -->
   <script src="../js/cart.js"></script>
   <script>
     // English Category Translation Map
-    const categoryTranslations = {
-      'الأجهزة المنزلية والكهربائية': 'Home Appliances & Electrical',
-      'الإلكترونيات والتكنولوجيا': 'Electronics & Technology', 
-      'العناية الشخصية والصحة والجمال': 'Personal Care, Health & Beauty',
-      'الأحذية والملابس والإكسسوارات': 'Shoes, Clothing & Accessories',
-      'الرياضة واللياقة والصحة': 'Sports, Fitness & Health',
-      'الأثاث والأدوات المنزلية': 'Furniture & Home Tools',
-      'الأدوات والصيانة': 'Tools & Maintenance',
-      'منتجات متنوعة': 'Miscellaneous Products'
+    const CATEGORY_TRANSLATIONS = {
+      'الأجهزة المنزلية والكهربائية': {
+        en: 'Home Appliances & Electrical',
+        icon: '🏠',
+        slug: 'home-appliances-electrical'
+      },
+      'الإلكترونيات والتكنولوجيا': {
+        en: 'Electronics & Technology', 
+        icon: '📱',
+        slug: 'electronics-technology'
+      },
+      'العناية الشخصية والصحة والجمال': {
+        en: 'Personal Care, Health & Beauty',
+        icon: '💄',
+        slug: 'personal-care-health-beauty'
+      },
+      'الأحذية والملابس والإكسسوارات': {
+        en: 'Shoes, Clothing & Accessories',
+        icon: '👟',
+        slug: 'shoes-clothing-accessories'
+      },
+      'الرياضة واللياقة والصحة': {
+        en: 'Sports, Fitness & Health',
+        icon: '🏅',
+        slug: 'sports-fitness-health'
+      },
+      'الأثاث والأدوات المنزلية': {
+        en: 'Furniture & Home Tools',
+        icon: '🛋️',
+        slug: 'furniture-home-tools'
+      },
+      'الأدوات والصيانة': {
+        en: 'Tools & Maintenance',
+        icon: '🔧',
+        slug: 'tools-maintenance'
+      },
+      'منتجات متنوعة': {
+        en: 'Miscellaneous Products',
+        icon: '🛑',
+        slug: 'miscellaneous-products'
+      }
     };
 
-    const categoryIcons = {
-      'الأجهزة المنزلية والكهربائية': '🏠',
-      'الإلكترونيات والتكنولوجيا': '📱',
-      'العناية الشخصية والصحة والجمال': '💄',
-      'الأحذية والملابس والإكسسوارات': '👟',
-      'الرياضة واللياقة والصحة': '🏅',
-      'الأثاث والأدوات المنزلية': '🛋️',
-      'الأدوات والصيانة': '🔧',
-      'منتجات متنوعة': '🛑'
-    };
+    let allProductsData = [];
 
     // Load data and render English interface
     async function loadData() {
       try {
+        console.log('📦 Loading product data for English site...');
         const response = await fetch('../data/uae-products.json');
-        if (!response.ok) throw new Error('Failed to load data');
+        if (!response.ok) throw new Error(`HTTP ${response.status}: Failed to load data`);
         const data = await response.json();
         
+        allProductsData = data;
         console.log('✅ Loaded', data.length, 'products for English site');
         
         renderEnglishCategories(data);
@@ -223,45 +256,38 @@
       
       container.innerHTML = '';
       entries.forEach(([arabicName, count]) => {
-        const englishName = categoryTranslations[arabicName] || arabicName;
-        const icon = categoryIcons[arabicName] || '🏷️';
+        const categoryData = CATEGORY_TRANSLATIONS[arabicName];
+        if (!categoryData) return;
         
         const card = document.createElement('div');
         card.className = 'category-card';
-        card.setAttribute('data-category', arabicName); // Keep Arabic for filtering
+        card.setAttribute('data-category', arabicName);
         card.innerHTML = `
-          <div class="category-icon">${icon}</div>
-          <h3 class="category-name">${englishName}</h3>
+          <div class="category-icon">${categoryData.icon}</div>
+          <h3 class="category-name">${categoryData.en}</h3>
           <div class="category-count">${count} products</div>
         `;
         
-        // Open English category page
-        card.addEventListener('click', () => {
-          const slug = getEnglishCategorySlug(arabicName);
-          window.open(`./en-${slug}.html`, '_blank', 'noopener');
+        // Open English category page with proper parameters
+        card.addEventListener('click', (e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          
+          const categoryUrl = `./category.html?name=${encodeURIComponent(arabicName)}&slug=${categoryData.slug}`;
+          console.log(`🏪 Opening English category: ${categoryData.en} -> ${categoryUrl}`);
+          
+          window.open(categoryUrl, '_blank', 'noopener,noreferrer');
         });
         
         container.appendChild(card);
       });
-    }
-
-    function getEnglishCategorySlug(arabicName) {
-      const slugMap = {
-        'الأجهزة المنزلية والكهربائية': 'home-appliances-electrical',
-        'الإلكترونيات والتكنولوجيا': 'electronics-technology',
-        'العناية الشخصية والصحة والجمال': 'personal-care-health-beauty',
-        'الأحذية والملابس والإكسسوارات': 'shoes-clothing-accessories',
-        'الرياضة واللياقة والصحة': 'sports-fitness-health',
-        'الأثاث والأدوات المنزلية': 'furniture-home-tools',
-        'الأدوات والصيانة': 'tools-maintenance',
-        'منتجات متنوعة': 'miscellaneous-products'
-      };
-      return slugMap[arabicName] || 'miscellaneous-products';
+      
+      console.log('✅ Rendered', entries.length, 'English categories');
     }
 
     function renderEnglishProducts(data) {
       const featured = data.filter(p => (p.sale_price || p.regular_price) >= 300).slice(0, 12);
-      const allProducts = data.sort((a, b) => a.title.localeCompare(b.title, 'ar'));
+      const allProducts = data.sort((a, b) => (b.sale_price || b.regular_price || 0) - (a.sale_price || a.regular_price || 0)).slice(0, 24);
       
       const featuredContainer = document.getElementById('en-featured-container');
       const allContainer = document.getElementById('en-all-container');
@@ -273,6 +299,8 @@
       if (allContainer) {
         allContainer.innerHTML = allProducts.map(createEnglishProductCard).join('');
       }
+      
+      console.log(`✅ Rendered ${featured.length} featured + ${allProducts.length} all products`);
     }
 
     function createEnglishProductCard(product) {
@@ -281,32 +309,58 @@
         ? `<span class="original-price">${product.regular_price} AED</span>` 
         : '';
       const title = product.title.length > 60 ? product.title.slice(0, 60) + '…' : product.title;
-      const englishCategory = categoryTranslations[product.category] || product.category;
+      const categoryData = CATEGORY_TRANSLATIONS[product.category];
+      const englishCategory = categoryData ? categoryData.en : product.category;
+      
+      const discountPercent = product.sale_price && product.regular_price > product.sale_price
+        ? Math.round((1 - product.sale_price / product.regular_price) * 100)
+        : 0;
       
       const whatsappMsg = `Hello, I'm interested in: ${product.title} (Price: ${currentPrice} AED)`;
       
       return `
         <div class="product-card" data-product-id="${product.id}">
+          ${discountPercent > 0 ? `<div class="discount-badge">-${discountPercent}%</div>` : ''}
+          
           <div class="product-image" onclick="openProduct('${product.id}')" style="cursor:pointer;">
             <img src="${product.image_url}" alt="${title}" loading="lazy" 
                  onerror="this.src='https://via.placeholder.com/400x300/1e40af/FFFFFF?text=Product'" />
           </div>
+          
           <div class="product-info">
             <div class="product-category">${englishCategory}</div>
             <h3 class="product-title" onclick="openProduct('${product.id}')" style="cursor:pointer;">${title}</h3>
+            
+            <div class="product-rating">
+              <span class="stars">⭐⭐⭐⭐⭐</span>
+              <span class="rating-text">(4.8/5)</span>
+            </div>
+            
             <div class="product-price">
               <span class="current-price">${currentPrice} AED</span>
               ${originalPrice}
             </div>
+            
             <div class="product-features">
               <div class="feature">🇦🇪 UAE Product</div>
               <div class="feature">🚚 Free Shipping</div>
               <div class="feature">💰 Cash on Delivery</div>
             </div>
+            
             <div class="product-actions">
-              <button class="btn add-to-cart" onclick="addToCart('${product.id}', '${product.title.replace(/'/g, "\\'")}', ${currentPrice}, '${product.image_url}')">🛒 Add to Cart</button>
-              <a class="btn whatsapp-btn" href="https://wa.me/201110760081?text=${encodeURIComponent(whatsappMsg)}" target="_blank" rel="noopener">📱 WhatsApp</a>
-              <button class="btn view-details" onclick="openProduct('${product.id}')">👁 View</button>
+              <button class="btn add-to-cart" data-product-id="${product.id}" 
+                      onclick="handleAddToCart('${product.id}', '${product.title.replace(/'/g, "\\'")}'', ${currentPrice}, '${product.image_url}')">
+                🛒 Add to Cart
+              </button>
+              
+              <a class="btn whatsapp-btn" href="https://wa.me/201110760081?text=${encodeURIComponent(whatsappMsg)}" 
+                 target="_blank" rel="noopener">
+                📱 WhatsApp
+              </a>
+              
+              <button class="btn view-details" onclick="openProduct('${product.id}')">
+                👁 View Details
+              </button>
             </div>
           </div>
         </div>
@@ -314,16 +368,27 @@
     }
 
     function openProduct(id) {
-      window.open(`../product.html?id=${encodeURIComponent(id)}`, '_blank', 'noopener');
+      const productUrl = `../product.html?id=${encodeURIComponent(id)}`;
+      window.open(productUrl, '_blank', 'noopener,noreferrer');
     }
 
-    function addToCart(id, title, price, image) {
+    function handleAddToCart(id, title, price, image) {
       try {
+        console.log(`🛒 Adding to cart: ${title}`);
+        
+        // Use the global cart system if available
+        if (window.cart && typeof window.cart.addToCart === 'function') {
+          window.cart.addToCart(id, true); // true = open cart sidebar immediately
+          return;
+        }
+        
+        // Fallback: manual cart management
         const cartItems = JSON.parse(localStorage.getItem('emirates_cart') || '[]');
         const existingItem = cartItems.find(item => item.id === id);
         
         if (existingItem) {
           existingItem.quantity += 1;
+          showNotification(`Increased quantity of "${title}" in cart!`);
         } else {
           cartItems.push({
             id: id,
@@ -333,10 +398,15 @@
             quantity: 1,
             addedAt: Date.now()
           });
+          showNotification(`"${title}" added to cart successfully!`);
         }
         
         localStorage.setItem('emirates_cart', JSON.stringify(cartItems));
-        showNotification(`"${title}" added to cart successfully!`);
+        
+        // Try to open cart if available
+        if (window.cart && typeof window.cart.openCart === 'function') {
+          setTimeout(() => window.cart.openCart(), 300);
+        }
         
       } catch (error) {
         console.error('Error adding to cart:', error);
@@ -345,19 +415,38 @@
     }
 
     function showNotification(message, type = 'success') {
-      const colors = { success: '#10b981', error: '#ef4444' };
+      document.querySelectorAll('.en-notification').forEach(n => n.remove());
+      
+      const colors = { 
+        success: '#10b981', 
+        error: '#ef4444',
+        warning: '#f59e0b' 
+      };
+      
       const notification = document.createElement('div');
+      notification.className = 'en-notification';
       notification.style.cssText = `
-        position: fixed; top: 100px; right: 24px; background: ${colors[type]};
-        color: white; padding: 1rem 1.5rem; border-radius: 8px;
-        font-weight: 600; z-index: 10001; box-shadow: 0 4px 20px rgba(0,0,0,0.15);
-        cursor: pointer; max-width: 300px; border: 2px solid white;
-        font-family: Inter, sans-serif;
+        position: fixed; top: 100px; right: 24px; 
+        background: ${colors[type] || colors.success};
+        color: white; padding: 1rem 1.5rem; border-radius: 15px;
+        font-weight: 700; z-index: 10001; 
+        box-shadow: 0 8px 25px rgba(0, 0, 0, 0.2);
+        cursor: pointer; max-width: 350px; 
+        border: 2px solid rgba(255, 255, 255, 0.3);
+        font-family: 'Inter', sans-serif;
+        animation: slideIn 0.4s ease;
       `;
+      
       notification.textContent = message;
       notification.onclick = () => notification.remove();
       document.body.appendChild(notification);
-      setTimeout(() => { if(notification.parentNode) notification.remove(); }, 4000);
+      
+      setTimeout(() => {
+        if (notification.parentNode) {
+          notification.style.animation = 'slideOut 0.4s ease forwards';
+          setTimeout(() => notification.remove(), 400);
+        }
+      }, 4000);
     }
 
     function showError(message) {
@@ -365,11 +454,12 @@
       if (container) {
         container.innerHTML = `
           <div style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
-            <h3>⚠️ ${message}</h3>
+            <div style="font-size: 3rem; margin-bottom: 1rem;">⚠️</div>
+            <h3>${message}</h3>
             <a href="../" style="
               display: inline-block; margin-top: 1rem; padding: 1rem 2rem; 
-              background: var(--primary-blue); color: white; text-decoration: none; 
-              border-radius: 8px; font-weight: 600;
+              background: linear-gradient(135deg, #1e40af, #3b82f6); color: white; text-decoration: none; 
+              border-radius: 12px; font-weight: 600;
             ">🏠 Back to Home</a>
           </div>
         `;
@@ -379,12 +469,15 @@
     // Search functionality
     function performSearch() {
       const query = (document.getElementById('en-search').value || '').trim();
-      if (!query || query.length < 2) return;
+      if (!query || query.length < 2) {
+        showNotification('Please enter at least 2 characters to search', 'warning');
+        return;
+      }
       
-      // Simple search in loaded data (could be enhanced)
-      console.log('🔍 Search:', query);
+      console.log('🔍 Searching for:', query);
       // For now, redirect to all products tab
       document.querySelector('[data-tab="en-all"]').click();
+      showNotification(`Searching for: ${query}`);
     }
 
     // Initialize tabs
@@ -401,16 +494,38 @@
 
     // Initialize
     document.addEventListener('DOMContentLoaded', () => {
-      console.log('✅ Emirates Souq English - Loading...');
+      console.log('✅ Emirates Souq English - Initializing...');
       setupTabs();
       loadData();
       
       // Search events
-      document.getElementById('en-search-btn').addEventListener('click', performSearch);
-      document.getElementById('en-search').addEventListener('keypress', (e) => {
-        if (e.key === 'Enter') performSearch();
-      });
+      const searchBtn = document.getElementById('en-search-btn');
+      const searchInput = document.getElementById('en-search');
+      
+      if (searchBtn) searchBtn.addEventListener('click', performSearch);
+      if (searchInput) {
+        searchInput.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter') performSearch();
+        });
+      }
     });
+    
+    // Animation styles
+    if (!document.getElementById('en-animations')) {
+      const animStyles = document.createElement('style');
+      animStyles.id = 'en-animations';
+      animStyles.textContent = `
+        @keyframes slideIn {
+          from { transform: translateX(100%); opacity: 0; }
+          to { transform: translateX(0); opacity: 1; }
+        }
+        @keyframes slideOut {
+          from { transform: translateX(0); opacity: 1; }
+          to { transform: translateX(100%); opacity: 0; }
+        }
+      `;
+      document.head.appendChild(animStyles);
+    }
   </script>
 </body>
 </html>
