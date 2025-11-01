@@ -1,6 +1,6 @@
 /**
- * نظام بطاقات المنتج المتجاوبة والاحترافية - محسّن
- * Responsive Professional Product Cards System
+ * نظام بطاقات المنتج المحسن - إصلاح الأزرار
+ * Enhanced Product Cards System - Button Fix
  */
 
 class ResponsiveProductCards {
@@ -10,8 +10,8 @@ class ResponsiveProductCards {
     
     init() {
         this.addResponsiveStyles();
-        this.setupProductCardEvents();
-        console.log('✨ تم تفعيل بطاقات المنتج المتجاوبة');
+        this.setupGlobalEventListeners();
+        console.log('✨ تم تفعيل بطاقات المنتج المحسنة مع إصلاح الأزرار');
     }
     
     addResponsiveStyles() {
@@ -106,6 +106,9 @@ class ResponsiveProductCards {
             .product-info {
                 padding: 1.5rem;
                 position: relative;
+                display: flex;
+                flex-direction: column;
+                min-height: 300px;
             }
             
             .product-category {
@@ -178,6 +181,7 @@ class ResponsiveProductCards {
             /* ميزات المنتج */
             .product-features {
                 margin-bottom: 1.5rem;
+                flex-grow: 1;
             }
             
             .feature {
@@ -190,7 +194,7 @@ class ResponsiveProductCards {
                 gap: 0.3rem;
             }
             
-            /* أزرار المنتج - متجاوبة ومحترفة */
+            /* أزرار المنتج - محسّنة ومتجاوبة */
             .product-actions {
                 display: grid;
                 grid-template-columns: 1fr 1fr;
@@ -215,6 +219,10 @@ class ResponsiveProductCards {
                 position: relative;
                 overflow: hidden;
                 z-index: 1;
+                font-family: 'Cairo', sans-serif;
+                user-select: none;
+                outline: none;
+                -webkit-tap-highlight-color: transparent;
             }
             
             .product-actions .btn::before {
@@ -234,6 +242,10 @@ class ResponsiveProductCards {
             .product-actions .btn:hover::before {
                 width: 300px;
                 height: 300px;
+            }
+            
+            .product-actions .btn:active {
+                transform: scale(0.95);
             }
             
             /* زر إضافة للسلة */
@@ -264,7 +276,7 @@ class ResponsiveProductCards {
                 background: linear-gradient(135deg, #128C7E, #0d6c5d);
             }
             
-            /* زر عرض التفاصيل - محسّن واحترافي */
+            /* زر عرض التفاصيل */
             .view-details {
                 background: linear-gradient(135deg, #6366f1, #4f46e5);
                 color: white;
@@ -369,22 +381,13 @@ class ResponsiveProductCards {
             .product-card .card-3d-inner {
                 transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
                 transform-style: preserve-3d;
+                height: 100%;
+                display: flex;
+                flex-direction: column;
             }
             
             .product-card:hover .card-3d-inner {
-                transform: perspective(1000px) rotateX(5deg) rotateY(-5deg);
-            }
-            
-            /* تحسينات النص */
-            .product-info {
-                display: flex;
-                flex-direction: column;
-                height: 100%;
-                min-height: 280px;
-            }
-            
-            .product-actions {
-                margin-top: auto;
+                transform: perspective(1000px) rotateX(2deg) rotateY(-2deg);
             }
             
             /* شارات الحالة */
@@ -422,7 +425,7 @@ class ResponsiveProductCards {
                 font-family: 'Cairo', 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
             }
             
-            /* Loading state محسّن */
+            /* Loading state */
             .product-card.loading {
                 background: linear-gradient(90deg, #f0f0f0 25%, #e0e0e0 50%, #f0f0f0 75%);
                 background-size: 200% 100%;
@@ -432,29 +435,6 @@ class ResponsiveProductCards {
             @keyframes shimmer {
                 0% { background-position: -200% 0; }
                 100% { background-position: 200% 0; }
-            }
-            
-            /* أزرار أكثر احترافية */
-            .btn {
-                font-family: 'Cairo', sans-serif;
-                text-decoration: none;
-                display: inline-flex;
-                align-items: center;
-                justify-content: center;
-                gap: 0.5rem;
-                border: none;
-                cursor: pointer;
-                transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-                position: relative;
-                overflow: hidden;
-                text-align: center;
-                user-select: none;
-                white-space: nowrap;
-            }
-            
-            .btn:focus {
-                outline: 3px solid rgba(212, 175, 55, 0.5);
-                outline-offset: 2px;
             }
             
             /* تأثيرات اللمس للهواتف */
@@ -476,61 +456,150 @@ class ResponsiveProductCards {
         document.head.appendChild(styles);
     }
     
-    setupProductCardEvents() {
-        // Global event delegation for better performance
+    setupGlobalEventListeners() {
+        // Global event delegation for better performance and reliability
         document.addEventListener('click', (e) => {
             const target = e.target;
-            const card = target.closest('.product-card');
             
-            if (!card) return;
+            // Handle add to cart buttons
+            if (target.matches('.add-to-cart') || target.closest('.add-to-cart')) {
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const btn = target.matches('.add-to-cart') ? target : target.closest('.add-to-cart');
+                const productId = btn.getAttribute('data-product-id');
+                
+                if (productId) {
+                    console.log(`🛒 محاولة إضافة المنتج: ${productId}`);
+                    this.handleAddToCart(productId, btn);
+                } else {
+                    console.warn('⚠️ لم يتم العثور على product-id في زر السلة');
+                }
+                return;
+            }
             
-            const productId = card.getAttribute('data-product-id');
-            if (!productId) return;
-            
-            // زر "شاهد التفاصيل" المحسّن
+            // Handle view details buttons
             if (target.matches('.view-details') || target.closest('.view-details')) {
                 e.preventDefault();
                 e.stopPropagation();
-                this.openProductDetails(productId, card);
+                
+                const btn = target.matches('.view-details') ? target : target.closest('.view-details');
+                const productId = btn.getAttribute('data-product-id');
+                
+                if (productId) {
+                    console.log(`👁 محاولة عرض تفاصيل: ${productId}`);
+                    this.handleViewDetails(productId, btn);
+                } else {
+                    console.warn('⚠️ لم يتم العثور على product-id في زر التفاصيل');
+                }
                 return;
             }
             
-            // النقر على الصورة أو العنوان
-            if (target.matches('.product-image') || target.closest('.product-image') ||
-                target.matches('.product-title') || target.closest('.product-title')) {
+            // Handle product image/title clicks
+            const card = target.closest('.product-card');
+            if (card && (target.matches('.product-image') || target.closest('.product-image') ||
+                target.matches('.product-title') || target.closest('.product-title'))) {
                 e.preventDefault();
                 e.stopPropagation();
-                this.openProductDetails(productId, card);
+                
+                const productId = card.getAttribute('data-product-id');
+                if (productId) {
+                    console.log(`🖼️ محاولة عرض تفاصيل من الصورة/العنوان: ${productId}`);
+                    this.handleViewDetails(productId, card);
+                }
                 return;
             }
         });
+        
+        // Handle keyboard accessibility
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Enter' || e.key === ' ') {
+                const target = e.target;
+                
+                if (target.matches('.btn') || target.matches('.product-image') || target.matches('.product-title')) {
+                    e.preventDefault();
+                    target.click();
+                }
+            }
+        });
+        
+        console.log('✅ تم تفعيل مستمعات الأحداث العامة');
     }
     
-    openProductDetails(productId, cardElement) {
+    handleAddToCart(productId, buttonElement) {
         try {
-            // إضافة تأثير بصري للبطاقة
-            cardElement.style.transform = 'scale(0.95)';
-            cardElement.style.opacity = '0.8';
+            // تأثير بصري للزر
+            this.animateButton(buttonElement, 'adding');
             
-            setTimeout(() => {
-                cardElement.style.transform = '';
-                cardElement.style.opacity = '';
-            }, 200);
+            // محاولة استخدام نظام السلة العام
+            if (window.cart && typeof window.cart.addToCart === 'function') {
+                window.cart.addToCart(productId);
+                this.animateButton(buttonElement, 'success');
+                return;
+            }
             
-            // الحصول على بيانات المنتج
+            // Fallback: manual cart handling
             const product = this.getProductData(productId);
+            if (!product) {
+                this.showNotification('❌ لم يتم العثور على بيانات المنتج', 'error');
+                this.animateButton(buttonElement, 'error');
+                return;
+            }
             
+            // حفظ في localStorage مباشرة
+            const cartItems = JSON.parse(localStorage.getItem('emirates_cart') || '[]');
+            const existingItem = cartItems.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+                this.showNotification(`تم زيادة عدد "${product.title}" في السلة ✅`, 'success');
+            } else {
+                const cartItem = {
+                    id: productId,
+                    title: product.title,
+                    price: product.sale_price || product.regular_price || 0,
+                    image: product.image_url || 'https://via.placeholder.com/70x70/D4AF37/FFFFFF?text=صورة',
+                    quantity: 1,
+                    addedAt: Date.now()
+                };
+                cartItems.push(cartItem);
+                this.showNotification(`تم إضافة "${product.title}" للسلة ✅`, 'success');
+            }
+            
+            localStorage.setItem('emirates_cart', JSON.stringify(cartItems));
+            
+            // تحديث عرض السلة إذا كان متاحاً
+            if (window.cart && typeof window.cart.updateCartDisplay === 'function') {
+                window.cart.loadFromStorage();
+                window.cart.updateCartDisplay();
+            }
+            
+            this.animateButton(buttonElement, 'success');
+            
+        } catch (error) {
+            console.error('خطأ في إضافة المنتج للسلة:', error);
+            this.showNotification('حدث خطأ في إضافة المنتج للسلة', 'error');
+            this.animateButton(buttonElement, 'error');
+        }
+    }
+    
+    handleViewDetails(productId, element) {
+        try {
+            // تأثير بصري
+            this.animateElement(element);
+            
+            const product = this.getProductData(productId);
             if (!product) {
                 this.showNotification('❌ لم يتم العثور على بيانات المنتج', 'error');
                 return;
             }
             
-            // فتح صفحة التفاصيل في تبويب جديد
+            // فتح صفحة التفاصيل
             const detailsUrl = `./product.html?id=${encodeURIComponent(productId)}`;
             const newWindow = window.open(detailsUrl, '_blank', 'noopener,noreferrer');
             
             if (newWindow) {
-                this.showNotification(`🎯 جاري فتح تفاصيل "${product.title}"`, 'success');
+                this.showNotification(`🎯 جاري فتح تفاصيل "${product.title.substring(0, 30)}..."`, 'success');
             } else {
                 // Fallback: show modal if popup blocked
                 this.showProductModal(product);
@@ -549,17 +618,73 @@ class ResponsiveProductCards {
             window.allProducts,
             window.categoryProducts,
             window.filteredProducts,
-            window.categoriesHomepage?.products
+            window.categoriesHomepage?.products,
+            window.categoryPage?.products,
+            window.categoryPage?.filteredProducts
         ];
         
         for (const source of sources) {
             if (Array.isArray(source)) {
                 const product = source.find(p => p.id == productId);
-                if (product) return product;
+                if (product) {
+                    console.log(`✅ عثر على بيانات المنتج: ${product.title}`);
+                    return product;
+                }
             }
         }
         
+        console.warn(`⚠️ لم يتم العثور على بيانات المنتج: ${productId}`);
         return null;
+    }
+    
+    animateButton(button, state) {
+        if (!button) return;
+        
+        // إزالة الفئات السابقة
+        button.classList.remove('btn-adding', 'btn-success', 'btn-error');
+        
+        // إضافة فئة جديدة
+        if (state) {
+            button.classList.add(`btn-${state}`);
+        }
+        
+        // إزالة الحالة بعد فترة
+        setTimeout(() => {
+            button.classList.remove(`btn-${state}`);
+        }, 2000);
+        
+        // إضافة أنميشن للحالة
+        if (!document.getElementById('button-animations')) {
+            const styles = document.createElement('style');
+            styles.id = 'button-animations';
+            styles.textContent = `
+                .btn-adding {
+                    background: linear-gradient(135deg, #f59e0b, #d97706) !important;
+                    transform: scale(0.95);
+                }
+                .btn-success {
+                    background: linear-gradient(135deg, #10b981, #059669) !important;
+                    transform: scale(1.05);
+                }
+                .btn-error {
+                    background: linear-gradient(135deg, #ef4444, #dc2626) !important;
+                    transform: scale(0.95);
+                }
+            `;
+            document.head.appendChild(styles);
+        }
+    }
+    
+    animateElement(element) {
+        if (!element) return;
+        
+        element.style.transform = 'scale(0.95)';
+        element.style.opacity = '0.8';
+        
+        setTimeout(() => {
+            element.style.transform = '';
+            element.style.opacity = '';
+        }, 200);
     }
     
     showProductModal(product) {
@@ -590,10 +715,11 @@ class ResponsiveProductCards {
             max-height: 80vh;
             overflow-y: auto;
             position: relative;
+            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
         `;
         
         modalContent.innerHTML = `
-            <button onclick="this.closest('div[style*="position: fixed"]').remove()" style="
+            <button onclick="this.closest('div[style*=\"position: fixed\"]').remove()" style="
                 position: absolute;
                 top: 1rem;
                 right: 1rem;
@@ -606,25 +732,26 @@ class ResponsiveProductCards {
                 cursor: pointer;
                 font-size: 1.2rem;
                 font-weight: bold;
+                transition: all 0.3s ease;
             ">×</button>
             
             <div style="text-align: center;">
-                <img src="${product.image_url}" alt="${product.title}" style="
+                <img src="${product.image_url || 'https://via.placeholder.com/200x150/D4AF37/FFFFFF?text=صورة'}" alt="${product.title}" style="
                     width: 200px;
                     height: 150px;
                     object-fit: cover;
                     border-radius: 15px;
                     margin-bottom: 1.5rem;
                     border: 3px solid #d4af37;
-                ">
-                <h3 style="color: #111827; margin-bottom: 1rem;">${product.title}</h3>
-                <div style="font-size: 1.5rem; color: #d4af37; font-weight: 800; margin-bottom: 2rem;">
-                    ${product.sale_price || product.regular_price} درهم
+                " onerror="this.src='https://via.placeholder.com/200x150/D4AF37/FFFFFF?text=صورة'">
+                <h3 style="color: #111827; margin-bottom: 1rem; font-family: 'Cairo', sans-serif;">${product.title}</h3>
+                <div style="font-size: 1.5rem; color: #d4af37; font-weight: 800; margin-bottom: 2rem; font-family: 'Cairo', sans-serif;">
+                    ${product.sale_price || product.regular_price || 0} درهم
                 </div>
                 
                 <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
                     <button onclick="
-                        if(window.cart) window.cart.addToCart('${product.id}');
+                        window.responsiveCards.handleAddToCart('${product.id}', this);
                         this.closest('div[style*=\"position: fixed\"]').remove();
                     " style="
                         padding: 1rem;
@@ -634,7 +761,10 @@ class ResponsiveProductCards {
                         border-radius: 15px;
                         font-weight: 700;
                         cursor: pointer;
-                    ">🛒 إضافة للسلة</button>
+                        font-family: 'Cairo', sans-serif;
+                        transition: all 0.3s ease;
+                    " onmouseover="this.style.transform='scale(1.05)'" 
+                       onmouseout="this.style.transform='scale(1)'">🛒 إضافة للسلة</button>
                     
                     <a href="https://wa.me/201110760081?text=${encodeURIComponent(`أريد الاستفسار عن: ${product.title}`)}"
                        target="_blank" style="
@@ -648,7 +778,10 @@ class ResponsiveProductCards {
                         display: flex;
                         align-items: center;
                         justify-content: center;
-                    ">📱 واتساب</a>
+                        font-family: 'Cairo', sans-serif;
+                        transition: all 0.3s ease;
+                    " onmouseover="this.style.transform='scale(1.05)'" 
+                       onmouseout="this.style.transform='scale(1)'">📱 واتساب</a>
                 </div>
             </div>
         `;
@@ -672,12 +805,16 @@ class ResponsiveProductCards {
             warning: '#f59e0b'
         };
         
+        // إزالة الإشعارات السابقة
+        document.querySelectorAll('.product-notification').forEach(n => n.remove());
+        
         const notification = document.createElement('div');
+        notification.className = 'product-notification';
         notification.style.cssText = `
             position: fixed;
-            top: 120px;
+            top: 100px;
             right: 24px;
-            background: ${colors[type]};
+            background: ${colors[type] || colors.info};
             color: white;
             padding: 1rem 1.5rem;
             border-radius: 15px;
@@ -687,13 +824,28 @@ class ResponsiveProductCards {
             animation: slideIn 0.4s ease-out;
             max-width: 350px;
             word-wrap: break-word;
+            font-family: 'Cairo', sans-serif;
+            cursor: pointer;
+            border: 2px solid rgba(255, 255, 255, 0.2);
         `;
         
         notification.textContent = message;
+        
+        // Click to dismiss
+        notification.addEventListener('click', () => {
+            notification.style.animation = 'slideOut 0.4s ease-in forwards';
+            setTimeout(() => {
+                if (notification.parentNode) {
+                    notification.remove();
+                }
+            }, 400);
+        });
+        
         document.body.appendChild(notification);
         
+        // Auto dismiss after 4 seconds
         setTimeout(() => {
-            if (notification.parentNode) {
+            if (document.body.contains(notification)) {
                 notification.style.animation = 'slideOut 0.4s ease-in forwards';
                 setTimeout(() => {
                     if (notification.parentNode) {
@@ -709,12 +861,24 @@ class ResponsiveProductCards {
             animStyles.id = 'notification-animations';
             animStyles.textContent = `
                 @keyframes slideIn {
-                    from { transform: translateX(100%); opacity: 0; }
-                    to { transform: translateX(0); opacity: 1; }
+                    from { 
+                        transform: translateX(100%) scale(0.8); 
+                        opacity: 0; 
+                    }
+                    to { 
+                        transform: translateX(0) scale(1); 
+                        opacity: 1; 
+                    }
                 }
                 @keyframes slideOut {
-                    from { transform: translateX(0); opacity: 1; }
-                    to { transform: translateX(100%); opacity: 0; }
+                    from { 
+                        transform: translateX(0) scale(1); 
+                        opacity: 1; 
+                    }
+                    to { 
+                        transform: translateX(100%) scale(0.8); 
+                        opacity: 0; 
+                    }
                 }
             `;
             document.head.appendChild(animStyles);
@@ -722,7 +886,12 @@ class ResponsiveProductCards {
     }
 }
 
-// تفعيل النظام عند تحميل الصفحة
-document.addEventListener('DOMContentLoaded', function() {
+// تفعيل النظام فوراً عند تحميل السكريبت
+if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', function() {
+        window.responsiveCards = new ResponsiveProductCards();
+    });
+} else {
+    // إذا كان DOM جاهزاً بالفعل
     window.responsiveCards = new ResponsiveProductCards();
-});
+}
