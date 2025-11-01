@@ -1,6 +1,6 @@
 /**
- * نظام سلة التسوق الشامل - محدث بأسلوب دخون
- * Complete Shopping Cart System - Updated with Dkhoon Style
+ * نظام سلة التسوق المحسن - إصلاح عرض المنتجات
+ * Enhanced Cart System with Fixed Product Display
  */
 
 class ShoppingCart {
@@ -15,7 +15,16 @@ class ShoppingCart {
         this.createFloatingElements();
         this.setupEventListeners();
         this.updateCartDisplay();
-        console.log('🛒 تم تفعيل نظام سلة التسوق الفاخر');
+        this.debugCart(); // Debug helper
+        console.log('🛒 تم تفعيل نظام سلة التسوق المحسن');
+    }
+
+    // Debug helper to check cart state
+    debugCart() {
+        console.log('🔍 Cart Debug Info:');
+        console.log('Items in cart:', this.items.length);
+        console.log('Cart data:', this.items);
+        console.log('Local storage:', localStorage.getItem(this.storageKey));
     }
 
     // إنشاء العناصر العائمة
@@ -55,7 +64,7 @@ class ShoppingCart {
         const styles = document.createElement('style');
         styles.id = 'floating-styles';
         styles.textContent = `
-            /* زر السلة العائم - نمط دخون */
+            /* زر السلة العائم */
             .cart-float {
                 position: fixed;
                 bottom: 100px;
@@ -78,7 +87,7 @@ class ShoppingCart {
             }
 
             .cart-float:hover {
-                transform: scale(1.2) translateY(-8px) rotateZ(-10deg);
+                transform: scale(1.2) translateY(-8px);
                 box-shadow: 0 15px 40px rgba(212, 175, 55, 0.6);
                 background: linear-gradient(135deg, #1e40af, #3b82f6);
                 animation: none;
@@ -160,12 +169,6 @@ class ShoppingCart {
                 transform: translateY(0) scale(1);
             }
 
-            .scroll-to-top:hover {
-                transform: scale(1.2) translateY(-8px) rotateZ(15deg);
-                box-shadow: 0 15px 40px rgba(135, 206, 235, 0.6);
-                background: linear-gradient(135deg, #4682B4, #1E90FF);
-            }
-
             /* شريط السلة الجانبي */
             .cart-sidebar {
                 position: fixed;
@@ -173,9 +176,7 @@ class ShoppingCart {
                 left: -450px;
                 width: 450px;
                 height: 100vh;
-                background: 
-                    linear-gradient(135deg, #fefcfb 0%, #f9f7f4 100%),
-                    radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+                background: linear-gradient(135deg, #fefcfb 0%, #f9f7f4 100%);
                 backdrop-filter: blur(30px);
                 box-shadow: 8px 0 40px rgba(0, 0, 0, 0.2);
                 z-index: 10000;
@@ -365,9 +366,7 @@ class ShoppingCart {
             /* ذيل السلة */
             .cart-footer {
                 padding: 2rem;
-                background: 
-                    linear-gradient(135deg, #fefcfb 0%, #f9f7f4 100%),
-                    radial-gradient(circle at 50% 100%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
+                background: linear-gradient(135deg, #fefcfb 0%, #f9f7f4 100%);
                 border-top: 2px solid rgba(212, 175, 55, 0.3);
                 box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
             }
@@ -419,25 +418,6 @@ class ShoppingCart {
                 border: 3px solid transparent;
             }
 
-            .checkout-btn::before {
-                content: '';
-                position: absolute;
-                top: 50%;
-                left: 50%;
-                width: 0;
-                height: 0;
-                background: rgba(255, 255, 255, 0.3);
-                border-radius: 50%;
-                transform: translate(-50%, -50%);
-                transition: all 0.5s ease;
-                z-index: 1;
-            }
-
-            .checkout-btn:hover::before {
-                width: 500px;
-                height: 500px;
-            }
-
             .checkout-btn:hover {
                 transform: translateY(-5px) scale(1.02);
                 box-shadow: 0 15px 50px rgba(212, 175, 55, 0.6);
@@ -483,29 +463,6 @@ class ShoppingCart {
                 margin-bottom: 2rem;
             }
 
-            /* استجابة للهواتف */
-            @media (max-width: 768px) {
-                .cart-sidebar {
-                    width: 100vw;
-                    left: -100vw;
-                }
-
-                .cart-float {
-                    bottom: 90px;
-                    left: 20px;
-                    width: 60px;
-                    height: 60px;
-                }
-
-                .scroll-to-top {
-                    bottom: 160px;
-                    left: 20px;
-                    width: 50px;
-                    height: 50px;
-                    font-size: 20px;
-                }
-            }
-
             /* تأثيرات النجاح */
             .cart-float.success {
                 animation: cartSuccessLuxury 0.8s ease;
@@ -518,6 +475,20 @@ class ShoppingCart {
                 75% { transform: scale(1.2) rotate(5deg); background: linear-gradient(135deg, #10b981, #059669); }
                 100% { transform: scale(1); background: linear-gradient(135deg, #d4af37, #b8941f); }
             }
+
+            /* استجابة للهواتف */
+            @media (max-width: 768px) {
+                .cart-sidebar {
+                    width: 100vw;
+                    left: -100vw;
+                }
+                .cart-float {
+                    bottom: 90px;
+                    left: 20px;
+                    width: 60px;
+                    height: 60px;
+                }
+            }
         `;
         document.head.appendChild(styles);
     }
@@ -526,7 +497,10 @@ class ShoppingCart {
         // فتح السلة
         const cartFloat = document.getElementById('cart-float');
         if (cartFloat) {
-            cartFloat.addEventListener('click', () => this.openCart());
+            cartFloat.addEventListener('click', () => {
+                console.log('🛒 فتح السلة...');
+                this.openCart();
+            });
         }
 
         // العودة لأعلى
@@ -572,7 +546,7 @@ class ShoppingCart {
         };
     }
 
-    // إضافة منتج للسلة - محدثة مع ربط أفضل بالبيانات
+    // إضافة منتج للسلة
     async addToCart(productId) {
         try {
             console.log(`🛒 محاولة إضافة منتج: ${productId}`);
@@ -608,6 +582,7 @@ class ShoppingCart {
             this.saveToStorage();
             this.updateCartDisplay();
             this.animateCartButton();
+            this.debugCart(); // Debug after adding
 
         } catch (error) {
             console.error('خطأ في إضافة المنتج للسلة:', error);
@@ -615,41 +590,23 @@ class ShoppingCart {
         }
     }
 
-    // الحصول على بيانات المنتج - محدثة ومحسنة
+    // الحصول على بيانات المنتج
     async getProductById(productId) {
-        // محاولة الحصول من المتغير العام أولاً
-        if (window.allProducts && Array.isArray(window.allProducts)) {
-            const product = window.allProducts.find(p => p.id == productId);
-            if (product) {
-                console.log(`✅ Found product in window.allProducts: ${product.title}`);
-                return product;
-            }
-        }
-
-        // محاولة مع فئة الصفحة الرئيسية
-        if (window.categoryProducts && Array.isArray(window.categoryProducts)) {
-            const product = window.categoryProducts.find(p => p.id == productId);
-            if (product) {
-                console.log(`✅ Found product in window.categoryProducts: ${product.title}`);
-                return product;
-            }
-        }
-
-        // محاولة مع المنتجات المفلترة
-        if (window.filteredProducts && Array.isArray(window.filteredProducts)) {
-            const product = window.filteredProducts.find(p => p.id == productId);
-            if (product) {
-                console.log(`✅ Found product in window.filteredProducts: ${product.title}`);
-                return product;
-            }
-        }
-
-        // محاولة مع بيانات الصفحة الرئيسية
-        if (window.categoriesHomepage && window.categoriesHomepage.products) {
-            const product = window.categoriesHomepage.products.find(p => p.id == productId);
-            if (product) {
-                console.log(`✅ Found product in homepage data: ${product.title}`);
-                return product;
+        // محاولة الحصول من المتغيرات العامة أولاً
+        const sources = [
+            window.allProducts,
+            window.categoryProducts,
+            window.filteredProducts,
+            window.categoriesHomepage?.products
+        ];
+        
+        for (const source of sources) {
+            if (Array.isArray(source)) {
+                const product = source.find(p => p.id == productId);
+                if (product) {
+                    console.log(`✅ Found product in source: ${product.title}`);
+                    return product;
+                }
             }
         }
 
@@ -670,7 +627,6 @@ class ShoppingCart {
             
             if (product) {
                 console.log(`✅ Found product via direct fetch: ${product.title}`);
-                // حفظ في الذاكرة للاستخدام المستقبلي
                 if (!window.allProducts) window.allProducts = products;
                 return product;
             }
@@ -690,8 +646,10 @@ class ShoppingCart {
         };
     }
 
-    // فتح شريط السلة الجانبي
+    // فتح شريط السلة الجانبي - محسن
     openCart() {
+        console.log('🛒 فتح شريط السلة...');
+        
         let sidebar = document.getElementById('cart-sidebar');
         let overlay = document.getElementById('cart-overlay');
 
@@ -701,15 +659,16 @@ class ShoppingCart {
             overlay = document.getElementById('cart-overlay');
         }
 
+        // تحديث المحتويات قبل فتح السلة
+        this.loadFromStorage(); // تأكد من تحميل أحدث البيانات
         this.renderCartItems();
         
         overlay.classList.add('show');
         sidebar.classList.add('open');
         
-        // منع التمرير في الخلفية
         document.body.style.overflow = 'hidden';
         
-        console.log('✅ تم فتح سلة التسوق');
+        console.log(`✅ تم فتح سلة التسوق - العناصر: ${this.items.length}`);
     }
 
     // إغلاق السلة
@@ -787,10 +746,15 @@ class ShoppingCart {
         document.body.appendChild(sidebar);
     }
 
-    // عرض عناصر السلة
+    // عرض عناصر السلة - محسن
     renderCartItems() {
         const container = document.getElementById('cart-items-container');
-        if (!container) return;
+        if (!container) {
+            console.warn('⚠️ Cart container not found');
+            return;
+        }
+
+        console.log(`🔍 Rendering ${this.items.length} cart items`);
 
         if (this.items.length === 0) {
             container.innerHTML = `
@@ -818,27 +782,62 @@ class ShoppingCart {
             return;
         }
 
-        const itemsHTML = this.items.map(item => `
-            <div class="cart-item" data-item-id="${item.id}">
-                <img class="cart-item-image" src="${item.image}" alt="${item.title}" 
-                     onerror="this.src='https://via.placeholder.com/70x70/D4AF37/FFFFFF?text=صورة'">
-                <div class="cart-item-info">
-                    <div class="cart-item-title">${item.title.length > 35 ? item.title.substring(0, 35) + '...' : item.title}</div>
-                    <div class="cart-item-price">${item.price} درهم</div>
+        const itemsHTML = this.items.map(item => {
+            console.log('📋 Rendering item:', item);
+            return `
+                <div class="cart-item" data-item-id="${item.id}">
+                    <img class="cart-item-image" src="${item.image}" alt="${item.title}" 
+                         onerror="this.src='https://via.placeholder.com/70x70/D4AF37/FFFFFF?text=صورة'">
+                    <div class="cart-item-info">
+                        <div class="cart-item-title">${item.title.length > 35 ? item.title.substring(0, 35) + '...' : item.title}</div>
+                        <div class="cart-item-price">${item.price} درهم</div>
+                    </div>
+                    <div class="cart-item-controls">
+                        <button class="quantity-btn" onclick="window.cart.decreaseQuantity('${item.id}')" title="تقليل الكمية">−</button>
+                        <span class="cart-quantity">${item.quantity}</span>
+                        <button class="quantity-btn" onclick="window.cart.increaseQuantity('${item.id}')" title="زيادة الكمية">+</button>
+                        <button class="remove-item" onclick="window.cart.removeFromCart('${item.id}')" title="إزالة من السلة">×</button>
+                    </div>
                 </div>
-                <div class="cart-item-controls">
-                    <button class="quantity-btn" onclick="window.cart.decreaseQuantity('${item.id}')">−</button>
-                    <span class="cart-quantity">${item.quantity}</span>
-                    <button class="quantity-btn" onclick="window.cart.increaseQuantity('${item.id}')">+</button>
-                    <button class="remove-item" onclick="window.cart.removeFromCart('${item.id}')" title="إزالة من السلة">×</button>
-                </div>
-            </div>
-        `).join('');
+            `;
+        }).join('');
 
         container.innerHTML = itemsHTML;
+        console.log('✅ Cart items rendered successfully');
     }
 
-    // زيادة العدد
+    // الانتقال لصفحة إتمام الطلب - محسن مع ربط البيانات
+    proceedToCheckout() {
+        if (this.items.length === 0) {
+            this.showNotification('سلتك فارغة! أضف منتجات أولاً', 'warning');
+            return;
+        }
+
+        console.log('🚀 المتابعة لإتمام الطلب...');
+        console.log('📦 بيانات السلة للانتقال:', this.getCartData());
+
+        // حفظ بيانات السلة في sessionStorage للانتقال
+        try {
+            const cartData = this.getCartData();
+            sessionStorage.setItem('checkout_cart_data', JSON.stringify(cartData));
+            console.log('✅ تم حفظ بيانات السلة لصفحة إتمام الطلب');
+        } catch (error) {
+            console.error('❌ خطأ في حفظ بيانات الانتقال:', error);
+        }
+
+        // فتح صفحة إتمام الطلب في تبويب جديد
+        const checkoutUrl = './checkout.html';
+        const newWindow = window.open(checkoutUrl, '_blank', 'noopener,noreferrer');
+        
+        if (newWindow) {
+            this.showNotification('تم فتح صفحة إتمام الطلب...', 'success');
+            this.closeCart();
+        } else {
+            this.showNotification('يرجى السماح بفتح النوافذ المنبثقة', 'warning');
+        }
+    }
+
+    // باقي الدوال كما هي...
     increaseQuantity(productId) {
         const item = this.items.find(item => item.id === productId);
         if (item) {
@@ -850,7 +849,6 @@ class ShoppingCart {
         }
     }
 
-    // تقليل العدد
     decreaseQuantity(productId) {
         const item = this.items.find(item => item.id === productId);
         if (item && item.quantity > 1) {
@@ -862,7 +860,6 @@ class ShoppingCart {
         }
     }
 
-    // إزالة من السلة
     removeFromCart(productId) {
         const item = this.items.find(item => item.id === productId);
         if (item) {
@@ -903,16 +900,18 @@ class ShoppingCart {
             checkoutBtn.disabled = totalItems === 0;
         }
         
-        // تحديث أي عناصر أخرى
+        // تحديث صفحة checkout إذا كانت مفتوحة
         this.updateCheckoutPage();
+        
+        console.log(`🔄 تم تحديث عرض السلة: ${totalItems} عنصر، المجموع: ${totalPrice} درهم`);
     }
 
     // تحديث صفحة إتمام الطلب
     updateCheckoutPage() {
-        // في صفحة checkout.html
         const checkoutItemsContainer = document.getElementById('order-items');
         const subtotalElement = document.getElementById('subtotal');
         const finalTotalElement = document.getElementById('final-total');
+        const itemsCountElement = document.getElementById('items-count');
         
         if (checkoutItemsContainer) {
             this.renderCheckoutItems(checkoutItemsContainer);
@@ -924,6 +923,11 @@ class ShoppingCart {
         
         if (finalTotalElement) {
             finalTotalElement.textContent = `${this.getTotalPrice()} درهم`;
+        }
+        
+        if (itemsCountElement) {
+            const count = this.getTotalItems();
+            itemsCountElement.textContent = `${count} ${count === 1 ? 'عنصر' : 'عنصر'}`;
         }
     }
 
@@ -951,48 +955,46 @@ class ShoppingCart {
         }
         
         const itemsHTML = this.items.map(item => `
-            <div class="order-item">
+            <div class="order-item" style="
+                display: flex;
+                align-items: center;
+                gap: 1rem;
+                padding: 1rem;
+                border: 2px solid rgba(212, 175, 55, 0.2);
+                border-radius: 15px;
+                margin-bottom: 1rem;
+                background: white;
+                box-shadow: 0 2px 10px rgba(0, 0, 0, 0.05);
+            ">
                 <img class="item-image" src="${item.image}" alt="${item.title}" 
+                     style="width: 60px; height: 60px; border-radius: 10px; object-fit: cover; border: 2px solid rgba(212, 175, 55, 0.3);"
                      onerror="this.src='https://via.placeholder.com/60x60/D4AF37/FFFFFF?text=صورة'">
-                <div class="item-details">
-                    <div class="item-title">${item.title.length > 40 ? item.title.substring(0, 40) + '...' : item.title}</div>
-                    <div class="item-price">${item.price * item.quantity} درهم</div>
+                <div class="item-details" style="flex: 1;">
+                    <div class="item-title" style="font-weight: 700; color: #111827; margin-bottom: 0.3rem; line-height: 1.3;">
+                        ${item.title.length > 40 ? item.title.substring(0, 40) + '...' : item.title}
+                    </div>
+                    <div class="item-price" style="font-weight: 800; color: #d4af37;">
+                        ${item.price * item.quantity} درهم
+                    </div>
                 </div>
-                <div class="item-quantity">×${item.quantity}</div>
+                <div class="item-quantity" style="font-weight: 800; color: #6b7280; font-size: 1rem;">
+                    ×${item.quantity}
+                </div>
             </div>
         `).join('');
         
         container.innerHTML = itemsHTML;
     }
 
-    // الانتقال لصفحة إتمام الطلب
-    proceedToCheckout() {
-        if (this.items.length === 0) {
-            this.showNotification('سلتك فارغة! أضف منتجات أولاً', 'warning');
-            return;
-        }
-
-        // فتح صفحة إتمام الطلب في تبويب جديد
-        const checkoutUrl = './checkout.html';
-        window.open(checkoutUrl, '_blank', 'noopener,noreferrer');
-        
-        this.showNotification('جاري فتح صفحة إتمام الطلب...', 'info');
-        
-        // إغلاق الشريط الجانبي
-        this.closeCart();
-    }
-
-    // حساب إجمالي العناصر
+    // الدوال المساعدة
     getTotalItems() {
         return this.items.reduce((total, item) => total + (item.quantity || 1), 0);
     }
 
-    // حساب إجمالي السعر
     getTotalPrice() {
         return this.items.reduce((total, item) => total + ((item.price || 0) * (item.quantity || 1)), 0);
     }
 
-    // حفظ في التخزين المحلي
     saveToStorage() {
         try {
             localStorage.setItem(this.storageKey, JSON.stringify(this.items));
@@ -1002,7 +1004,6 @@ class ShoppingCart {
         }
     }
 
-    // تحميل من التخزين
     loadFromStorage() {
         try {
             const saved = localStorage.getItem(this.storageKey);
@@ -1014,7 +1015,6 @@ class ShoppingCart {
         }
     }
 
-    // تنظيف السلة
     clearCart() {
         if (confirm('هل تريد تفريغ سلة التسوق بالكامل؟')) {
             this.items = [];
@@ -1025,7 +1025,6 @@ class ShoppingCart {
         }
     }
 
-    // تأثير عند الإضافة
     animateCartButton() {
         const cartFloat = document.getElementById('cart-float');
         if (cartFloat) {
@@ -1036,7 +1035,6 @@ class ShoppingCart {
         }
     }
 
-    // معالجة التمرير
     handleScroll() {
         const scrollTop = document.getElementById('scroll-to-top');
         if (scrollTop) {
@@ -1048,7 +1046,6 @@ class ShoppingCart {
         }
     }
 
-    // العودة لأعلى
     scrollToTop() {
         window.scrollTo({
             top: 0,
@@ -1056,7 +1053,6 @@ class ShoppingCart {
         });
     }
 
-    // عرض إشعار فاخر
     showNotification(message, type = 'success') {
         const colors = {
             success: { bg: '#50C878', shadow: 'rgba(80, 200, 120, 0.3)' },
@@ -1067,7 +1063,6 @@ class ShoppingCart {
         
         const color = colors[type] || colors.success;
         
-        // إزالة الإشعارات السابقة
         document.querySelectorAll('.cart-notification').forEach(n => n.remove());
         
         const notification = document.createElement('div');
@@ -1092,7 +1087,6 @@ class ShoppingCart {
         `;
         notification.textContent = message;
         
-        // إغلاق عند النقر
         notification.addEventListener('click', () => {
             notification.style.animation = 'luxurySlideOut 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards';
             setTimeout(() => {
@@ -1102,7 +1096,6 @@ class ShoppingCart {
         
         document.body.appendChild(notification);
         
-        // إغلاق تلقائي بعد 4 ثوانِ
         setTimeout(() => {
             if (document.body.contains(notification)) {
                 notification.style.animation = 'luxurySlideOut 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards';
@@ -1112,7 +1105,6 @@ class ShoppingCart {
             }
         }, 4000);
         
-        // إضافة الأنماط المتحركة الفاخرة
         if (!document.getElementById('notification-styles')) {
             const styles = document.createElement('style');
             styles.id = 'notification-styles';
@@ -1151,7 +1143,6 @@ class ShoppingCart {
         }
     }
 
-    // حصول على بيانات السلة للخارج
     getCartData() {
         return {
             items: this.items,
@@ -1160,18 +1151,18 @@ class ShoppingCart {
             timestamp: Date.now()
         };
     }
-
-    // ربط مباشر بمتجر السلة المنفصل
-    openFullCartPage() {
-        window.open('./cart.html', '_blank', 'noopener,noreferrer');
-        this.closeCart();
-    }
 }
 
 // تفعيل النظام عند تحميل الصفحة
 document.addEventListener('DOMContentLoaded', function() {
-    // إنشاء مثيل عام للسلة
     window.cart = new ShoppingCart();
     
-    console.log('✨ تم تفعيل نظام سلة التسوق الفاخر بنجاح!');
+    // تحديث checkout page إذا كانت مفتوحة
+    if (window.location.pathname.includes('checkout.html') && window.cart) {
+        setTimeout(() => {
+            window.cart.updateCheckoutPage();
+        }, 1000);
+    }
+    
+    console.log('✨ تم تفعيل نظام سلة التسوق المحسن بنجاح!');
 });
