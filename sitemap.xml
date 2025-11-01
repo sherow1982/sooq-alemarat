@@ -21,6 +21,12 @@
     <priority>0.9</priority>
   </url>
   <url>
+    <loc>https://sherow1982.github.io/sooq-alemarat/product.html</loc>
+    <lastmod>2025-11-01</lastmod>
+    <changefreq>daily</changefreq>
+    <priority>0.9</priority>
+  </url>
+  <url>
     <loc>https://sherow1982.github.io/sooq-alemarat/legal/terms.html</loc>
     <lastmod>2025-11-01</lastmod>
     <changefreq>monthly</changefreq>
@@ -94,6 +100,54 @@
   </url>
   <url>
     <loc>https://sherow1982.github.io/sooq-alemarat/miscellaneous-products.html</loc>
+    <lastmod>2025-11-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sherow1982.github.io/sooq-alemarat/en/en-home-appliances-electrical.html</loc>
+    <lastmod>2025-11-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sherow1982.github.io/sooq-alemarat/en/en-electronics-technology.html</loc>
+    <lastmod>2025-11-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sherow1982.github.io/sooq-alemarat/en/en-personal-care-health-beauty.html</loc>
+    <lastmod>2025-11-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sherow1982.github.io/sooq-alemarat/en/en-shoes-clothing-accessories.html</loc>
+    <lastmod>2025-11-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sherow1982.github.io/sooq-alemarat/en/en-sports-fitness-health.html</loc>
+    <lastmod>2025-11-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sherow1992.github.io/sooq-alemarat/en/en-furniture-home-tools.html</loc>
+    <lastmod>2025-11-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sherow1982.github.io/sooq-alemarat/en/en-tools-maintenance.html</loc>
+    <lastmod>2025-11-01</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+  <url>
+    <loc>https://sherow1982.github.io/sooq-alemarat/en/en-miscellaneous-products.html</loc>
     <lastmod>2025-11-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
