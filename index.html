@@ -21,8 +21,11 @@
     <!-- Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Theme المحسن للرؤية والألوان -->
+    <!-- Enhanced Theme -->
     <link rel="stylesheet" href="css/improved-theme.css">
+    
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https: http:; font-src 'self' https:; connect-src 'self' https:; frame-src 'none'; object-src 'none'; base-uri 'self';">
 </head>
 <body>
     <!-- Header -->
@@ -50,7 +53,7 @@
         </div>
     </header>
 
-    <!-- Hero -->
+    <!-- Hero Section -->
     <section class="hero-section">
         <div class="container">
             <h1 class="hero-title">🇦🇪 مرحباً بك في سوق الإمارات</h1>
@@ -64,7 +67,7 @@
         </div>
     </section>
 
-    <!-- Categories -->
+    <!-- Categories Section -->
     <section id="categories" class="section">
         <div class="container">
             <h2 class="section-title">🏪 تسوق حسب الفئة</h2>
@@ -77,7 +80,7 @@
         </div>
     </section>
 
-    <!-- Products -->
+    <!-- Products Section -->
     <section id="featured" class="section">
         <div class="container">
             <div class="filter-bar" id="filter-bar">
@@ -160,19 +163,20 @@
         </div>
     </footer>
 
-    <!-- Floating Buttons -->
+    <!-- Floating WhatsApp Button -->
     <a href="https://wa.me/201110760081?text=مرحبا،%20أريد%20التواصل%20مع%20فريق%20سوق%20الإمارات" 
        class="whatsapp-float" target="_blank" title="تواصل عبر واتساب">
         📱
     </a>
 
-    <!-- Scripts -->
+    <!-- Scripts in optimal loading order -->
+    <script src="js/extension-detector.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/category-routing.js"></script>
     <script src="js/categories-homepage-3d-fixed.js"></script>
     
     <script>
-        // تعديل سلوك بطاقات الفئات لفتح صفحات SEO الثابتة بدل روابط غير موجودة
+        // Enhanced homepage functionality with extension compatibility
         document.addEventListener('click', function(e){
             const catCard = e.target.closest('.category-card');
             if (catCard) {
@@ -180,15 +184,84 @@
                 if (name && window.getCategoryPage) {
                     e.preventDefault();
                     const page = window.getCategoryPage(name);
+                    console.log(`🔗 Opening category page: ${page}`);
                     window.open(page, '_blank', 'noopener');
                 }
             }
         }, true);
         
-        // تفعيل تحسينات الأداء
+        // Performance optimizations
         document.addEventListener('DOMContentLoaded', function() {
             console.log('✅ سوق الإمارات - تم التحميل مع السمة المحسنة وروابط فئات SEO');
+            
+            // Add search functionality
+            const searchBtn = document.getElementById('search-btn');
+            const searchInput = document.getElementById('main-search');
+            
+            if (searchBtn && searchInput) {
+                searchBtn.addEventListener('click', performSearch);
+                searchInput.addEventListener('keypress', function(e) {
+                    if (e.key === 'Enter') {
+                        performSearch();
+                    }
+                });
+            }
+            
+            function performSearch() {
+                const query = searchInput.value.trim();
+                if (query.length > 2) {
+                    console.log(`🔍 Searching for: ${query}`);
+                    // Here you can implement search functionality or redirect to search results
+                    showNotification(`جاري البحث عن: ${query}`);
+                } else {
+                    showNotification('يرجى إدخال 3 أحرف على الأقل', 'error');
+                }
+            }
         });
+        
+        // Global notification function
+        window.showNotification = function(message, type = 'success') {
+            document.querySelectorAll('.homepage-notification').forEach(n => n.remove());
+            
+            const bgColor = type === 'success' ? '#10b981' : '#ef4444';
+            
+            const notification = document.createElement('div');
+            notification.className = 'homepage-notification';
+            notification.style.cssText = `
+                position: fixed; top: 100px; right: 20px;
+                background: ${bgColor}; color: white;
+                padding: 1rem 1.5rem; border-radius: 12px;
+                font-weight: 600; z-index: 1000;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+                animation: slideIn 0.3s ease-out;
+                cursor: pointer; max-width: 300px;
+            `;
+            notification.textContent = message;
+            
+            notification.addEventListener('click', () => notification.remove());
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) notification.remove();
+            }, 4000);
+        };
     </script>
+    
+    <!-- Animation Styles -->
+    <style>
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+        
+        .loading-spinner {
+            animation: spin 1s linear infinite;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+    </style>
 </body>
 </html>
