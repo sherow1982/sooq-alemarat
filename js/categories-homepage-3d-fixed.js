@@ -1,6 +1,6 @@
 /**
- * نظام إدارة المنتجات والفئات للصفحة الرئيسية
- * Homepage Products and Categories Management System
+ * نظام إدارة المنتجات والفئات للصفحة الرئيسية - محدث
+ * Homepage Products and Categories Management System - Updated
  */
 
 class CategoriesHomepage3DFixed {
@@ -55,41 +55,72 @@ class CategoriesHomepage3DFixed {
             });
         }
 
-        // Tab switching
+        // Global click handler for all product interactions
         document.addEventListener('click', (e) => {
-            if (e.target.matches('.tab-btn')) {
-                this.switchTab(e.target.dataset.tab, e.target);
+            // Prevent default for specific elements
+            const target = e.target;
+            const card = target.closest('.product-card');
+            
+            // Tab switching
+            if (target.matches('.tab-btn')) {
+                e.preventDefault();
+                this.switchTab(target.dataset.tab, target);
+                return;
             }
             
             // Category card clicks - Shows products in same page with filter
-            if (e.target.closest('.category-card')) {
-                const categoryCard = e.target.closest('.category-card');
+            if (target.closest('.category-card')) {
+                e.preventDefault();
+                const categoryCard = target.closest('.category-card');
                 const categoryName = categoryCard.dataset.category;
                 if (categoryName) {
                     this.viewCategory(categoryName);
                 }
+                return;
             }
             
-            // Product image and title clicks - Open product details
-            if (e.target.matches('.product-image') || e.target.closest('.product-image') || 
-                e.target.matches('.product-title') || e.target.closest('.product-title')) {
-                const productCard = e.target.closest('.product-card');
-                if (productCard) {
-                    const productId = productCard.dataset.productId;
+            // Product card interactions
+            if (card) {
+                const productId = card.dataset.productId;
+                
+                // Add to cart button - highest priority
+                if (target.matches('.add-to-cart') || target.closest('.add-to-cart')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.addToCartHandler(productId);
+                    return;
+                }
+                
+                // WhatsApp button
+                if (target.matches('.whatsapp-btn') || target.closest('.whatsapp-btn')) {
+                    // Let default behavior handle WhatsApp link
+                    return;
+                }
+                
+                // View details button
+                if (target.matches('.view-details') || target.closest('.view-details')) {
+                    e.preventDefault();
+                    e.stopPropagation();
                     this.viewProductDetails(productId);
+                    return;
+                }
+                
+                // Product image or title click - open details in new tab
+                if (target.matches('.product-image') || target.closest('.product-image') ||
+                    target.matches('.product-title') || target.closest('.product-title') ||
+                    target.tagName === 'IMG' && target.closest('.product-card')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.viewProductDetails(productId);
+                    return;
                 }
             }
             
-            // View details button
-            if (e.target.matches('.view-details') || e.target.closest('.view-details')) {
-                const btn = e.target.matches('.view-details') ? e.target : e.target.closest('.view-details');
-                const productId = btn.dataset.productId || btn.closest('.product-card').dataset.productId;
-                this.viewProductDetails(productId);
-            }
-            
             // Back to categories button
-            if (e.target.id === 'back-to-categories' || e.target.closest('#back-to-categories')) {
+            if (target.id === 'back-to-categories' || target.closest('#back-to-categories')) {
+                e.preventDefault();
                 this.resetView();
+                return;
             }
         });
     }
@@ -175,6 +206,60 @@ class CategoriesHomepage3DFixed {
         }
     }
 
+    // ADD TO CART HANDLER
+    addToCartHandler(productId) {
+        console.log(`🛒 إضافة المنتج للسلة: ${productId}`);
+        
+        // Use global cart if available
+        if (window.cart && typeof window.cart.addToCart === 'function') {
+            window.cart.addToCart(productId);
+            return;
+        }
+        
+        // Fallback: manual cart handling
+        try {
+            const product = this.getProductById(productId);
+            if (!product) {
+                this.showError('لم يتم العثور على بيانات المنتج');
+                return;
+            }
+            
+            const cartItems = JSON.parse(localStorage.getItem('emirates_cart') || '[]');
+            const existingItem = cartItems.find(item => item.id === productId);
+            
+            if (existingItem) {
+                existingItem.quantity += 1;
+                this.showSuccess(`تم زيادة عدد "${product.title}" في السلة ✅`);
+            } else {
+                const cartItem = {
+                    id: product.id,
+                    title: product.title,
+                    price: product.sale_price || product.regular_price,
+                    image: product.image_url,
+                    quantity: 1,
+                    addedAt: Date.now()
+                };
+                cartItems.push(cartItem);
+                this.showSuccess(`تم إضافة "${product.title}" للسلة ✅`);
+            }
+            
+            localStorage.setItem('emirates_cart', JSON.stringify(cartItems));
+            
+            // Update cart display if function exists
+            if (window.cart && typeof window.cart.updateCartDisplay === 'function') {
+                window.cart.updateCartDisplay();
+            }
+            
+        } catch (error) {
+            console.error('خطأ في إضافة المنتج للسلة:', error);
+            this.showError('حدث خطأ في إضافة المنتج للسلة');
+        }
+    }
+
+    getProductById(productId) {
+        return this.products.find(p => p.id == productId);
+    }
+
     parsePrice(priceString) {
         if (typeof priceString === 'number') return priceString;
         if (!priceString) return 0;
@@ -211,7 +296,7 @@ class CategoriesHomepage3DFixed {
         
         // Free shipping
         const price = product.sale_price || product.regular_price;
-        if (product.free_shipping_threshold && price >= product.free_shipping_threshold) {
+        if (!product.free_shipping_threshold || price >= (product.free_shipping_threshold || 100)) {
             features.push('🚚 شحن مجاني');
         }
         
@@ -262,7 +347,7 @@ class CategoriesHomepage3DFixed {
         if (this.categories.length === 0) {
             container.innerHTML = `
                 <div class="no-categories" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
-                    <h3>🔍 لا توجد فرئات متاحة</h3>
+                    <h3>🔍 لا توجد فئات متاحة</h3>
                     <p>يرجى تحديث الصفحة أو المحاولة لاحقاً</p>
                 </div>
             `;
@@ -397,7 +482,13 @@ class CategoriesHomepage3DFixed {
             : '';
 
         // WhatsApp message
-        const whatsappMessage = `مرحبا، أريد الاستفسار عن:\n\n▶️ ${product.title}\n💰 السعر: ${currentPrice} درهم\n📎 الفئة: ${product.category}\n\nأرجو إرسال التفاصيل وطريقة التوصيل.`;
+        const whatsappMessage = `مرحبا، أريد الاستفسار عن:
+
+▶️ ${product.title}
+💰 السعر: ${currentPrice} درهم
+📎 الفئة: ${product.category}
+
+أرجو إرسال التفاصيل وطريقة التوصيل.`;
 
         return `
             <div class="product-card card-3d" data-product-id="${product.id}">
@@ -405,7 +496,7 @@ class CategoriesHomepage3DFixed {
                     ${discount}
                     ${featuredBadge}
                     
-                    <div class="product-image" style="cursor: pointer;">
+                    <div class="product-image" style="cursor: pointer;" title="اضغط لعرض تفاصيل المنتج">
                         <img src="${primaryImage}" 
                              alt="${product.title}" 
                              loading="lazy"
@@ -415,7 +506,7 @@ class CategoriesHomepage3DFixed {
                     
                     <div class="product-info">
                         <div class="product-category">${product.category}</div>
-                        <h3 class="product-title" title="${product.title}" style="cursor: pointer;">${displayTitle}</h3>
+                        <h3 class="product-title" title="${product.title} - اضغط لعرض التفاصيل" style="cursor: pointer;">${displayTitle}</h3>
                         <div class="product-rating" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-secondary);">
                             <span style="color: #FCD34D;">${stars}</span>
                             <span>(${product.review_count || 0} تقييم)</span>
@@ -428,14 +519,14 @@ class CategoriesHomepage3DFixed {
                             ${features.slice(0, 3).map(feature => `<div class="feature">${feature}</div>`).join('')}
                         </div>
                         <div class="product-actions">
-                            <button class="btn add-to-cart" data-product-id="${product.id}">
+                            <button class="btn add-to-cart" data-product-id="${product.id}" title="إضافة المنتج للسلة">
                                 🛒 إضافة
                             </button>
                             <a href="https://wa.me/201110760081?text=${encodeURIComponent(whatsappMessage)}" 
-                               class="btn whatsapp-btn" target="_blank" rel="noopener">
+                               class="btn whatsapp-btn" target="_blank" rel="noopener" title="طلب عبر واتساب">
                                 📱 واتساب
                             </a>
-                            <button class="btn view-details" data-product-id="${product.id}">
+                            <button class="btn view-details" data-product-id="${product.id}" title="عرض تفاصيل المنتج">
                                 👁 تفاصيل
                             </button>
                         </div>
@@ -533,19 +624,53 @@ class CategoriesHomepage3DFixed {
         // Switch to featured tab
         this.switchTabProgrammatically('featured-products');
         
+        // Re-render all products in all-products tab
+        this.renderAllProducts();
+        
         // Scroll to categories
         document.getElementById('categories').scrollIntoView({ behavior: 'smooth' });
         
         this.showSuccess('تم العودة لعرض جميع الفئات');
     }
 
-    // Product details opens in new tab
+    // Product details opens in new tab with proper URL
     viewProductDetails(productId) {
         console.log(`👁 فتح معاينة المنتج: ${productId}`);
         
-        // Open product details page in new tab
-        const productUrl = `./product.html?id=${productId}`;
+        // Find the product to get its URL slug
+        const product = this.getProductById(productId);
+        if (!product) {
+            this.showError('لم يتم العثور على المنتج');
+            return;
+        }
+        
+        // Try to use the product's URL slug if available
+        let productUrl;
+        
+        if (product.url_slug) {
+            // Use existing URL slug
+            productUrl = `./data/pruducts-pages/${product.url_slug}.html`;
+        } else {
+            // Generate URL slug
+            const slug = this.createArabicSlug(product.title, productId);
+            productUrl = `./data/pruducts-pages/${slug}.html`;
+        }
+        
+        // Open in new tab
         window.open(productUrl, '_blank', 'noopener,noreferrer');
+        
+        this.showSuccess(`جاري فتح تفاصيل "${product.title}" في تبويب جديد`);
+    }
+    
+    createArabicSlug(title, productId) {
+        // Create Arabic-friendly slug
+        let slug = title.trim();
+        slug = slug.replace(/\s+/g, '-');
+        slug = slug.replace(/[^\u0600-\u06FF\u0750-\u077F\w\-]/g, '');
+        slug = slug.replace(/--+/g, '-');
+        slug = slug.replace(/^-+|-+$/g, '');
+        
+        return `${slug}-${productId}`;
     }
 
     // TAB FUNCTIONALITY
@@ -555,6 +680,8 @@ class CategoriesHomepage3DFixed {
         
         tabButton.classList.add('active');
         document.getElementById(tabId).classList.add('active');
+        
+        console.log(`📑 تم التبديل للتبويب: ${tabId}`);
     }
 
     // SEARCH FUNCTIONALITY
@@ -693,7 +820,11 @@ class CategoriesHomepage3DFixed {
         
         const color = colors[type] || colors.info;
         
+        // Remove existing notifications
+        document.querySelectorAll('.homepage-notification').forEach(n => n.remove());
+        
         const notificationDiv = document.createElement('div');
+        notificationDiv.className = 'homepage-notification';
         notificationDiv.style.cssText = `
             position: fixed;
             top: 100px;
@@ -740,11 +871,11 @@ class CategoriesHomepage3DFixed {
     loadFallbackData() {
         console.log('📂 تحميل بيانات احتياطية...');
         
-        // Sample data
+        // Sample data with proper structure
         this.products = [
             {
                 id: 'sample-1',
-                title: 'غسالة محمولة قابلة للطي',
+                title: 'غسالة محمولة قابلة للطي - توفير مساحة ووقت',
                 category: 'الأجهزة المنزلية والكهربائية',
                 sale_price: 150,
                 regular_price: 200,
@@ -757,7 +888,7 @@ class CategoriesHomepage3DFixed {
             },
             {
                 id: 'sample-2',
-                title: 'مرطب كهربائي بزيت طبيعي',
+                title: 'مرطب كهربائي بزيت طبيعي - صحة وراحة',
                 category: 'العناية الشخصية والصحة والجمال',
                 sale_price: 175,
                 regular_price: 250,
@@ -765,7 +896,20 @@ class CategoriesHomepage3DFixed {
                 discount_percentage: 30,
                 image_url: 'https://via.placeholder.com/400x300/25D366/FFFFFF?text=مرطب+كهربائي',
                 average_rating: 5.0,
-                review_count: 75,
+                review_count: 85,
+                features: ['🇦🇪 منتج إماراتي 100%', '🚚 شحن مجاني', '💰 دفع عند الاستلام', '⏰ 1-3 أيام عمل']
+            },
+            {
+                id: 'sample-3',
+                title: 'مكنسة كهربائية لاسلكية - قوة شفط عالية',
+                category: 'الأجهزة المنزلية والكهربائية',
+                sale_price: 350,
+                regular_price: 450,
+                currency: 'AED',
+                discount_percentage: 22,
+                image_url: 'https://via.placeholder.com/400x300/4F46E5/FFFFFF?text=مكنسة+كهربائية',
+                average_rating: 4.5,
+                review_count: 120,
                 features: ['🇦🇪 منتج إماراتي 100%', '🚚 شحن مجاني', '💰 دفع عند الاستلام', '⏰ 1-3 أيام عمل']
             }
         ];
@@ -780,6 +924,8 @@ class CategoriesHomepage3DFixed {
         this.renderCategories();
         this.renderFeaturedProducts();
         this.renderAllProducts();
+        
+        this.showSuccess('تم تحميل بيانات تجريبية - 3 منتجات');
     }
 
     // UTILITY FUNCTIONS
