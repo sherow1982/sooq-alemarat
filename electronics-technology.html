@@ -1,1 +1,79 @@
-<content omitted for brevity>
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>الإلكترونيات والتكنولوجيا - أحدث التقنيات في الإمارات | سوق الإمارات</title>
+    <meta name="description" content="تسوق أحدث الإلكترونيات والتقنيات في الإمارات. هواتف، شواحن، كاميرات، أجهزة ذكية، وأكسسوارات تقنية متطورة مع ضمان الجودة.">
+    <link rel="canonical" href="https://sherow1982.github.io/sooq-alemarat/electronics-technology.html">
+    <link rel="icon" href="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/e1029c77-e4a0-4b40-a278-4b4996e2ee05.png">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/improved-theme.css">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="./" class="logo">
+                    <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/b1f430c1-8aa0-4082-8bec-59935fddfaa2.png" alt="سوق الإمارات">
+                    <span>سوق الإمارات</span>
+                </a>
+                <nav><ul class="nav-list">
+                    <li><a href="./">🏠 الرئيسية</a></li>
+                    <li><a href="cart.html" target="_blank">🛒 السلة</a></li>
+                    <li><a href="./en/" target="_blank">🇺🇸 English</a></li>
+                </ul></nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <div class="breadcrumb">
+                <a href="./">🏠 الرئيسية</a><span>←</span><span>📱 الإلكترونيات والتكنولوجيا</span>
+            </div>
+            
+            <section class="section">
+                <h1 class="category-title">📱 الإلكترونيات والتكنولوجيا</h1>
+                
+                <div class="filter-options" style="text-align: center; margin: 2rem 0;">
+                    <div style="margin-bottom: 1rem; font-weight: 600;">🔍 تصفية حسب السعر:</div>
+                    <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
+                        <button class="btn filter-btn active" data-filter="all" onclick="filterByPrice('all', this)">جميع المنتجات</button>
+                        <button class="btn filter-btn" data-filter="under-200" onclick="filterByPrice('under-200', this)">أقل من 200 درهم</button>
+                        <button class="btn filter-btn" data-filter="200-300" onclick="filterByPrice('200-300', this)">200-300 درهم</button>
+                        <button class="btn filter-btn" data-filter="over-300" onclick="filterByPrice('over-300', this)">أكثر من 300 درهم</button>
+                    </div>
+                </div>
+                
+                <div class="products-grid" id="category-products">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        <h3>جاري تحميل الإلكترونيات...</h3>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>🏪 سوق الإمارات</h3>
+                    <p>رائدون في عالم التسوق الرقمي</p>
+                </div>
+                <div class="footer-section">
+                    <h3>📞 تواصل</h3>
+                    <div><a href="https://wa.me/201110760081" target="_blank">📱 واتساب</a></div>
+                </div>
+            </div>
+        </div>
+    </footer>
+    
+    <a href="https://wa.me/201110760081" class="whatsapp-float" target="_blank">📱</a>
+    
+    <script src="js/cart.js"></script>
+    <script src="js/category-handler.js"></script>
+</body>
+</html>
