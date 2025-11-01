@@ -9,6 +9,9 @@
     <link rel="icon" href="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/e1029c77-e4a0-4b40-a278-4b4996e2ee05.png">
     <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/improved-theme.css">
+    
+    <!-- Content Security Policy for better extension compatibility -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https: http:; font-src 'self' https:; connect-src 'self' https:; frame-src 'none'; object-src 'none'; base-uri 'self';">
 </head>
 <body>
     <header class="header">
@@ -36,7 +39,14 @@
             <section class="section">
                 <h1 class="category-title">🛑 منتجات متنوعة</h1>
                 
-                <div class="filter-options" style="text-align: center; margin: 2rem 0;">
+                <!-- Loading State -->
+                <div id="loading-state" style="text-align: center; padding: 3rem; display: block;">
+                    <div style="font-size: 3rem; margin-bottom: 1rem; animation: spin 1s linear infinite;">⚡</div>
+                    <h3 style="color: #1e40af; margin-bottom: 1rem;">جاري تحميل المنتجات المتنوعة...</h3>
+                    <p style="color: #6b7280;">يرجى الانتظار بينما نجهز لك أفضل المنتجات</p>
+                </div>
+                
+                <div class="filter-options" style="text-align: center; margin: 2rem 0; display: none;" id="filter-section">
                     <div style="margin-bottom: 1rem; font-weight: 600;">🔍 تصفية حسب السعر:</div>
                     <div style="display: flex; justify-content: center; gap: 1rem; flex-wrap: wrap;">
                         <button class="btn filter-btn active" data-filter="all" onclick="filterByPrice('all', this)">جميع المنتجات</button>
@@ -47,10 +57,14 @@
                 </div>
                 
                 <div class="products-grid" id="category-products">
-                    <div class="loading">
-                        <div class="loading-spinner"></div>
-                        <h3>جاري تحميل المنتجات...</h3>
-                    </div>
+                    <!-- Products will be loaded here by JavaScript -->
+                </div>
+                
+                <!-- Debug Panel (only visible in development) -->
+                <div id="debug-panel" style="display: none; margin-top: 2rem; padding: 1rem; background: #f3f4f6; border-radius: 8px; font-family: monospace; font-size: 12px;">
+                    <strong>🔧 Debug Info:</strong>
+                    <div id="debug-content"></div>
+                    <button onclick="window.reportStoreIssue('miscellaneous-page')" style="margin-top: 0.5rem; padding: 0.5rem 1rem; background: #1e40af; color: white; border: none; border-radius: 4px; cursor: pointer;">Copy Debug Info</button>
                 </div>
             </section>
         </div>
@@ -61,18 +75,93 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>🏪 سوق الإمارات</h3>
+                    <p>متجرك الموثوق للمنتجات المتنوعة والفريدة</p>
                 </div>
                 <div class="footer-section">
-                    <h3>📞 تواصل</h3>
-                    <div><a href="https://wa.me/201110760081" target="_blank">📱 واتساب</a></div>
+                    <h3>📞 تواصل معنا</h3>
+                    <div><a href="https://wa.me/201110760081" target="_blank">📱 واتساب للطلبات السريعة</a></div>
                 </div>
+                <div class="footer-section">
+                    <h3>🔗 روابط سريعة</h3>
+                    <div><a href="./">🏠 الرئيسية</a></div>
+                    <div><a href="cart.html" target="_blank">🛒 سلة التسوق</a></div>
+                    <div><a href="./en/" target="_blank">🇺🇸 English</a></div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px;">
+                <p>© 2025 سوق الإمارات - جميع الحقوق محفوظة | مدعوم بالذكاء الاصطناعي</p>
             </div>
         </div>
     </footer>
     
-    <a href="https://wa.me/201110760081" class="whatsapp-float" target="_blank">📱</a>
+    <a href="https://wa.me/201110760081" class="whatsapp-float" target="_blank" title="تواصل معنا عبر واتساب">📱</a>
     
+    <!-- Scripts in correct loading order -->
+    <script src="js/extension-detector.js"></script>
     <script src="js/cart.js"></script>
     <script src="js/category-handler.js"></script>
+    
+    <!-- Loading Animation Styles -->
+    <style>
+        @keyframes spin {
+            from { transform: rotate(0deg); }
+            to { transform: rotate(360deg); }
+        }
+        
+        .loading-fade-out {
+            opacity: 0;
+            transition: opacity 0.5s ease-out;
+        }
+        
+        .products-fade-in {
+            animation: fadeIn 0.5s ease-in;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+    
+    <!-- Enhanced Loading Script -->
+    <script>
+        // Show filter section after products load
+        document.addEventListener('DOMContentLoaded', function() {
+            // Hide loading state and show filters after successful load
+            setTimeout(() => {
+                const loadingState = document.getElementById('loading-state');
+                const filterSection = document.getElementById('filter-section');
+                const productsGrid = document.getElementById('category-products');
+                
+                if (loadingState && window.filteredProducts && window.filteredProducts.length > 0) {
+                    loadingState.style.display = 'none';
+                    if (filterSection) filterSection.style.display = 'block';
+                    if (productsGrid) productsGrid.classList.add('products-fade-in');
+                }
+            }, 2000);
+            
+            // Enable debug panel on localhost
+            if (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1') {
+                const debugPanel = document.getElementById('debug-panel');
+                if (debugPanel) {
+                    debugPanel.style.display = 'block';
+                    
+                    // Update debug content periodically
+                    setInterval(() => {
+                        const debugContent = document.getElementById('debug-content');
+                        if (debugContent && window.allProducts) {
+                            debugContent.innerHTML = `
+                                <div>Total Products: ${window.allProducts.length}</div>
+                                <div>Category Products: ${window.categoryProducts?.length || 0}</div>
+                                <div>Filtered Products: ${window.filteredProducts?.length || 0}</div>
+                                <div>Page URL: ${window.location.href}</div>
+                                <div>Timestamp: ${new Date().toLocaleTimeString()}</div>
+                            `;
+                        }
+                    }, 3000);
+                }
+            }
+        });
+    </script>
 </body>
 </html>
