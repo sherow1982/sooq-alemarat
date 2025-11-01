@@ -1,6 +1,7 @@
 /**
  * نظام إدارة المنتجات والفئات للصفحة الرئيسية - محدث
  * Homepage Products and Categories Management System - Updated
+ * جميع الروابط تفتح في تبويبات جديدة
  */
 
 class CategoriesHomepage3DFixed {
@@ -24,6 +25,54 @@ class CategoriesHomepage3DFixed {
         this.updateWhatsAppLinks();
         this.addScrollEffects();
         this.addParticles();
+        this.ensureAllLinksOpenInNewTab();
+    }
+
+    // ضمان فتح جميع الروابط في تبويبات جديدة
+    ensureAllLinksOpenInNewTab() {
+        // تحديث جميع الروابط الموجودة
+        const allLinks = document.querySelectorAll('a:not([href^="#"])');
+        allLinks.forEach(link => {
+            if (!link.getAttribute('target')) {
+                link.setAttribute('target', '_blank');
+                link.setAttribute('rel', 'noopener noreferrer');
+            }
+        });
+        
+        console.log('✅ تم تحديث جميع الروابط لتفتح في تبويبات جديدة');
+        
+        // مراقبة مستمرة للروابط الجديدة
+        const observer = new MutationObserver((mutations) => {
+            mutations.forEach(mutation => {
+                if (mutation.type === 'childList') {
+                    mutation.addedNodes.forEach(node => {
+                        if (node.nodeType === 1) { // Element node
+                            // تحديث الروابط الجديدة
+                            const newLinks = node.querySelectorAll ? node.querySelectorAll('a:not([href^="#"])') : [];
+                            newLinks.forEach(link => {
+                                if (!link.getAttribute('target')) {
+                                    link.setAttribute('target', '_blank');
+                                    link.setAttribute('rel', 'noopener noreferrer');
+                                }
+                            });
+                            
+                            // إذا كان العنصر نفسه رابط
+                            if (node.tagName === 'A' && !node.getAttribute('href').startsWith('#')) {
+                                if (!node.getAttribute('target')) {
+                                    node.setAttribute('target', '_blank');
+                                    node.setAttribute('rel', 'noopener noreferrer');
+                                }
+                            }
+                        }
+                    });
+                }
+            });
+        });
+        
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
     }
 
     setupEventListeners() {
@@ -57,7 +106,6 @@ class CategoriesHomepage3DFixed {
 
         // Global click handler for all product interactions
         document.addEventListener('click', (e) => {
-            // Prevent default for specific elements
             const target = e.target;
             const card = target.closest('.product-card');
             
@@ -68,13 +116,14 @@ class CategoriesHomepage3DFixed {
                 return;
             }
             
-            // Category card clicks - Shows products in same page with filter
+            // فئات المنتجات - فتح في تبويب جديد
             if (target.closest('.category-card')) {
                 e.preventDefault();
+                e.stopPropagation();
                 const categoryCard = target.closest('.category-card');
                 const categoryName = categoryCard.dataset.category;
                 if (categoryName) {
-                    this.viewCategory(categoryName);
+                    this.openCategoryInNewTab(categoryName);
                 }
                 return;
             }
@@ -91,27 +140,165 @@ class CategoriesHomepage3DFixed {
                     return;
                 }
                 
-                // WhatsApp button
+                // WhatsApp button - يفتح في تبويب جديد
                 if (target.matches('.whatsapp-btn') || target.closest('.whatsapp-btn')) {
-                    // Let default behavior handle WhatsApp link
+                    // السلوك الافتراضي سيفتح في تبويب جديد
                     return;
                 }
                 
-                // View details button
+                // View details button - فتح في تبويب جديد
                 if (target.matches('.view-details') || target.closest('.view-details')) {
                     e.preventDefault();
                     e.stopPropagation();
-                    this.viewProductDetails(productId);
+                    this.viewProductDetailsNewTab(productId);
                     return;
                 }
                 
-                // Product image or title click - open details in new tab
+                // الصورة أو العنوان - فتح تفاصيل في تبويب جديد
                 if (target.matches('.product-image') || target.closest('.product-image') ||
                     target.matches('.product-title') || target.closest('.product-title') ||
                     target.tagName === 'IMG' && target.closest('.product-card')) {
                     e.preventDefault();
                     e.stopPropagation();
-                    this.viewProductDetails(productId);
+                    this.viewProductDetailsNewTab(productId);
+                    return;
+                }
+            }
+            
+            // Back to categories button
+            if (target.id === 'back-to-categories' || target.closest('#back-to-categories')) {
+                e.preventDefault();
+                this.resetView();
+                return;
+            }
+        });
+    }
+
+    // فتح فئة في تبويب جديد
+    openCategoryInNewTab(categoryName) {
+        console.log(`🏪 فتح فئة "${categoryName}" في تبويب جديد`);
+        
+        // إنشاء رابط مع معامل الفئة
+        const categorySlug = this.createCategorySlug(categoryName);
+        const categoryUrl = `./category.html?name=${encodeURIComponent(categoryName)}&slug=${categorySlug}`;
+        
+        // فتح في تبويب جديد
+        window.open(categoryUrl, '_blank', 'noopener,noreferrer');
+        
+        this.showSuccess(`جاري فتح فئة "${categoryName}" في تبويب جديد...`);
+    }
+    
+    createCategorySlug(categoryName) {
+        return categoryName
+            .replace(/\s+/g, '-')
+            .replace(/[^\u0600-\u06FF\u0750-\u077F\w\-]/g, '')
+            .replace(/--+/g, '-')
+            .replace(/^-+|-+$/g, '');
+    }
+
+    // فتح تفاصيل المنتج في تبويب جديد
+    viewProductDetailsNewTab(productId) {
+        console.log(`👁 فتح تفاصيل المنتج: ${productId}`);
+        
+        const product = this.getProductById(productId);
+        if (!product) {
+            this.showError('لم يتم العثور على المنتج');
+            return;
+        }
+        
+        // فتح صفحة product.html مع معرف المنتج
+        const productUrl = `./product.html?id=${encodeURIComponent(productId)}`;
+        window.open(productUrl, '_blank', 'noopener,noreferrer');
+        
+        this.showSuccess(`جاري فتح تفاصيل "${product.title}" في تبويب جديد...`);
+    }
+
+    setupEventListeners() {
+        // Search functionality
+        const searchInput = document.getElementById('main-search');
+        const searchBtn = document.getElementById('search-btn');
+        
+        if (searchInput) {
+            searchInput.addEventListener('keypress', (e) => {
+                if (e.key === 'Enter') {
+                    this.performSearch();
+                }
+            });
+            
+            // Real-time search
+            searchInput.addEventListener('input', () => {
+                clearTimeout(this.searchTimeout);
+                this.searchTimeout = setTimeout(() => {
+                    if (searchInput.value.trim().length > 2) {
+                        this.performSearch();
+                    }
+                }, 500);
+            });
+        }
+        
+        if (searchBtn) {
+            searchBtn.addEventListener('click', () => {
+                this.performSearch();
+            });
+        }
+
+        // Global click handler for all product interactions
+        document.addEventListener('click', (e) => {
+            const target = e.target;
+            const card = target.closest('.product-card');
+            
+            // Tab switching
+            if (target.matches('.tab-btn')) {
+                e.preventDefault();
+                this.switchTab(target.dataset.tab, target);
+                return;
+            }
+            
+            // فئات المنتجات - فتح في تبويب جديد
+            if (target.closest('.category-card')) {
+                e.preventDefault();
+                e.stopPropagation();
+                const categoryCard = target.closest('.category-card');
+                const categoryName = categoryCard.dataset.category;
+                if (categoryName) {
+                    this.openCategoryInNewTab(categoryName);
+                }
+                return;
+            }
+            
+            // Product card interactions
+            if (card) {
+                const productId = card.dataset.productId;
+                
+                // Add to cart button - highest priority
+                if (target.matches('.add-to-cart') || target.closest('.add-to-cart')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.addToCartHandler(productId);
+                    return;
+                }
+                
+                // WhatsApp button - يفتح في تبويب جديد
+                if (target.matches('.whatsapp-btn') || target.closest('.whatsapp-btn')) {
+                    // السلوك الافتراضي سيفتح في تبويب جديد لأن target="_blank"
+                    return;
+                }
+                
+                // View details button - فتح في تبويب جديد
+                if (target.matches('.view-details') || target.closest('.view-details')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.viewProductDetailsNewTab(productId);
+                    return;
+                }
+                
+                // الصورة أو العنوان - فتح تفاصيل في تبويب جديد
+                if (target.matches('.product-image') || target.closest('.product-image') ||
+                    target.matches('.product-title') || target.closest('.product-title') ||
+                    target.tagName === 'IMG' && target.closest('.product-card')) {
+                    e.preventDefault();
+                    e.stopPropagation();
+                    this.viewProductDetailsNewTab(productId);
                     return;
                 }
             }
@@ -129,7 +316,7 @@ class CategoriesHomepage3DFixed {
     async loadProducts() {
         try {
             this.showLoadingState();
-            console.log('📂 Attempting to load products...');
+            console.log('📂 محاولة تحميل المنتجات...');
             
             // Try multiple data sources
             const dataSources = [
@@ -142,21 +329,21 @@ class CategoriesHomepage3DFixed {
             
             for (const source of dataSources) {
                 try {
-                    console.log(`🔄 Trying to load from: ${source}`);
+                    console.log(`🔄 محاولة التحميل من: ${source}`);
                     const response = await fetch(source);
                     if (response.ok) {
                         rawProducts = await response.json();
                         loadedFrom = source;
-                        console.log(`✅ Successfully loaded from: ${source}`);
+                        console.log(`✅ تم التحميل بنجاح من: ${source}`);
                         break;
                     }
                 } catch (err) {
-                    console.warn(`❌ Failed to load from ${source}:`, err.message);
+                    console.warn(`❌ فشل التحميل من ${source}:`, err.message);
                 }
             }
             
             if (!rawProducts || rawProducts.length === 0) {
-                throw new Error('No product data could be loaded from any source');
+                throw new Error('لم يتم العثور على بيانات المنتجات من أي مصدر');
             }
             
             // Process and clean product data
@@ -367,12 +554,16 @@ class CategoriesHomepage3DFixed {
     createCategoryCard(category) {
         const icon = this.getCategoryIcon(category.name);
         
+        // بطاقة الفئة تفتح في تبويب جديد
         return `
-            <div class="category-card card-3d" data-category="${category.name}">
+            <div class="category-card card-3d" data-category="${category.name}" style="cursor: pointer;" title="اضغط لفتح فئة ${category.name} في تبويب جديد">
                 <div class="card-3d-inner">
                     <div class="category-icon">${icon}</div>
                     <h3 class="category-name">${category.name}</h3>
                     <div class="category-count">${category.count} منتج</div>
+                    <div style="font-size: 0.8rem; color: var(--text-secondary); margin-top: 0.5rem;">
+                        🆕 اضغط للفتح في تبويب جديد
+                    </div>
                 </div>
             </div>
         `;
@@ -384,13 +575,13 @@ class CategoriesHomepage3DFixed {
             'الإلكترونيات والتكنولوجيا': '📱',
             'العناية الشخصية والصحة والجمال': '💄',
             'الأحذية والملابس والإكسسوارات': '👟',
-            'الرياضة واللياقة والصحة': '🏋️',
-            'الأثاث والأدوات المنزلية': '🛋️',
+            'الرياضة واللياقة والصحة': '🏅',
+            'الأثاث والأدوات المنزلية': '🛋',
             'الأدوات والصيانة': '🔧',
-            'منتجات متنوعة': '🛍️'
+            'منتجات متنوعة': '🛑'
         };
         
-        return icons[categoryName] || '🛍️';
+        return icons[categoryName] || '🛑';
     }
 
     renderFeaturedProducts() {
@@ -405,7 +596,7 @@ class CategoriesHomepage3DFixed {
                     <div style="font-size: 3rem; margin-bottom: 1rem;">💎</div>
                     <h3>لا توجد منتجات مميزة حالياً</h3>
                     <p>المنتجات المميزة هي التي يزيد سعرها عن ${this.FEATURED_PRICE_THRESHOLD} درهم</p>
-                    <a href="https://wa.me/201110760081" target="_blank" class="btn whatsapp-btn" style="margin-top: 1rem; text-decoration: none; display: inline-block;">
+                    <a href="https://wa.me/201110760081" target="_blank" class="btn whatsapp-btn" style="margin-top: 1rem; text-decoration: none; display: inline-block;" rel="noopener">
                         📱 تواصل معنا للمنتجات الخاصة
                     </a>
                 </div>
@@ -478,7 +669,7 @@ class CategoriesHomepage3DFixed {
         const features = product.features || [];
         
         const featuredBadge = isFeatured 
-            ? `<div class="discount-badge" style="background: linear-gradient(135deg, #DAA520 0%, #FFD700 100%); left: 1rem; top: 3rem;">⭐ مميز</div>`
+            ? `<div class="discount-badge" style="background: var(--gradient-royal); left: 1rem; top: 3rem;">⭐ مميز</div>`
             : '';
 
         // WhatsApp message
@@ -496,17 +687,19 @@ class CategoriesHomepage3DFixed {
                     ${discount}
                     ${featuredBadge}
                     
-                    <div class="product-image" style="cursor: pointer;" title="اضغط لعرض تفاصيل المنتج">
+                    <div class="product-image" style="cursor: pointer;" title="اضغط لعرض تفاصيل المنتج في تبويب جديد">
                         <img src="${primaryImage}" 
                              alt="${product.title}" 
                              loading="lazy"
+                             width="400" 
+                             height="300"
                              onerror="this.onerror=null;this.src='${fallback1}';this.onerror=function(){this.src='${fallback2}'};"
                              style="width: 100%; height: 100%; object-fit: cover;">
                     </div>
                     
                     <div class="product-info">
                         <div class="product-category">${product.category}</div>
-                        <h3 class="product-title" title="${product.title} - اضغط لعرض التفاصيل" style="cursor: pointer;">${displayTitle}</h3>
+                        <h3 class="product-title" title="${product.title} - اضغط لعرض التفاصيل في تبويب جديد" style="cursor: pointer;">${displayTitle}</h3>
                         <div class="product-rating" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-secondary);">
                             <span style="color: #FCD34D;">${stars}</span>
                             <span>(${product.review_count || 0} تقييم)</span>
@@ -523,10 +716,10 @@ class CategoriesHomepage3DFixed {
                                 🛒 إضافة
                             </button>
                             <a href="https://wa.me/201110760081?text=${encodeURIComponent(whatsappMessage)}" 
-                               class="btn whatsapp-btn" target="_blank" rel="noopener" title="طلب عبر واتساب">
+                               class="btn whatsapp-btn" target="_blank" rel="noopener noreferrer" title="طلب عبر واتساب في تبويب جديد">
                                 📱 واتساب
                             </a>
-                            <button class="btn view-details" data-product-id="${product.id}" title="عرض تفاصيل المنتج">
+                            <button class="btn view-details" data-product-id="${product.id}" title="عرض تفاصيل المنتج في تبويب جديد">
                                 👁 تفاصيل
                             </button>
                         </div>
@@ -536,48 +729,17 @@ class CategoriesHomepage3DFixed {
         `;
     }
 
-    // NAVIGATION FUNCTIONS
-    
-    // Category view shows filtered products in same page
-    viewCategory(categoryName) {
-        console.log(`🏷️ عرض فئة: ${categoryName}`);
+    // TAB FUNCTIONALITY
+    switchTab(tabId, tabButton) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
         
-        // Filter products by category
-        const categoryProducts = this.products.filter(product => 
-            product.category === categoryName
-        );
+        tabButton.classList.add('active');
+        document.getElementById(tabId).classList.add('active');
         
-        if (categoryProducts.length === 0) {
-            this.showError(`لا توجد منتجات في فئة "${categoryName}"`);
-            return;
-        }
-        
-        this.currentFilter = categoryName;
-        
-        // Show filter bar
-        const filterBar = document.getElementById('filter-bar');
-        const filterText = document.getElementById('filter-text');
-        
-        if (filterBar && filterText) {
-            filterBar.style.display = 'block';
-            filterText.innerHTML = `
-                <span style="color: var(--primary-color); font-weight: bold;">${this.getCategoryIcon(categoryName)} ${categoryName}</span>
-                <span style="color: var(--text-secondary);">(تم العثور على ${categoryProducts.length} منتج)</span>
-            `;
-        }
-        
-        // Switch to all products tab
-        this.switchTabProgrammatically('all-products');
-        
-        // Render filtered products
-        this.renderFilteredProducts(categoryProducts, categoryName);
-        
-        // Scroll to products section
-        document.getElementById('featured').scrollIntoView({ behavior: 'smooth' });
-        
-        this.showSuccess(`تم عرض ${categoryProducts.length} منتج من فئة "${categoryName}"`);
+        console.log(`📁 تم التبديل للتبويب: ${tabId}`);
     }
-    
+
     switchTabProgrammatically(tabId) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
         document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
@@ -587,6 +749,58 @@ class CategoriesHomepage3DFixed {
         
         if (targetTab) targetTab.classList.add('active');
         if (targetContent) targetContent.classList.add('active');
+    }
+
+    // SEARCH FUNCTIONALITY
+    performSearch() {
+        const searchInput = document.getElementById('main-search');
+        const query = searchInput ? searchInput.value.trim() : '';
+        
+        if (query.length === 0) {
+            this.showError('يرجى إدخال كلمة للبحث');
+            return;
+        }
+        
+        if (query.length < 2) {
+            this.showError('يرجى إدخال حرفين على الأقل للبحث');
+            return;
+        }
+        
+        console.log(`🔍 البحث عن: ${query}`);
+        
+        // Filter products locally
+        const searchResults = this.products.filter(product => 
+            product.title.toLowerCase().includes(query.toLowerCase()) ||
+            product.category.toLowerCase().includes(query.toLowerCase()) ||
+            (product.description && product.description.toLowerCase().includes(query.toLowerCase())) ||
+            (product.seo_keywords && product.seo_keywords.toLowerCase().includes(query.toLowerCase()))
+        );
+        
+        if (searchResults.length === 0) {
+            this.showError(`لا توجد نتائج للبحث عن "${query}"`);
+            return;
+        }
+        
+        // Update filter bar for search
+        const filterBar = document.getElementById('filter-bar');
+        const filterText = document.getElementById('filter-text');
+        
+        if (filterBar && filterText) {
+            filterBar.style.display = 'block';
+            filterText.innerHTML = `
+                <span style="color: var(--gold-primary); font-weight: bold;">🔍 نتائج البحث: "${query}"</span>
+                <span style="color: var(--text-secondary);">(تم العثور على ${searchResults.length} منتج)</span>
+            `;
+        }
+        
+        // Show search results in the all products tab
+        this.switchTabProgrammatically('all-products');
+        this.renderFilteredProducts(searchResults, `بحث: ${query}`);
+        
+        // Scroll to results
+        document.getElementById('featured').scrollIntoView({ behavior: 'smooth' });
+        
+        this.showSuccess(`تم العثور على ${searchResults.length} منتج للبحث عن "${query}"`);
     }
     
     renderFilteredProducts(products, categoryName) {
@@ -631,109 +845,6 @@ class CategoriesHomepage3DFixed {
         document.getElementById('categories').scrollIntoView({ behavior: 'smooth' });
         
         this.showSuccess('تم العودة لعرض جميع الفئات');
-    }
-
-    // Product details opens in new tab with proper URL
-    viewProductDetails(productId) {
-        console.log(`👁 فتح معاينة المنتج: ${productId}`);
-        
-        // Find the product to get its URL slug
-        const product = this.getProductById(productId);
-        if (!product) {
-            this.showError('لم يتم العثور على المنتج');
-            return;
-        }
-        
-        // Try to use the product's URL slug if available
-        let productUrl;
-        
-        if (product.url_slug) {
-            // Use existing URL slug
-            productUrl = `./data/pruducts-pages/${product.url_slug}.html`;
-        } else {
-            // Generate URL slug
-            const slug = this.createArabicSlug(product.title, productId);
-            productUrl = `./data/pruducts-pages/${slug}.html`;
-        }
-        
-        // Open in new tab
-        window.open(productUrl, '_blank', 'noopener,noreferrer');
-        
-        this.showSuccess(`جاري فتح تفاصيل "${product.title}" في تبويب جديد`);
-    }
-    
-    createArabicSlug(title, productId) {
-        // Create Arabic-friendly slug
-        let slug = title.trim();
-        slug = slug.replace(/\s+/g, '-');
-        slug = slug.replace(/[^\u0600-\u06FF\u0750-\u077F\w\-]/g, '');
-        slug = slug.replace(/--+/g, '-');
-        slug = slug.replace(/^-+|-+$/g, '');
-        
-        return `${slug}-${productId}`;
-    }
-
-    // TAB FUNCTIONALITY
-    switchTab(tabId, tabButton) {
-        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
-        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
-        
-        tabButton.classList.add('active');
-        document.getElementById(tabId).classList.add('active');
-        
-        console.log(`📑 تم التبديل للتبويب: ${tabId}`);
-    }
-
-    // SEARCH FUNCTIONALITY
-    performSearch() {
-        const searchInput = document.getElementById('main-search');
-        const query = searchInput ? searchInput.value.trim() : '';
-        
-        if (query.length === 0) {
-            this.showError('يرجى إدخال كلمة للبحث');
-            return;
-        }
-        
-        if (query.length < 2) {
-            this.showError('يرجى إدخال حرفين على الأقل للبحث');
-            return;
-        }
-        
-        console.log(`🔍 البحث عن: ${query}`);
-        
-        // Filter products locally
-        const searchResults = this.products.filter(product => 
-            product.title.toLowerCase().includes(query.toLowerCase()) ||
-            product.category.toLowerCase().includes(query.toLowerCase()) ||
-            (product.description && product.description.toLowerCase().includes(query.toLowerCase())) ||
-            (product.seo_keywords && product.seo_keywords.toLowerCase().includes(query.toLowerCase()))
-        );
-        
-        if (searchResults.length === 0) {
-            this.showError(`لا توجد نتائج للبحث عن "${query}"`);
-            return;
-        }
-        
-        // Update filter bar for search
-        const filterBar = document.getElementById('filter-bar');
-        const filterText = document.getElementById('filter-text');
-        
-        if (filterBar && filterText) {
-            filterBar.style.display = 'block';
-            filterText.innerHTML = `
-                <span style="color: var(--primary-color); font-weight: bold;">🔍 نتائج البحث: "${query}"</span>
-                <span style="color: var(--text-secondary);">(تم العثور على ${searchResults.length} منتج)</span>
-            `;
-        }
-        
-        // Show search results in the all products tab
-        this.switchTabProgrammatically('all-products');
-        this.renderFilteredProducts(searchResults, `بحث: ${query}`);
-        
-        // Scroll to results
-        document.getElementById('featured').scrollIntoView({ behavior: 'smooth' });
-        
-        this.showSuccess(`تم العثور على ${searchResults.length} منتج للبحث عن "${query}"`);
     }
 
     // SCROLL EFFECTS
@@ -786,7 +897,7 @@ class CategoriesHomepage3DFixed {
                 container.innerHTML = `
                     <div class="loading" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
                         <div class="loading-spinner"></div>
-                        <h3>جاري التحميل...</h3>
+                        <h3>جاري التحميل بأسلوب فاخر...</h3>
                         <p>يرجى الانتظار قليلاً</p>
                     </div>
                 `;
@@ -813,9 +924,9 @@ class CategoriesHomepage3DFixed {
     
     showNotification(message, type = 'info') {
         const colors = {
-            error: { bg: '#EF4444', shadow: 'rgba(239, 68, 68, 0.3)' },
-            success: { bg: '#10B981', shadow: 'rgba(16, 185, 129, 0.3)' },
-            info: { bg: '#3B82F6', shadow: 'rgba(59, 130, 246, 0.3)' }
+            error: { bg: '#FF6B6B', shadow: 'rgba(255, 107, 107, 0.3)' },
+            success: { bg: '#50C878', shadow: 'rgba(80, 200, 120, 0.3)' },
+            info: { bg: '#87CEEB', shadow: 'rgba(135, 206, 235, 0.3)' }
         };
         
         const color = colors[type] || colors.info;
@@ -827,29 +938,31 @@ class CategoriesHomepage3DFixed {
         notificationDiv.className = 'homepage-notification';
         notificationDiv.style.cssText = `
             position: fixed;
-            top: 100px;
-            right: 20px;
+            top: 120px;
+            right: 24px;
             background: ${color.bg};
             color: white;
-            padding: 1rem 1.5rem;
+            padding: 1.2rem 1.8rem;
             border-radius: 25px;
-            font-weight: 600;
-            z-index: 10000;
-            animation: slideInRight 0.5s ease-out;
-            box-shadow: 0 4px 20px ${color.shadow};
-            max-width: 300px;
+            font-weight: 700;
+            z-index: 10001;
+            animation: luxurySlideIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            box-shadow: 0 8px 35px ${color.shadow};
+            max-width: 350px;
             cursor: pointer;
+            backdrop-filter: blur(20px);
+            border: 2px solid rgba(255, 255, 255, 0.3);
         `;
         notificationDiv.textContent = message;
         
         // Click to dismiss
         notificationDiv.addEventListener('click', () => {
-            notificationDiv.style.animation = 'slideOutRight 0.5s ease-in forwards';
+            notificationDiv.style.animation = 'luxurySlideOut 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards';
             setTimeout(() => {
                 if (notificationDiv.parentNode) {
                     notificationDiv.parentNode.removeChild(notificationDiv);
                 }
-            }, 500);
+            }, 400);
         });
         
         document.body.appendChild(notificationDiv);
@@ -857,12 +970,12 @@ class CategoriesHomepage3DFixed {
         // Auto dismiss after 4 seconds
         setTimeout(() => {
             if (notificationDiv.parentNode) {
-                notificationDiv.style.animation = 'slideOutRight 0.5s ease-in forwards';
+                notificationDiv.style.animation = 'luxurySlideOut 0.4s cubic-bezier(0.55, 0.085, 0.68, 0.53) forwards';
                 setTimeout(() => {
                     if (notificationDiv.parentNode) {
                         notificationDiv.parentNode.removeChild(notificationDiv);
                     }
-                }, 500);
+                }, 400);
             }
         }, 4000);
     }
@@ -945,31 +1058,59 @@ class CategoriesHomepage3DFixed {
                 const newHref = href.replace(/wa\.me\/\d+/, 'wa.me/201110760081');
                 link.setAttribute('href', newHref);
             }
+            // ضمان فتح في تبويب جديد
+            link.setAttribute('target', '_blank');
+            link.setAttribute('rel', 'noopener noreferrer');
         });
+        
+        console.log('✅ تم تحديث جميع روابط واتساب');
     }
 
     initializeAnimations() {
         const style = document.createElement('style');
         style.textContent = `
-            @keyframes slideInRight {
-                from {
+            @keyframes luxurySlideIn {
+                0% {
                     opacity: 0;
-                    transform: translateX(100px);
+                    transform: translateX(100px) rotateY(90deg) scale(0.8);
                 }
-                to {
+                50% {
+                    opacity: 0.8;
+                    transform: translateX(10px) rotateY(10deg) scale(1.05);
+                }
+                100% {
                     opacity: 1;
-                    transform: translateX(0);
+                    transform: translateX(0) rotateY(0deg) scale(1);
                 }
             }
-
-            @keyframes slideOutRight {
-                from {
+            
+            @keyframes luxurySlideOut {
+                0% {
                     opacity: 1;
-                    transform: translateX(0);
+                    transform: translateX(0) rotateY(0deg) scale(1);
+                }
+                50% {
+                    opacity: 0.6;
+                    transform: translateX(20px) rotateY(-10deg) scale(0.95);
+                }
+                100% {
+                    opacity: 0;
+                    transform: translateX(150px) rotateY(-90deg) scale(0.7);
+                }
+            }
+            
+            .animate-fade-in {
+                animation: luxuryFadeIn 0.8s ease-out;
+            }
+            
+            @keyframes luxuryFadeIn {
+                from {
+                    opacity: 0;
+                    transform: translateY(30px) scale(0.95);
                 }
                 to {
-                    opacity: 0;
-                    transform: translateX(100px);
+                    opacity: 1;
+                    transform: translateY(0) scale(1);
                 }
             }
         `;
@@ -979,9 +1120,9 @@ class CategoriesHomepage3DFixed {
 
 // Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-    console.log('🌟 بدء تحميل المتجر...');
+    console.log('🎆 بدء تحميل المتجر بأسلوب فاخر...');
     
     // Initialize the enhanced homepage
     window.categoriesHomepage = new CategoriesHomepage3DFixed();
-    console.log('🎉 تم تحميل المتجر بنجاح!');
+    console.log('🎉 تم تحميل المتجر بنجاح - تجربة فاخرة فريدة!');
 });
