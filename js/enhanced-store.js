@@ -4,6 +4,7 @@ class EmiratesStoreComplete {
     constructor() {
         this.cart = JSON.parse(localStorage.getItem('cart')) || [];
         this.products = [];
+        this.allProducts = [];
         this.wishlist = JSON.parse(localStorage.getItem('wishlist')) || [];
         this.currentUser = JSON.parse(localStorage.getItem('currentUser')) || null;
         this.isLoading = false;
@@ -76,148 +77,42 @@ class EmiratesStoreComplete {
         });
     }
 
-    // PRODUCT LOADING WITH UPDATED IMAGES
+    // PRODUCT LOADING WITH REAL DATA
     async loadProducts() {
         try {
             this.showProductsLoading();
             
-            this.products = [
-                {
-                    id: "1",
-                    title: "غسالة محمولة قابلة للطي",
-                    description: "غسالة الملابس المحمولة صغيرة الحجم المثالية للسفر والرحلات مع وظائف متقدمة للتنظيف الفعال وتوفير الطاقة والمياه",
-                    category: "الأجهزة المنزلية والكهربائية",
-                    brand: "HomeTech Pro",
-                    regular_price: 200,
-                    sale_price: 150,
-                    currency: "AED",
-                    discount_percentage: 25,
-                    stock_status: "in stock",
-                    condition: "new",
-                    image_url: "https://images.unsplash.com/photo-1558618666-fcd25c85cd64?w=600&h=400&fit=crop&auto=format",
-                    average_rating: 4.7,
-                    review_count: 128,
-                    features: [
-                        "توفير الطاقة والمياه بنسبة 40%",
-                        "سهلة الحمل والاستخدام",
-                        "تنظيف تلقائي متقدم",
-                        "قابلة للطي لتوفير المساحة",
-                        "ضمان لمدة سنة كاملة"
-                    ],
-                    delivery_time: "1-3 أيام عمل",
-                    free_shipping: true,
-                    cod_available: true,
-                    tags: ["منزلي", "محمول", "توفير", "عملي"]
-                },
-                {
-                    id: "2",
-                    title: "شاحن سيارة مع ضوء النجوم",
-                    description: "شاحن سيارة فاخر مزود بضوء النجوم الساحر وتقنية الشحن السريع 66 واط مع حماية متقدمة وتصميم عصري أنيق",
-                    category: "الإلكترونيات والتكنولوجيا",
-                    brand: "StarTech Elite",
-                    regular_price: 250,
-                    sale_price: 170,
-                    currency: "AED",
-                    discount_percentage: 32,
-                    stock_status: "in stock",
-                    condition: "new",
-                    image_url: "https://images.unsplash.com/photo-1609592806717-3a8f3b14e2a0?w=600&h=400&fit=crop&auto=format",
-                    average_rating: 4.3,
-                    review_count: 89,
-                    features: [
-                        "شحن سريع 66 واط فائق القوة",
-                        "ضوء النجوم LED متعدد الألوان",
-                        "منافذ متعددة USB-C و USB-A",
-                        "حماية من الجهد الزائد والحرارة",
-                        "تصميم قابل للسحب وعملي"
-                    ],
-                    delivery_time: "1-3 أيام عمل",
-                    free_shipping: true,
-                    cod_available: true,
-                    tags: ["تقني", "سيارة", "شحن", "LED"]
-                },
-                {
-                    id: "3",
-                    title: "كاميرا أمنية بالطاقة الشمسية",
-                    description: "كاميرا مراقبة متطورة تعمل بالطاقة الشمسية المستدامة مع دقة 4K ورؤية ليلية ملونة وذكاء اصطناعي لكشف الحركة",
-                    category: "الإلكترونيات والتكنولوجيا",
-                    brand: "SecureVision Pro",
-                    regular_price: 400,
-                    sale_price: 299,
-                    currency: "AED",
-                    discount_percentage: 25,
-                    stock_status: "in stock",
-                    condition: "new",
-                    image_url: "https://images.unsplash.com/photo-1557804506-669a67965ba0?w=600&h=400&fit=crop&auto=format",
-                    average_rating: 4.5,
-                    review_count: 156,
-                    features: [
-                        "عدسة مزدوجة بدقة 4K فائقة الوضوح",
-                        "طاقة شمسية مستدامة وصديقة للبيئة",
-                        "رؤية ليلية ملونة متقدمة",
-                        "ذكاء اصطناعي لكشف الحركة",
-                        "مقاومة للطقس IP66"
-                    ],
-                    delivery_time: "1-3 أيام عمل",
-                    free_shipping: true,
-                    cod_available: true,
-                    tags: ["أمان", "شمسي", "4K", "ذكي"]
-                },
-                {
-                    id: "4",
-                    title: "قلم مكياج متعدد الاستخدامات 4 في 1",
-                    description: "قلم مكياج فاخر من كاتيليا بيوتي يجمع بين 4 استخدامات في منتج واحد مع تركيبة طبيعية آمنة وثبات يدوم طوال اليوم",
-                    category: "العناية الشخصية والصحة والجمال",
-                    brand: "Katilia Beauty Pro",
-                    regular_price: 300,
-                    sale_price: 199,
-                    currency: "AED",
-                    discount_percentage: 34,
-                    stock_status: "in stock",
-                    condition: "new",
-                    image_url: "https://images.unsplash.com/photo-1522335789203-aabd1fc54bc9?w=600&h=400&fit=crop&auto=format",
-                    average_rating: 4.6,
-                    review_count: 203,
-                    features: [
-                        "4 استخدامات في منتج واحد فريد",
-                        "تركيبة نباتية آمنة وخالية من الكيماويات",
-                        "مقاوم للماء والعرق",
-                        "قابل لإعادة الملء واقتصادي",
-                        "سهل الاستخدام والحمل في السفر"
-                    ],
-                    delivery_time: "1-3 أيام عمل",
-                    free_shipping: true,
-                    cod_available: true,
-                    tags: ["مكياج", "جمال", "طبيعي", "متعدد"]
-                },
-                {
-                    id: "5",
-                    title: "ماسك الشعر بالزنجبيل المجدد",
-                    description: "قناع ترطيب الشعر الفاخر المدعم بالزنجبيل الطبيعي والزيوت العضوية لمحاربة التساقط وتحفيز النمو مع نتائج مذهلة",
-                    category: "العناية الشخصية والصحة والجمال",
-                    brand: "NaturalCare Premium",
-                    regular_price: 200,
-                    sale_price: 149,
-                    currency: "AED",
-                    discount_percentage: 26,
-                    stock_status: "in stock",
-                    condition: "new",
-                    image_url: "https://images.unsplash.com/photo-1629198038967-0dc7b9ba5c5d?w=600&h=400&fit=crop&auto=format",
-                    average_rating: 4.8,
-                    review_count: 167,
-                    features: [
-                        "يحارب تساقط الشعر بفعالية عالية",
-                        "يحفز النمو الطبيعي للشعر",
-                        "تركيبة طبيعية 100% خالية من الكيماويات",
-                        "مناسب لجميع أنواع الشعر",
-                        "نتائج مرئية خلال أسبوعين فقط"
-                    ],
-                    delivery_time: "1-3 أيام عمل",
-                    free_shipping: true,
-                    cod_available: true,
-                    tags: ["شعر", "طبيعي", "زنجبيل", "ترطيب"]
-                }
-            ];
+            // Load products from JSON file
+            const response = await fetch('./data/uae-products.json');
+            if (!response.ok) {
+                throw new Error(`HTTP error! status: ${response.status}`);
+            }
+            
+            const productsData = await response.json();
+            
+            // Process and clean product data
+            this.allProducts = productsData.map(product => ({
+                ...product,
+                // Ensure proper data types
+                regular_price: parseFloat(product.regular_price) || 0,
+                sale_price: parseFloat(product.sale_price) || 0,
+                discount_percentage: parseFloat(product.discount_percentage) || 0,
+                average_rating: parseFloat(product.average_rating) || 4.0,
+                review_count: parseInt(product.review_count) || 0,
+                
+                // Add missing features for display
+                features: [
+                    "📦 شحن مجاني فوق 100 درهم",
+                    "🚚 " + (product.delivery_time || "1-3 أيام عمل"),
+                    "💳 " + (product.cod_available ? "دفع عند الاستلام" : "دفع مسبق"),
+                    "✅ " + (product.uae_compliant ? "معتمد في الإمارات" : "جودة عالية"),
+                    "⚡ " + (product.stock_status === 'in stock' ? "متوفر الآن" : "نفذت الكمية")
+                ]
+            }));
+            
+            this.products = [...this.allProducts];
+            
+            console.log(`✅ تم تحميل ${this.products.length} منتج بنجاح`);
             
             setTimeout(() => {
                 this.hideProductsLoading();
@@ -225,9 +120,50 @@ class EmiratesStoreComplete {
             }, 1500);
             
         } catch (error) {
-            console.error('Error loading products:', error);
-            this.showError('حدث خطأ في تحميل المنتجات');
+            console.error('❌ خطأ في تحميل المنتجات:', error);
+            this.showError('حدث خطأ في تحميل المنتجات. يرجى تحديث الصفحة.');
+            
+            // Fallback to show sample products if JSON fails
+            setTimeout(() => {
+                this.loadFallbackProducts();
+            }, 2000);
         }
+    }
+
+    loadFallbackProducts() {
+        console.log('📂 تحميل منتجات احتياطية...');
+        this.products = [
+            {
+                id: "1",
+                title: "غسالة محمولة قابلة للطي",
+                description: "غسالة الملابس المحمولة صغيرة الحجم المثالية للسفر والرحلات مع وظائف متقدمة للتنظيف الفعال وتوفير الطاقة والمياه",
+                category: "الأجهزة المنزلية والكهربائية",
+                brand: "HomeTech Pro",
+                regular_price: 200,
+                sale_price: 150,
+                currency: "AED",
+                discount_percentage: 25,
+                stock_status: "in stock",
+                condition: "new", 
+                image_url: "https://easyorders.fra1.digitaloceanspaces.com/1707171499085865826.png",
+                average_rating: 4.7,
+                review_count: 70,
+                delivery_time: "1-3 أيام عمل",
+                free_shipping: true,
+                cod_available: true,
+                uae_compliant: true,
+                features: [
+                    "📦 شحن مجاني فوق 100 درهم",
+                    "🚚 1-3 أيام عمل",
+                    "💳 دفع عند الاستلام", 
+                    "✅ معتمد في الإمارات",
+                    "⚡ متوفر الآن"
+                ]
+            }
+        ];
+        
+        this.hideProductsLoading();
+        this.renderEnhancedProducts();
     }
 
     // ENHANCED PRODUCT RENDERING
@@ -257,11 +193,14 @@ class EmiratesStoreComplete {
             cardElement.firstElementChild.classList.add('animate-fade-in');
             container.appendChild(cardElement.firstElementChild);
         });
+
+        // Update products count
+        this.updateProductsCount(productsToRender.length);
     }
 
     createEnhancedProductCard(product) {
         const discount = product.discount_percentage > 0 
-            ? `<div class="discount-badge">خصم ${product.discount_percentage}%</div>` 
+            ? `<div class="discount-badge">خصم ${Math.round(product.discount_percentage)}%</div>` 
             : '';
             
         const originalPrice = product.regular_price > product.sale_price 
@@ -270,36 +209,51 @@ class EmiratesStoreComplete {
 
         const stars = this.generateStars(product.average_rating);
         const isInWishlist = this.wishlist.includes(product.id);
-        const wishlistClass = isInWishlist ? 'active' : '';
+
+        // Handle image with fallback
+        const imageUrl = product.image_url || 'https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop&auto=format';
+        
+        // Truncate title if too long
+        const displayTitle = product.title.length > 60 
+            ? product.title.substring(0, 60) + '...' 
+            : product.title;
+
+        // Display features with proper fallback
+        const features = product.features && product.features.length > 0 
+            ? product.features.slice(0, 3) 
+            : [
+                "📦 شحن مجاني",
+                `🚚 ${product.delivery_time || "1-3 أيام"}`,
+                `💳 ${product.cod_available ? "دفع عند الاستلام" : "دفع مسبق"}`
+            ];
 
         return `
-            <div class="product-card glass-card card-3d">
+            <div class="product-card glass-card card-3d" data-product-id="${product.id}">
                 <div class="product-image" onclick="window.open('products/product-${product.id}.html', '_blank')" style="cursor: pointer;">
-                    <img src="${product.image_url}" 
+                    <img src="${imageUrl}" 
                          alt="${product.title}" 
                          loading="lazy"
                          onerror="this.src='https://images.unsplash.com/photo-1560472354-b33ff0c44a43?w=400&h=300&fit=crop&auto=format'">
                     ${discount}
                 </div>
                 <div class="product-info">
-                    <div class="product-category">${product.category}</div>
-                    <h3 class="product-title">${product.title}</h3>
+                    <div class="product-category">${product.category || 'منتجات عامة'}</div>
+                    <h3 class="product-title" title="${product.title}">${displayTitle}</h3>
                     <div class="product-rating">
                         <span class="stars">${stars}</span>
-                        <span class="rating-count">(${product.review_count} تقييم)</span>
+                        <span class="rating-count">(${product.review_count || 0} تقييم)</span>
                     </div>
                     <div class="product-price">
                         <span class="current-price">${product.sale_price} ${product.currency}</span>
                         ${originalPrice}
                     </div>
                     <div class="product-features">
-                        <div class="feature">📦 شحن مجاني</div>
-                        <div class="feature">🚚 ${product.delivery_time}</div>
-                        <div class="feature">💳 دفع عند الاستلام</div>
+                        ${features.map(feature => `<div class="feature">${feature}</div>`).join('')}
                     </div>
                     <div class="product-actions">
-                        <a href="https://wa.me/201110760081?text=أريد الاستفسار عن ${product.title} - ${product.sale_price} ${product.currency}" 
-                           class="whatsapp-btn" target="_blank" rel="noopener">
+                        <a href="https://wa.me/201110760081?text=${encodeURIComponent('أريد الاستفسار عن ' + product.title + ' - ' + product.sale_price + ' ' + product.currency)}" 
+                           class="whatsapp-btn" target="_blank" rel="noopener"
+                           data-product-id="${product.id}">
                             📱 واتساب
                         </a>
                         <button class="view-details btn btn-primary" data-product-id="${product.id}">
@@ -314,9 +268,20 @@ class EmiratesStoreComplete {
         `;
     }
 
+    // Update products count display
+    updateProductsCount(count) {
+        const sectionDescription = document.querySelector('.section-description');
+        if (sectionDescription) {
+            sectionDescription.innerHTML = `
+                أفضل المنتجات بأسعار مغرية وعروض حصرية مع شحن مجاني ودفع عند الاستلام
+                <br><small style="color: var(--primary-color); font-weight: 600;">📦 يتم عرض ${count} منتج</small>
+            `;
+        }
+    }
+
     // CART FUNCTIONALITY
     addToCartWithAnimation(productId, button) {
-        const product = this.products.find(p => p.id === productId);
+        const product = this.products.find(p => p.id === productId) || this.allProducts.find(p => p.id === productId);
         if (!product) {
             this.showError('المنتج غير موجود');
             return;
@@ -360,7 +325,7 @@ class EmiratesStoreComplete {
 
     // ENHANCED FUNCTIONS
     sendWhatsAppInquiry(productId) {
-        const product = this.products.find(p => p.id === productId);
+        const product = this.products.find(p => p.id === productId) || this.allProducts.find(p => p.id === productId);
         if (product) {
             const message = `أريد الاستفسار عن ${product.title} - ${product.sale_price} ${product.currency}`;
             const whatsappUrl = `https://wa.me/201110760081?text=${encodeURIComponent(message)}`;
@@ -369,7 +334,9 @@ class EmiratesStoreComplete {
     }
 
     openProductPage(productId) {
-        window.open(`products/product-${productId}.html`, '_blank', 'noopener');
+        // Generate product page URL
+        const productPageUrl = `products/product-${productId}.html`;
+        window.open(productPageUrl, '_blank', 'noopener');
     }
 
     openCart() {
@@ -437,6 +404,40 @@ class EmiratesStoreComplete {
         window.addEventListener('resize', adjustButtonSizes);
     }
 
+    // SEARCH AND FILTER FUNCTIONS
+    searchProducts(query) {
+        if (!query || query.trim() === '') {
+            this.products = [...this.allProducts];
+        } else {
+            const searchTerm = query.toLowerCase().trim();
+            this.products = this.allProducts.filter(product =>
+                product.title.toLowerCase().includes(searchTerm) ||
+                product.description.toLowerCase().includes(searchTerm) ||
+                product.category.toLowerCase().includes(searchTerm) ||
+                (product.brand && product.brand.toLowerCase().includes(searchTerm))
+            );
+        }
+        this.renderEnhancedProducts();
+    }
+
+    filterByCategory(category) {
+        if (!category || category === 'all') {
+            this.products = [...this.allProducts];
+        } else {
+            this.products = this.allProducts.filter(product => 
+                product.category === category
+            );
+        }
+        this.renderEnhancedProducts();
+    }
+
+    filterByPriceRange(minPrice, maxPrice) {
+        this.products = this.allProducts.filter(product => 
+            product.sale_price >= minPrice && product.sale_price <= maxPrice
+        );
+        this.renderEnhancedProducts();
+    }
+
     // UTILITY FUNCTIONS
     updateCartStorage() {
         localStorage.setItem('cart', JSON.stringify(this.cart));
@@ -461,7 +462,7 @@ class EmiratesStoreComplete {
                 <div class="products-loading" style="grid-column: 1 / -1; text-align: center; padding: 4rem;">
                     <div class="loading-spinner" style="margin: 0 auto 1rem; width: 50px; height: 50px;"></div>
                     <h3 style="color: var(--text-primary);">جاري تحميل المنتجات...</h3>
-                    <p style="color: var(--text-secondary);">يرجى الانتظار</p>
+                    <p style="color: var(--text-secondary);">يرجى الانتظار قليلاً</p>
                 </div>
             `;
         }
@@ -476,7 +477,7 @@ class EmiratesStoreComplete {
 
     generateStars(rating) {
         const fullStars = Math.floor(rating);
-        const hasHalfStar = rating % 1 !== 0;
+        const hasHalfStar = rating % 1 >= 0.5;
         const emptyStars = 5 - fullStars - (hasHalfStar ? 1 : 0);
         
         return '★'.repeat(fullStars) + (hasHalfStar ? '☆' : '') + '☆'.repeat(emptyStars);
@@ -516,6 +517,10 @@ class EmiratesStoreComplete {
         this.showFloatingMessage(message, 'error');
     }
 
+    showSuccess(message) {
+        this.showFloatingMessage(message, 'success');
+    }
+
     showFloatingMessage(message, type = 'info') {
         const colors = {
             success: '#10B981',
@@ -538,6 +543,7 @@ class EmiratesStoreComplete {
             z-index: 10000;
             animation: slideInRight 0.5s ease-out;
             box-shadow: 0 4px 20px rgba(0,0,0,0.2);
+            max-width: 300px;
         `;
         
         document.body.appendChild(floating);
@@ -588,6 +594,18 @@ class EmiratesStoreComplete {
                     transform: translateX(100px);
                 }
             }
+
+            .loading-spinner {
+                border: 4px solid #f3f3f3;
+                border-top: 4px solid var(--primary-color);
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+
+            @keyframes spin {
+                0% { transform: rotate(0deg); }
+                100% { transform: rotate(360deg); }
+            }
         `;
         document.head.appendChild(style);
     }
@@ -603,10 +621,22 @@ class EmiratesStoreComplete {
             timeout = setTimeout(later, wait);
         };
     }
+
+    // Get all categories for filtering
+    getAllCategories() {
+        const categories = [...new Set(this.allProducts.map(product => product.category))];
+        return categories.sort();
+    }
+
+    // Get products by category
+    getProductsByCategory(category) {
+        return this.allProducts.filter(product => product.category === category);
+    }
 }
 
 // Initialize the enhanced store
 document.addEventListener('DOMContentLoaded', function() {
     window.emiratesStore = new EmiratesStoreComplete();
     console.log('🎉 Emirates Store Complete - All features loaded successfully!');
+    console.log('📊 Products will be loaded from JSON file with proper error handling');
 });
