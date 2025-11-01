@@ -1,25 +1,138 @@
-// Category Page Handler - Complete Fix for Product Display + Global Functions
+// Category Page Handler - Complete Fix for Product Display + Enhanced Category Matching
 (function() {
     'use strict';
     
-    function getCategoryFromPage() {
-        const title = document.querySelector('.category-title, h1')?.textContent;
-        if (!title) return null;
+    // Normalize Arabic text for consistent matching
+    function normalizeArabic(str) {
+        if (!str || typeof str !== 'string') return '';
         
-        const cleanTitle = title.replace(/[🏠📱💄👟🏅🛋🔧🛑]\s*/, '').trim();
+        return str
+            // Remove emojis and special chars
+            .replace(/[🏠📱💄👟🏅🛋🔧🛑🚗🍳⚽🌟✨🎯]/g, '')
+            // Remove extra spaces and trim
+            .replace(/\s+/g, ' ')
+            .trim()
+            // Normalize common variations
+            .replace(/أ/g, 'ا')
+            .replace(/إ/g, 'ا')
+            .replace(/آ/g, 'ا')
+            .replace(/ة/g, 'ه')
+            // Remove diacritics
+            .replace(/[ً ٌ ٍ َ ُ ِ ّ ْ]/g, '');
+    }
+    
+    // Map user-friendly names to exact JSON category names
+    function mapToKnownCategory(userInput) {
+        const cleanInput = normalizeArabic(userInput).toLowerCase();
         
-        const reverseMap = {
-            'Home Appliances & Electrical': 'الأجهزة المنزلية والكهربائية',
-            'Electronics & Technology': 'الإلكترونيات والتكنولوجيا',
-            'Personal Care, Health & Beauty': 'العناية الشخصية والصحة والجمال',
-            'Shoes, Clothing & Accessories': 'الأحذية والملابس والإكسسوارات',
-            'Sports, Fitness & Health': 'الرياضة واللياقة والصحة',
-            'Furniture & Home Tools': 'الأثاث والأدوات المنزلية',
-            'Tools & Maintenance': 'الأدوات والصيانة',
-            'Miscellaneous Products': 'منتجات متنوعة'
+        // Direct mappings based on exact JSON data
+        const categoryMappings = {
+            // Miscellaneous Products variations
+            'منتجات متنوعه': 'منتجات متنوعة',
+            'منتجات متنوعة': 'منتجات متنوعة',
+            'متنوعة': 'منتجات متنوعة',
+            'منوعات': 'منتجات متنوعة',
+            'miscellaneous products': 'منتجات متنوعة',
+            'miscellaneous': 'منتجات متنوعة',
+            
+            // Home Appliances & Electrical
+            'الاجهزه المنزليه والكهربائيه': 'الأجهزة المنزلية والكهربائية',
+            'الأجهزة المنزلية والكهربائية': 'الأجهزة المنزلية والكهربائية',
+            'اجهزه منزليه': 'الأجهزة المنزلية والكهربائية',
+            'أجهزة منزلية': 'الأجهزة المنزلية والكهربائية',
+            'home appliances': 'الأجهزة المنزلية والكهربائية',
+            
+            // Electronics & Technology
+            'الالكترونيات والتكنولوجيا': 'الإلكترونيات والتكنولوجيا',
+            'الإلكترونيات والتكنولوجيا': 'الإلكترونيات والتكنولوجيا',
+            'الكترونيات': 'الإلكترونيات والتكنولوجيا',
+            'تكنولوجيا': 'الإلكترونيات والتكنولوجيا',
+            'electronics': 'الإلكترونيات والتكنولوجيا',
+            
+            // Personal Care, Health & Beauty
+            'العنايه الشخصيه والصحه والجمال': 'العناية الشخصية والصحة والجمال',
+            'العناية الشخصية والصحة والجمال': 'العناية الشخصية والصحة والجمال',
+            'العنايه الشخصيه': 'العناية الشخصية والصحة والجمال',
+            'عنايه شخصيه': 'العناية الشخصية والصحة والجمال',
+            'صحه وجمال': 'العناية الشخصية والصحة والجمال',
+            'personal care': 'العناية الشخصية والصحة والجمال',
+            
+            // Shoes, Clothing & Accessories
+            'الاحذيه والملابس والاكسسوارات': 'الأحذية والملابس والإكسسوارات',
+            'الأحذية والملابس والإكسسوارات': 'الأحذية والملابس والإكسسوارات',
+            'احذيه وملابس': 'الأحذية والملابس والإكسسوارات',
+            'ملابس واحذيه': 'الأحذية والملابس والإكسسوارات',
+            'shoes clothing': 'الأحذية والملابس والإكسسوارات',
+            
+            // Sports, Fitness & Health
+            'الرياضه واللياقه والصحه': 'الرياضة واللياقة والصحة',
+            'الرياضة واللياقة والصحة': 'الرياضة واللياقة والصحة',
+            'رياضه ولياقه': 'الرياضة واللياقة والصحة',
+            'لياقه بدنيه': 'الرياضة واللياقة والصحة',
+            'sports fitness': 'الرياضة واللياقة والصحة',
+            
+            // Furniture & Home Tools
+            'الاثاث والادوات المنزليه': 'الأثاث والأدوات المنزلية',
+            'الأثاث والأدوات المنزلية': 'الأثاث والأدوات المنزلية',
+            'اثاث منزلي': 'الأثاث والأدوات المنزلية',
+            'ادوات منزليه': 'الأثاث والأدوات المنزلية',
+            'furniture': 'الأثاث والأدوات المنزلية',
+            
+            // Tools & Maintenance
+            'الادوات والصيانه': 'الأدوات والصيانة',
+            'الأدوات والصيانة': 'الأدوات والصيانة',
+            'ادوات صيانه': 'الأدوات والصيانة',
+            'ادوات': 'الأدوات والصيانة',
+            'tools': 'الأدوات والصيانة',
+            
+            // Additional categories from JSON data
+            'السيارات والاكسسوارات': 'السيارات والإكسسوارات',
+            'السيارات والإكسسوارات': 'السيارات والإكسسوارات',
+            'اكسسوارات سيارات': 'السيارات والإكسسوارات',
+            'car accessories': 'السيارات والإكسسوارات',
+            
+            'ادوات الطبخ والمطبخ': 'أدوات الطبخ والمطبخ',
+            'أدوات الطبخ والمطبخ': 'أدوات الطبخ والمطبخ',
+            'ادوات مطبخ': 'أدوات الطبخ والمطبخ',
+            'cooking tools': 'أدوات الطبخ والمطبخ'
         };
         
-        return reverseMap[cleanTitle] || cleanTitle;
+        // Try direct mapping first
+        if (categoryMappings[cleanInput]) {
+            return categoryMappings[cleanInput];
+        }
+        
+        // Try partial matching for complex names
+        for (const [key, value] of Object.entries(categoryMappings)) {
+            if (cleanInput.includes(key.split(' ')[0]) || key.includes(cleanInput)) {
+                return value;
+            }
+        }
+        
+        // Return original if no mapping found
+        return userInput;
+    }
+    
+    function getCategoryFromPage() {
+        // Try multiple sources for category name
+        const sources = [
+            document.querySelector('.category-title, h1')?.textContent,
+            document.querySelector('.breadcrumb span:last-child')?.textContent,
+            document.title?.split(' - ')[0],
+            new URLSearchParams(window.location.search).get('category')
+        ];
+        
+        for (const source of sources) {
+            if (source && source.trim()) {
+                const cleanTitle = normalizeArabic(source);
+                const mappedCategory = mapToKnownCategory(cleanTitle);
+                console.log(`🏷️ Category mapping: "${source}" → "${mappedCategory}"`);
+                return mappedCategory;
+            }
+        }
+        
+        console.warn('⚠️ No category found from page sources');
+        return null;
     }
     
     // Make variables global for filter access
@@ -42,20 +155,68 @@
             window.allProducts = await response.json();
             console.log(`✅ Loaded ${window.allProducts.length} total products`);
             
+            // Get all unique categories from data for debugging
+            const uniqueCategories = [...new Set(window.allProducts.map(p => p.category).filter(Boolean))];
+            console.log('📋 Available categories in data:', uniqueCategories);
+            
             const targetCategory = getCategoryFromPage();
             console.log(`🔍 Looking for category: "${targetCategory}"`);
             
             if (targetCategory) {
+                // Try exact match first
                 window.categoryProducts = window.allProducts.filter(p => p.category === targetCategory);
-                console.log(`🎯 Found ${window.categoryProducts.length} products in category`);
+                console.log(`🎯 Exact match found ${window.categoryProducts.length} products`);
+                
+                // If no exact match, try fuzzy matching
+                if (window.categoryProducts.length === 0) {
+                    const normalizedTarget = normalizeArabic(targetCategory).toLowerCase();
+                    window.categoryProducts = window.allProducts.filter(p => {
+                        if (!p.category) return false;
+                        const normalizedCategory = normalizeArabic(p.category).toLowerCase();
+                        return normalizedCategory.includes(normalizedTarget) || 
+                               normalizedTarget.includes(normalizedCategory) ||
+                               normalizedCategory.split(' ').some(word => 
+                                   normalizedTarget.includes(word) && word.length > 2
+                               );
+                    });
+                    console.log(`🔍 Fuzzy match found ${window.categoryProducts.length} products`);
+                }
+                
+                // Final fallback: show best products from multiple categories
+                if (window.categoryProducts.length === 0) {
+                    console.warn('⚠️ No products found, showing diverse selection');
+                    const categoryGroups = {};
+                    window.allProducts.forEach(p => {
+                        if (p.category) {
+                            if (!categoryGroups[p.category]) categoryGroups[p.category] = [];
+                            categoryGroups[p.category].push(p);
+                        }
+                    });
+                    
+                    // Get 3-4 products from each category, prioritize high-rated
+                    window.categoryProducts = [];
+                    Object.values(categoryGroups).forEach(products => {
+                        const sortedProducts = products
+                            .sort((a, b) => (b.average_rating || 0) - (a.average_rating || 0))
+                            .slice(0, 3);
+                        window.categoryProducts.push(...sortedProducts);
+                    });
+                    
+                    // Limit to reasonable number and shuffle
+                    window.categoryProducts = window.categoryProducts
+                        .sort(() => Math.random() - 0.5)
+                        .slice(0, 24);
+                        
+                    console.log(`🎲 Showing ${window.categoryProducts.length} diverse products as fallback`);
+                }
             } else {
-                window.categoryProducts = window.allProducts;
-                console.log('⚠️ No specific category found, showing all products');
+                window.categoryProducts = window.allProducts.slice(0, 30); // Limit for performance
+                console.log('⚠️ No specific category found, showing limited product set');
             }
             
             window.filteredProducts = [...window.categoryProducts];
             
-            // Force immediate render
+            // Immediate render
             setTimeout(() => {
                 renderCategoryProducts();
                 updateProductCount();
@@ -68,173 +229,24 @@
     }
     
     function renderCategoryProducts() {
-        const container = document.getElementById('category-products');
+        const container = document.getElementById('category-products') || 
+                         document.querySelector('.products-grid') ||
+                         document.querySelector('[id*="products"]');
+        
         if (!container) {
-            console.error('❌ Container #category-products not found');
-            // Try alternative container IDs
-            const altContainer = document.querySelector('.products-grid');
-            if (altContainer) {
-                console.log('ℹ️ Using alternative products container');
-                renderInContainer(altContainer);
-            }
+            console.error('❌ No container found for products');
             return;
         }
         
-        renderInContainer(container);
-    }
-    
-    function renderInContainer(container) {
+        console.log(`🎨 Rendering ${window.filteredProducts.length} products`);
+        
         if (window.filteredProducts.length === 0) {
             const isEnglish = window.location.pathname.includes('/en/');
             const noResultsHTML = isEnglish ? `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: #f9fafb; border-radius: 12px;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">📦</div>
-                    <h3 style="color: #111827;">No products found in this category</h3>
-                    <p style="color: #6b7280; margin: 1rem 0;">Try a different category or return to homepage</p>
-                    <a href="../" style="
-                        display: inline-block; margin-top: 1rem; padding: 1rem 2rem; 
-                        background: #1e40af; color: white; text-decoration: none; 
-                        border-radius: 8px; font-weight: 600;
-                    ">🏠 Back to Home</a>
-                </div>
-            ` : `
-                <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: #f9fafb; border-radius: 12px;">
-                    <div style="font-size: 3rem; margin-bottom: 1rem;">📦</div>
-                    <h3 style="color: #111827;">لم يتم العثور على منتجات في هذه الفئة</h3>
-                    <p style="color: #6b7280; margin: 1rem 0;">جرب فئة أخرى أو العودة للرئيسية</p>
-                    <a href="./" style="
-                        display: inline-block; margin-top: 1rem; padding: 1rem 2rem; 
-                        background: #1e40af; color: white; text-decoration: none; 
-                        border-radius: 8px; font-weight: 600;
-                    ">🏠 العودة للرئيسية</a>
-                </div>
-            `;
-            container.innerHTML = noResultsHTML;
-            return;
-        }
-        
-        const productsHTML = window.filteredProducts.map(createProductCard).join('');
-        container.innerHTML = productsHTML;
-        console.log(`✅ Successfully rendered ${window.filteredProducts.length} products`);
-    }
-    
-    function createProductCard(product) {
-        if (!product) return '';
-        
-        const currentPrice = product.sale_price || product.regular_price || 0;
-        const originalPrice = product.sale_price && product.regular_price && product.regular_price > product.sale_price 
-            ? `<span class="original-price">${product.regular_price} AED</span>` 
-            : '';
-        const discount = product.discount_percentage && product.discount_percentage > 0 
-            ? `<div class="discount-badge">-${Math.round(product.discount_percentage)}%</div>` 
-            : '';
-            
-        const displayTitle = product.title && product.title.length > 60 
-            ? product.title.substring(0, 60) + '...' 
-            : (product.title || 'منتج غير محدد');
-            
-        const isEnglishPage = window.location.pathname.includes('/en/');
-        const categoryTranslations = {
-            'الأجهزة المنزلية والكهربائية': 'Home Appliances & Electrical',
-            'الإلكترونيات والتكنولوجيا': 'Electronics & Technology',
-            'العناية الشخصية والصحة والجمال': 'Personal Care, Health & Beauty',
-            'الأحذية والملابس والإكسسوارات': 'Shoes, Clothing & Accessories',
-            'الرياضة واللياقة والصحة': 'Sports, Fitness & Health',
-            'الأثاث والأدوات المنزلية': 'Furniture & Home Tools',
-            'الأدوات والصيانة': 'Tools & Maintenance',
-            'منتجات متنوعة': 'Miscellaneous Products'
-        };
-        
-        return reverseMap[cleanTitle] || cleanTitle;
-    }
-    
-    // Global variables for filter access
-    window.allProducts = [];
-    window.categoryProducts = [];
-    window.filteredProducts = [];
-    
-    async function loadCategoryData() {
-        try {
-            console.log('📦 Loading category data...');
-            
-            const isInEnFolder = window.location.pathname.includes('/en/');
-            const dataPath = isInEnFolder ? '../data/uae-products.json' : './data/uae-products.json';
-            console.log(`📋 Data path: ${dataPath}`);
-            
-            const response = await fetch(dataPath);
-            if (!response.ok) {
-                throw new Error(`Failed to load: ${response.status} ${response.statusText}`);
-            }
-            
-            window.allProducts = await response.json();
-            console.log(`✅ Loaded ${window.allProducts.length} total products`);
-            
-            if (!Array.isArray(window.allProducts) || window.allProducts.length === 0) {
-                throw new Error('No valid product data received');
-            }
-            
-            const targetCategory = getCategoryFromPage();
-            console.log(`🔍 Target category: "${targetCategory}"`);
-            
-            if (targetCategory) {
-                window.categoryProducts = window.allProducts.filter(p => 
-                    p && p.category && p.category.includes(targetCategory)
-                );
-                console.log(`🎯 Found ${window.categoryProducts.length} products in category`);
-                
-                // Fallback: try partial matching if exact match fails
-                if (window.categoryProducts.length === 0) {
-                    const keywords = targetCategory.split(' ').filter(w => w.length > 2);
-                    window.categoryProducts = window.allProducts.filter(p => 
-                        p && p.category && keywords.some(keyword => 
-                            p.category.includes(keyword)
-                        )
-                    );
-                    console.log(`🔍 Fallback search found ${window.categoryProducts.length} products`);
-                }
-            } else {
-                window.categoryProducts = window.allProducts;
-                console.log('⚠️ No category specified, showing all products');
-            }
-            
-            window.filteredProducts = [...window.categoryProducts];
-            
-            // Force render after small delay
-            setTimeout(() => {
-                renderCategoryProducts();
-                updateProductCount();
-            }, 200);
-            
-        } catch (error) {
-            console.error('❌ Error loading products:', error);
-            showErrorState(error.message);
-        }
-    }
-    
-    function renderCategoryProducts() {
-        let container = document.getElementById('category-products');
-        
-        // Try multiple container selectors
-        if (!container) {
-            container = document.querySelector('.products-grid');
-        }
-        if (!container) {
-            container = document.querySelector('[id*="products"]');
-        }
-        if (!container) {
-            console.error('❌ No suitable container found for products');
-            return;
-        }
-        
-        console.log(`🎨 Rendering ${window.filteredProducts.length} products in container`);
-        
-        if (window.filteredProducts.length === 0) {
-            const isEnglish = window.location.pathname.includes('/en/');
-            const emptyStateHTML = isEnglish ? `
                 <div style="grid-column: 1 / -1; text-align: center; padding: 3rem; background: #f9fafb; border-radius: 12px; border: 2px solid #e5e7eb;">
                     <div style="font-size: 4rem; margin-bottom: 1.5rem; opacity: 0.7;">🚫</div>
                     <h3 style="color: #111827; margin-bottom: 1rem; font-size: 1.5rem;">No Products Found</h3>
-                    <p style="color: #6b7280; margin-bottom: 2rem; font-size: 1rem;">No products match the current filter or category</p>
+                    <p style="color: #6b7280; margin-bottom: 2rem;">No products available in this category or filter</p>
                     <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
                         <button onclick="window.filterByPrice('all', null)" style="
                             padding: 0.75rem 1.5rem; background: #10b981; color: white; 
@@ -263,7 +275,7 @@
                     </div>
                 </div>
             `;
-            container.innerHTML = emptyStateHTML;
+            container.innerHTML = noResultsHTML;
             return;
         }
         
@@ -273,7 +285,10 @@
             console.log(`✅ Successfully rendered ${window.filteredProducts.length} product cards`);
         } catch (renderError) {
             console.error('❌ Error rendering products:', renderError);
-            container.innerHTML = `<div style="padding: 2rem; text-align: center; color: #dc2626;">Error rendering products</div>`;
+            const errorMsg = window.location.pathname.includes('/en/') 
+                ? 'Error rendering products' 
+                : 'خطأ في عرض المنتجات';
+            container.innerHTML = `<div style="padding: 2rem; text-align: center; color: #dc2626;">${errorMsg}</div>`;
         }
     }
     
@@ -304,7 +319,9 @@
             'الرياضة واللياقة والصحة': 'Sports, Fitness & Health',
             'الأثاث والأدوات المنزلية': 'Furniture & Home Tools',
             'الأدوات والصيانة': 'Tools & Maintenance',
-            'منتجات متنوعة': 'Miscellaneous Products'
+            'منتجات متنوعة': 'Miscellaneous Products',
+            'السيارات والإكسسوارات': 'Car & Accessories',
+            'أدوات الطبخ والمطبخ': 'Cooking & Kitchen Tools'
         };
         
         const categoryDisplay = isEnglishPage 
@@ -478,7 +495,7 @@
             ? 'Unable to load products for this category' 
             : 'لم يتمكن من تحميل منتجات هذه الفئة';
         const buttonText = isEnglish ? '🏠 Back to Home' : '🏠 العودة للرئيسية';
-        const homeUrl = isInEnFolder ? '../' : './';
+        const homeUrl = isEnglish ? '../' : './';
         
         container.innerHTML = `
             <div style="grid-column: 1 / -1; text-align: center; padding: 4rem; background: #f9fafb; border-radius: 16px; border: 2px solid #dc2626;">
@@ -525,7 +542,7 @@
         const categoryName = getCategoryFromPage();
         console.log(`🏷️ Category page initialized for: "${categoryName}"`);
         
-        // Force load after small delay to ensure DOM is fully ready
+        // Load data after small delay to ensure DOM is fully ready
         setTimeout(() => {
             loadCategoryData();
         }, 300);
