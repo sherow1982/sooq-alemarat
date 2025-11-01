@@ -4,462 +4,117 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>سوق الإمارات للهدايا - أفضل المنتجات بأسعار لا تقاوم</title>
-    <meta name="description" content="تسوق أفضل المنتجات في الإمارات مع شحن مجاني ودفع عند الاستلام. أجهزة منزلية، إلكترونيات، أدوات صحة وجمال، وأكثر بأسعار مميزة.">
-    <meta name="keywords" content="تسوق أونلاين، الإمارات، شحن مجاني، دفع عند الاستلام، أجهزة منزلية، إلكترونيات">
+    <meta name="description" content="تسوق أفضل المنتجات في الإمارات مع شحن مجاني ودفع عند الاستلام. أجهزة منزلية، إلكترونيات، وأكثر.">
+    <meta name="keywords" content="تسوق أونلاين، الإمارات، شحن مجاني، دفع عند الاستلام">
     
-    <!-- Open Graph / Facebook -->
+    <!-- SEO & Social -->
     <meta property="og:type" content="website">
-    <meta property="og:url" content="https://sherow1982.github.io/sooq-alemarat">
-    <meta property="og:title" content="سوق الإمارات للهدايا - أفضل المنتجات بأسعار لا تقاوم">
-    <meta property="og:description" content="تسوق أفضل المنتجات في الإمارات مع شحن مجاني ودفع عند الاستلام">
+    <meta property="og:title" content="سوق الإمارات للهدايا">
+    <meta property="og:description" content="تسوق أفضل المنتجات في الإمارات">
     <meta property="og:image" content="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/b1f430c1-8aa0-4082-8bec-59935fddfaa2.png">
 
-    <!-- Twitter -->
-    <meta property="twitter:card" content="summary_large_image">
-    <meta property="twitter:url" content="https://sherow1982.github.io/sooq-alemarat">
-    <meta property="twitter:title" content="سوق الإمارات للهدايا">
-    <meta property="twitter:description" content="تسوق أفضل المنتجات في الإمارات مع شحن مجاني ودفع عند الاستلام">
-    <meta property="twitter:image" content="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/b1f430c1-8aa0-4082-8bec-59935fddfaa2.png">
-
-    <!-- PWA Meta Tags -->
+    <!-- PWA -->
     <meta name="theme-color" content="#D4AF37">
-    <meta name="apple-mobile-web-app-capable" content="yes">
-    <meta name="apple-mobile-web-app-status-bar-style" content="default">
-    <meta name="apple-mobile-web-app-title" content="سوق الإمارات">
-    <link rel="apple-touch-icon" href="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/b1f430c1-8aa0-4082-8bec-59935fddfaa2.png">
     <link rel="manifest" href="./manifest.json">
-
-    <!-- Favicon -->
-    <link rel="icon" type="image/png" sizes="32x32" href="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/e1029c77-e4a0-4b40-a278-4b4996e2ee05.png">
-    <link rel="icon" type="image/png" sizes="16x16" href="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/e1029c77-e4a0-4b40-a278-4b4996e2ee05.png">
-    <link rel="shortcut icon" href="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/e1029c77-e4a0-4b40-a278-4b4996e2ee05.png">
+    <link rel="icon" href="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/e1029c77-e4a0-4b40-a278-4b4996e2ee05.png">
 
     <!-- Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" preload>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" preload>
-    <link href="https://fonts.googleapis.com/css2?family=Tajawal:wght@300;400;500;700;800;900&display=swap" rel="stylesheet" preload>
-    <link href="https://fonts.googleapis.com/css2?family=Amiri:wght@400;700&display=swap" rel="stylesheet" preload>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
     
-    <!-- Main Theme -->
+    <!-- Theme -->
     <link rel="stylesheet" href="css/dkhoon-inspired-theme.css">
-    
-    <style>
-        /* تحسينات خاصة للصفحة الرئيسية */
-        .hero-section {
-            background: 
-                radial-gradient(ellipse at 30% 30%, rgba(212, 175, 55, 0.1) 0%, transparent 60%),
-                radial-gradient(ellipse at 70% 70%, rgba(255, 225, 53, 0.08) 0%, transparent 50%),
-                linear-gradient(135deg, var(--bg-primary) 0%, var(--champagne) 30%, var(--pearl-white) 70%, var(--bg-secondary) 100%);
-            padding: 150px 0 80px;
-            text-align: center;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .hero-section::before {
-            content: '';
-            position: absolute;
-            top: -50%;
-            left: -50%;
-            width: 200%;
-            height: 200%;
-            background: conic-gradient(from 0deg at 50% 50%, transparent, rgba(212, 175, 55, 0.05), transparent);
-            animation: rotateBackground 60s linear infinite;
-            pointer-events: none;
-        }
-        
-        @keyframes rotateBackground {
-            to { transform: rotate(360deg); }
-        }
-        
-        .hero-title {
-            font-size: 3.5rem;
-            font-weight: 900;
-            background: var(--gradient-gold);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            margin-bottom: 2rem;
-            text-shadow: 0 8px 30px rgba(212, 175, 55, 0.3);
-            position: relative;
-            z-index: 2;
-            animation: heroFloat 4s ease-in-out infinite;
-        }
-        
-        @keyframes heroFloat {
-            0%, 100% { transform: translateY(0); }
-            50% { transform: translateY(-10px); }
-        }
-        
-        .hero-description {
-            font-size: 1.3rem;
-            color: var(--text-secondary);
-            max-width: 700px;
-            margin: 0 auto 3rem;
-            line-height: 1.8;
-            font-weight: 500;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .search-box {
-            display: flex;
-            max-width: 600px;
-            margin: 0 auto;
-            background: white;
-            border-radius: 30px;
-            box-shadow: var(--shadow-premium);
-            border: 3px solid var(--gold-light);
-            overflow: hidden;
-            position: relative;
-            z-index: 2;
-        }
-        
-        .search-input {
-            flex: 1;
-            padding: 1.5rem 2rem;
-            border: none;
-            outline: none;
-            font-size: 1.1rem;
-            background: transparent;
-            color: var(--text-primary);
-            font-family: 'Cairo', sans-serif;
-        }
-        
-        .search-input::placeholder {
-            color: var(--text-light);
-        }
-        
-        .search-btn {
-            padding: 1.5rem 2rem;
-            background: var(--gradient-gold);
-            color: white;
-            border: none;
-            cursor: pointer;
-            font-size: 1.2rem;
-            font-weight: 700;
-            transition: var(--transition-smooth);
-        }
-        
-        .search-btn:hover {
-            background: var(--gradient-royal);
-            transform: scale(1.05);
-        }
-        
-        /* أقسام الصفحة */
-        .section {
-            padding: 80px 0;
-            position: relative;
-        }
-        
-        .categories-section {
-            background: 
-                radial-gradient(circle at 20% 80%, rgba(218, 165, 32, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 80% 20%, rgba(80, 200, 120, 0.03) 0%, transparent 50%);
-        }
-        
-        .tabs-section {
-            background: 
-                radial-gradient(circle at 70% 30%, rgba(99, 102, 241, 0.05) 0%, transparent 50%),
-                radial-gradient(circle at 30% 70%, rgba(255, 215, 0, 0.03) 0%, transparent 50%);
-        }
-        
-        .section-title {
-            font-size: 2.8rem;
-            font-weight: 900;
-            text-align: center;
-            margin-bottom: 3rem;
-            position: relative;
-            background: var(--gradient-gold);
-            background-clip: text;
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-        }
-        
-        .section-title::after {
-            content: '';
-            position: absolute;
-            bottom: -10px;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 80px;
-            height: 4px;
-            background: var(--gradient-gold);
-            border-radius: 2px;
-        }
-        
-        .categories-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 2rem;
-            margin-bottom: 2rem;
-        }
-        
-        .tabs-nav {
-            display: flex;
-            background: var(--gradient-pearl);
-            border-radius: 25px;
-            padding: 0.8rem;
-            gap: 0.8rem;
-            margin-bottom: 3rem;
-            box-shadow: var(--shadow-elegant);
-            border: 2px solid var(--gold-light);
-            justify-content: center;
-            flex-wrap: wrap;
-        }
-        
-        .tab-btn {
-            flex: 1;
-            min-width: 200px;
-            padding: 1.5rem 2rem;
-            background: transparent;
-            color: var(--text-secondary);
-            border: none;
-            border-radius: 20px;
-            font-weight: 700;
-            font-size: 1.1rem;
-            cursor: pointer;
-            transition: var(--transition-smooth);
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .tab-btn::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: var(--gradient-gold);
-            opacity: 0;
-            transition: var(--transition-smooth);
-            z-index: 0;
-        }
-        
-        .tab-btn.active::before,
-        .tab-btn:hover::before {
-            opacity: 1;
-        }
-        
-        .tab-btn span {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .tab-btn.active,
-        .tab-btn:hover {
-            color: white;
-            transform: translateY(-3px);
-            box-shadow: 0 8px 25px rgba(218, 165, 32, 0.4);
-        }
-        
-        .products-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-            gap: 2.5rem;
-        }
-        
-        /* Filter Bar */
-        .filter-bar {
-            background: var(--gradient-royal);
-            color: white;
-            padding: 2rem;
-            border-radius: 25px;
-            margin-bottom: 2rem;
-            box-shadow: var(--shadow-royal);
-            text-align: center;
-            display: none;
-            position: relative;
-            overflow: hidden;
-        }
-        
-        .back-to-categories {
-            background: rgba(255, 255, 255, 0.2);
-            color: white;
-            border: 2px solid rgba(255, 255, 255, 0.4);
-            padding: 0.8rem 1.5rem;
-            border-radius: 20px;
-            margin-right: 1rem;
-            cursor: pointer;
-            transition: var(--transition-quick);
-            font-weight: 700;
-        }
-        
-        .back-to-categories:hover {
-            background: white;
-            color: var(--royal-blue);
-            transform: scale(1.05);
-        }
-        
-        /* استجابة للهواتف */
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: 2.5rem;
-            }
-            
-            .hero-description {
-                font-size: 1.1rem;
-            }
-            
-            .section-title {
-                font-size: 2.2rem;
-            }
-            
-            .search-box {
-                margin: 0 1rem;
-            }
-            
-            .tabs-nav {
-                flex-direction: column;
-                gap: 0.5rem;
-            }
-            
-            .tab-btn {
-                min-width: auto;
-                width: 100%;
-            }
-            
-            .categories-grid {
-                grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-                gap: 1.5rem;
-            }
-            
-            .products-grid {
-                grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-                gap: 1.5rem;
-            }
-        }
-        
-        @media (max-width: 480px) {
-            .hero-section {
-                padding: 130px 0 60px;
-            }
-            
-            .hero-title {
-                font-size: 2rem;
-            }
-            
-            .categories-grid,
-            .products-grid {
-                grid-template-columns: 1fr;
-                gap: 1rem;
-            }
-            
-            .search-box {
-                flex-direction: column;
-                border-radius: 20px;
-            }
-            
-            .search-input {
-                border-bottom: 2px solid rgba(212, 175, 55, 0.2);
-            }
-        }
-    </style>
 </head>
 <body>
-    <!-- Particles Background -->
-    <div class="particles"></div>
-
     <!-- Header -->
     <header class="header">
         <div class="container">
             <div class="header-content">
-                <div class="logo">
-                    <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/b1f430c1-8aa0-4082-8bec-59935fddfaa2.png" alt="سوق الإمارات للهدايا" style="height: 45px; width: auto; margin-left: 16px;">
+                <a href="./" class="logo">
+                    <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/b1f430c1-8aa0-4082-8bec-59935fddfaa2.png" alt="سوق الإمارات" style="height: 40px; margin-left: 12px;">
                     <span>سوق الإمارات</span>
-                </div>
+                </a>
                 
-                <nav class="nav" role="navigation">
+                <nav>
                     <ul class="nav-list">
-                        <li><a href="#categories"><span>🏪 الفئات</span></a></li>
-                        <li><a href="#featured"><span>💎 مميزة</span></a></li>
-                        <li><a href="cart.html" target="_blank" rel="noopener"><span>🛒 السلة</span></a></li>
-                        <li><a href="./en/" target="_blank" rel="noopener"><span>🇺🇸 English</span></a></li>
-                        <li><a href="legal/terms.html" target="_blank" rel="noopener"><span>📋 الشروط</span></a></li>
-                        <li><a href="legal/privacy.html" target="_blank" rel="noopener"><span>🔒 الخصوصية</span></a></li>
-                        <li><a href="legal/shipping.html" target="_blank" rel="noopener"><span>📦 الشحن</span></a></li>
-                        <li><a href="legal/returns.html" target="_blank" rel="noopener"><span>↩️ الإرجاع</span></a></li>
+                        <li><a href="#categories">🏪 الفئات</a></li>
+                        <li><a href="#featured">💎 مميزة</a></li>
+                        <li><a href="cart.html" target="_blank">🛒 السلة</a></li>
+                        <li><a href="./en/" target="_blank">🇺🇸 English</a></li>
+                        <li><a href="legal/terms.html" target="_blank">📋 الشروط</a></li>
+                        <li><a href="legal/privacy.html" target="_blank">🔒 خصوصية</a></li>
+                        <li><a href="legal/shipping.html" target="_blank">📦 شحن</a></li>
+                        <li><a href="legal/returns.html" target="_blank">↩️ إرجاع</a></li>
                     </ul>
                 </nav>
             </div>
         </div>
     </header>
 
-    <!-- Main Content -->
-    <main>
-        <!-- Hero Section -->
-        <section class="hero-section">
-            <div class="container">
-                <h1 class="hero-title">🇦🇪 مرحباً بك في سوق الإمارات</h1>
-                <p class="hero-description">
-                    اكتشف عالم من المنتجات الفاخرة والعروض الحصرية مع ضمان الشحن المجاني والدفع عند الاستلام داخل دولة الإمارات العربية المتحدة. تجربة تسوق فاخرة تليق بأسلوب الفخامة الإماراتي الأصيل.
-                </p>
-                <div class="search-box">
-                    <input type="search" class="search-input" id="main-search" placeholder="ابحث عن منتجاتك المفضلة..." autocomplete="off">
-                    <button class="search-btn" id="search-btn">🔍</button>
+    <!-- Hero -->
+    <section class="hero-section">
+        <div class="container">
+            <h1 class="hero-title">🇦🇪 مرحباً بك في سوق الإمارات</h1>
+            <p class="hero-description">
+                اكتشف عالم من المنتجات الفاخرة مع شحن مجاني ودفع عند الاستلام داخل دولة الإمارات.
+            </p>
+            <div class="search-box">
+                <input type="search" class="search-input" placeholder="ابحث عن منتجاتك...">
+                <button class="search-btn">🔍</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Categories -->
+    <section id="categories" class="section">
+        <div class="container">
+            <h2 class="section-title">🏪 تسوق حسب الفئة</h2>
+            <div class="categories-grid" id="categories-container">
+                <div class="loading">
+                    <div class="loading-spinner"></div>
+                    <h3>جاري تحميل الفئات...</h3>
                 </div>
             </div>
-        </section>
+        </div>
+    </section>
 
-        <!-- Categories Section -->
-        <section id="categories" class="categories-section section">
-            <div class="container">
-                <h2 class="section-title">🏪 تسوق حسب الفئة</h2>
-                <div class="categories-grid" id="categories-container">
+    <!-- Products -->
+    <section id="featured" class="section">
+        <div class="container">
+            <div class="filter-bar" id="filter-bar">
+                <span class="filter-text" id="filter-text"></span>
+                <button class="back-to-categories" id="back-to-categories">
+                    🔙 عودة لجميع الفئات
+                </button>
+            </div>
+
+            <div class="tabs-nav">
+                <button class="tab-btn active" data-tab="featured-products">
+                    💎 مجموعتنا الفاخرة (أكثر من 300 درهم)
+                </button>
+                <button class="tab-btn" data-tab="all-products">
+                    🛑 جميع المنتجات
+                </button>
+            </div>
+            
+            <div class="tab-content active" id="featured-products">
+                <div class="products-grid" id="featured-container">
                     <div class="loading">
                         <div class="loading-spinner"></div>
-                        <h3>جاري تحميل الفئات الفاخرة...</h3>
-                        <p>انتظر قليلاً لتجربة تسوق مميزة</p>
+                        <h3>جاري تحميل المجموعة الفاخرة...</h3>
                     </div>
                 </div>
             </div>
-        </section>
-
-        <!-- Products Tabs Section -->
-        <section id="featured" class="tabs-section section">
-            <div class="container">
-                <!-- Filter Bar (Hidden by default) -->
-                <div class="filter-bar" id="filter-bar" style="display: none;">
-                    <div class="filter-info">
-                        <div class="filter-text" id="filter-text"></div>
-                        <button class="back-to-categories" id="back-to-categories">
-                            🔙 عودة لجميع الفئات
-                        </button>
-                    </div>
-                </div>
-
-                <div class="tabs-nav">
-                    <button class="tab-btn active" data-tab="featured-products">
-                        <span>💎 مجموعتنا الفاخرة (أكثر من 300 درهم)</span>
-                    </button>
-                    <button class="tab-btn" data-tab="all-products">
-                        <span>🛑 جميع المنتجات</span>
-                    </button>
-                </div>
-                
-                <div class="tab-content active" id="featured-products">
-                    <div class="products-grid" id="featured-container">
-                        <div class="loading">
-                            <div class="loading-spinner"></div>
-                            <h3>جاري تحميل المجموعة الفاخرة...</h3>
-                            <p>قطع مختارة بعناية لتجربة فاخرة</p>
-                        </div>
-                    </div>
-                </div>
-                
-                <div class="tab-content" id="all-products">
-                    <div class="products-grid" id="all-container">
-                        <div class="loading">
-                            <div class="loading-spinner"></div>
-                            <h3>جاري تحميل مجموعتنا الكاملة...</h3>
-                            <p>تشكيلة واسعة من أجود المنتجات</p>
-                        </div>
+            
+            <div class="tab-content" id="all-products">
+                <div class="products-grid" id="all-container">
+                    <div class="loading">
+                        <div class="loading-spinner"></div>
+                        <h3>جاري تحميل جميع المنتجات...</h3>
                     </div>
                 </div>
             </div>
-        </section>
-    </main>
+        </div>
+    </section>
 
     <!-- Footer -->
     <footer class="footer">
@@ -467,52 +122,47 @@
             <div class="footer-content">
                 <div class="footer-section">
                     <h3>🏪 سوق الإمارات</h3>
-                    <p>رائدون في عالم التسوق الرقمي بأسلوب الفخامة الإماراتي</p>
-                    <p>منتج إماراتي 100% بضمان الجودة 🇦🇪</p>
+                    <p>رائدون في عالم التسوق الرقمي</p>
+                    <p>منتج إماراتي 100% 🇦🇪</p>
                 </div>
                 <div class="footer-section">
                     <h3>🔗 روابط مهمة</h3>
                     <div>
-                        <a href="legal/terms.html" target="_blank" rel="noopener">📋 الشروط والأحكام</a><br>
-                        <a href="legal/privacy.html" target="_blank" rel="noopener">🔒 سياسة الخصوصية</a><br>
-                        <a href="legal/shipping.html" target="_blank" rel="noopener">📦 سياسة الشحن</a><br>
-                        <a href="legal/returns.html" target="_blank" rel="noopener">↩️ سياسة الإرجاع</a><br>
-                        <a href="./en/" target="_blank" rel="noopener">🇺🇸 الإصدار الإنجليزي</a>
+                        <a href="legal/terms.html" target="_blank">📋 الشروط</a><br>
+                        <a href="legal/privacy.html" target="_blank">🔒 الخصوصية</a><br>
+                        <a href="legal/shipping.html" target="_blank">📦 الشحن</a><br>
+                        <a href="legal/returns.html" target="_blank">↩️ الإرجاع</a><br>
+                        <a href="./en/" target="_blank">🇺🇸 English</a>
                     </div>
                 </div>
                 <div class="footer-section">
-                    <h3>📞 تواصل معنا</h3>
+                    <h3>📞 تواصل</h3>
                     <div>
-                        <a href="https://wa.me/201110760081" target="_blank" rel="noopener">📱 واتساب فوري</a><br>
-                        <a href="tel:+201110760081">☎️ اتصال مباشر</a><br>
-                        <a href="mailto:info@sooq-alemarat.com">📧 بريد إلكتروني</a><br>
-                        <a href="cart.html" target="_blank" rel="noopener">🛒 عرض سلة التسوق</a><br>
-                        <a href="checkout.html" target="_blank" rel="noopener">💳 إتمام طلب</a>
+                        <a href="https://wa.me/201110760081" target="_blank">📱 واتساب</a><br>
+                        <a href="tel:+201110760081">☎️ اتصال</a><br>
+                        <a href="cart.html" target="_blank">🛒 السلة</a><br>
+                        <a href="checkout.html" target="_blank">💳 إتمام طلب</a>
                     </div>
                 </div>
                 <div class="footer-section">
-                    <h3>✨ خدمات مميزة</h3>
+                    <h3>✨ خدماتنا</h3>
                     <div>
-                        <span>🚚 شحن مجاني فوري</span><br>
-                        <span>💰 دفع آمن عند الاستلام</span><br>
-                        <span>🔄 ضمان إرجاع 7 أيام</span><br>
-                        <span>⭐ خدمة عملاء 24/7</span><br>
-                        <span>🎁 عروض حصرية يومية</span><br>
-                        <span>🎆 تجربة فاخرة فريدة</span>
+                        🚚 شحن مجاني<br>
+                        💰 دفع عند الاستلام<br>
+                        🔄 ضمان إرجاع 7 أيام<br>
+                        ⭐ خدمة عملاء 24/7
                     </div>
                 </div>
             </div>
-            <div style="border-top: 1px solid #8B4513; padding-top: 2rem; margin-top: 2rem; position: relative; z-index: 2;">
-                <p>&copy; 2025 سوق الإمارات للهدايا. جميع الحقوق محفوظة.</p>
-                <p style="margin-top: 0.5rem; opacity: 0.8;">تصميم مبتكر وتطوير احترافي بأسلوب الفخامة الإماراتي</p>
+            <div style="border-top: 1px solid #666; padding-top: 1.5rem; margin-top: 1.5rem; text-align: center;">
+                <p>&copy; 2025 سوق الإمارات. جميع الحقوق محفوظة.</p>
             </div>
         </div>
     </footer>
 
-    <!-- Floating WhatsApp Button -->
-    <a href="https://wa.me/201110760081?text=مرحبا،%20أريد%20التواصل%20مع%20فريق%20سوق%20الإمارات%20للمساعدة%20في%20التسوق%20والاستفسار%20عن%20المنتجات." 
-       class="whatsapp-float" target="_blank" rel="noopener" 
-       title="تواصل معنا عبر واتساب للمساعدة الفورية">
+    <!-- Floating Buttons -->
+    <a href="https://wa.me/201110760081?text=مرحبا،%20أريد%20التواصل%20مع%20فريق%20سوق%20الإمارات" 
+       class="whatsapp-float" target="_blank" title="تواصل عبر واتساب">
         📱
     </a>
 
@@ -521,9 +171,9 @@
     <script src="js/categories-homepage-3d-fixed.js"></script>
     
     <script>
-        // تفعيل التأثيرات عند التحميل
+        // تفعيل تحسينات الأداء
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('🎆 مرحباً بك في سوق الإمارات - تجربة فاخرة فريدة!');
+            console.log('✅ سوق الإمارات - تم التحميل');
             
             // تفعيل التمرير الناعم للروابط الداخلية
             document.querySelectorAll('a[href^="#"]').forEach(link => {
@@ -540,43 +190,18 @@
                 });
             });
             
-            // تأثير عند التمرير على الرأس
+            // تأثير عند التمرير
             const header = document.querySelector('.header');
-            let ticking = false;
-            
-            function updateHeader() {
-                if (window.pageYOffset > 120) {
-                    header.classList.add('scrolled');
-                } else {
-                    header.classList.remove('scrolled');
-                }
-                ticking = false;
-            }
-            
             window.addEventListener('scroll', function() {
-                if (!ticking) {
-                    requestAnimationFrame(updateHeader);
-                    ticking = true;
+                if (window.pageYOffset > 100) {
+                    header.style.background = 'rgba(255,255,255,1)';
+                } else {
+                    header.style.background = 'rgba(255,255,255,0.9)';
                 }
             });
-            
-            // ضمان فتح جميع الروابط الخارجية في تبويبات جديدة
-            document.querySelectorAll('a:not([href^="#"]):not([href^="javascript:"]):not(.internal-link)').forEach(link => {
-                if (!link.getAttribute('target')) {
-                    link.setAttribute('target', '_blank');
-                    link.setAttribute('rel', 'noopener noreferrer');
-                }
-            });
-            
-            console.log('✅ تم تفعيل جميع الميزات بنجاح!');
         });
         
-        // معالجة الأخطاء العامة
-        window.addEventListener('error', function(e) {
-            console.error('خطأ عام في الموقع:', e.error);
-        });
-        
-        // Service Worker للأداء
+        // Service Worker
         if ('serviceWorker' in navigator) {
             navigator.serviceWorker.register('./sw.js')
                 .then(() => console.log('✅ Service Worker مفعل'))
