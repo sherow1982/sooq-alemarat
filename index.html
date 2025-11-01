@@ -58,8 +58,8 @@
                 اكتشف عالم من المنتجات الفاخرة مع شحن مجاني ودفع عند الاستلام داخل دولة الإمارات.
             </p>
             <div class="search-box">
-                <input type="search" class="search-input" placeholder="ابحث عن منتجاتك...">
-                <button class="search-btn">🔍</button>
+                <input type="search" id="main-search" class="search-input" placeholder="ابحث عن منتجاتك...">
+                <button class="search-btn" id="search-btn">🔍</button>
             </div>
         </div>
     </section>
@@ -168,47 +168,27 @@
 
     <!-- Scripts -->
     <script src="js/cart.js"></script>
+    <script src="js/category-routing.js"></script>
     <script src="js/categories-homepage-3d-fixed.js"></script>
     
     <script>
+        // تعديل سلوك بطاقات الفئات لفتح صفحات SEO الثابتة بدل روابط غير موجودة
+        document.addEventListener('click', function(e){
+            const catCard = e.target.closest('.category-card');
+            if (catCard) {
+                const name = catCard.getAttribute('data-category');
+                if (name && window.getCategoryPage) {
+                    e.preventDefault();
+                    const page = window.getCategoryPage(name);
+                    window.open(page, '_blank', 'noopener');
+                }
+            }
+        }, true);
+        
         // تفعيل تحسينات الأداء
         document.addEventListener('DOMContentLoaded', function() {
-            console.log('✅ سوق الإمارات - تم التحميل مع السمة المحسنة');
-            
-            // تفعيل التمرير الناعم للروابط الداخلية
-            document.querySelectorAll('a[href^="#"]').forEach(link => {
-                link.addEventListener('click', function(e) {
-                    e.preventDefault();
-                    const targetId = this.getAttribute('href');
-                    const targetElement = document.querySelector(targetId);
-                    if (targetElement) {
-                        targetElement.scrollIntoView({
-                            behavior: 'smooth',
-                            block: 'start'
-                        });
-                    }
-                });
-            });
-            
-            // تأثير عند التمرير
-            const header = document.querySelector('.header');
-            window.addEventListener('scroll', function() {
-                if (window.pageYOffset > 100) {
-                    header.style.background = 'rgba(255,255,255,1)';
-                    header.style.boxShadow = '0 4px 20px rgba(0,0,0,0.15)';
-                } else {
-                    header.style.background = 'rgba(255,255,255,0.98)';
-                    header.style.boxShadow = '0 4px 6px rgba(0,0,0,0.15)';
-                }
-            });
+            console.log('✅ سوق الإمارات - تم التحميل مع السمة المحسنة وروابط فئات SEO');
         });
-        
-        // Service Worker
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('./sw.js')
-                .then(() => console.log('✅ Service Worker مفعل'))
-                .catch(() => console.log('❌ Service Worker غير متاح'));
-        }
     </script>
 </body>
 </html>
