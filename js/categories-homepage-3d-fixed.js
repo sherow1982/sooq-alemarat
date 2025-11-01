@@ -1,4 +1,4 @@
-// ===== Enhanced JS that fixes broken images via data file and strict Arabic slugs =====
+// ===== Fixed JavaScript for Categories and Products Navigation =====
 
 class CategoriesHomepage3DFixed {
     constructor() {
@@ -45,7 +45,7 @@ class CategoriesHomepage3DFixed {
                 this.switchTab(e.target.dataset.tab, e.target);
             }
             
-            // Category card clicks
+            // Category card clicks - FIXED: Opens products in same page with category filter
             if (e.target.closest('.category-card')) {
                 const categoryCard = e.target.closest('.category-card');
                 const categoryName = categoryCard.dataset.category;
@@ -178,7 +178,6 @@ class CategoriesHomepage3DFixed {
         const placeholders = [
             `https://via.placeholder.com/400x300/DAA520/FFFFFF?text=${cleanTitle}`,
             `https://dummyimage.com/400x300/DAA520/FFFFFF&text=${cleanTitle}`,
-            `https://source.unsplash.com/400x300/?product,shopping,${cleanTitle}`,
             `https://picsum.photos/400/300?random=${Math.floor(Math.random() * 1000)}`
         ];
         
@@ -300,7 +299,7 @@ class CategoriesHomepage3DFixed {
             'العناية الشخصية والصحة والجمال': '💄',
             'الرياضة واللياقة والصحة': '🏃',
             'الألعاب والهوايات': '🎮',
-            'الأثاث والأدوات المنزلية': '🌿',
+            'الأثاث والأدوات المنزلية': '🪑',
             'السيارات والإكسسوارات': '🚗',
             'الكتب والإعلام': '📚',
             'الطعام والمشروبات': '🍽️',
@@ -404,7 +403,8 @@ class CategoriesHomepage3DFixed {
                         <img src="${primaryImage}" 
                              alt="${product.title}" 
                              loading="lazy"
-                             onerror="this.onerror=null;this.src='${fallback1}';this.onerror=function(){this.src='${fallback2}'};">
+                             onerror="this.onerror=null;this.src='${fallback1}';this.onerror=function(){this.src='${fallback2}'};"
+                             style="width: 100%; height: 100%; object-fit: cover;">
                         ${discount}
                         ${featuredBadge}
                     </div>
@@ -438,6 +438,116 @@ class CategoriesHomepage3DFixed {
         `;
     }
 
+    // NAVIGATION FUNCTIONS - FIXED
+    
+    // FIXED: Category view now shows filtered products in same page
+    viewCategory(categoryName) {
+        console.log(`🏷️ عرض فئة: ${categoryName}`);
+        
+        // Filter products by category
+        const categoryProducts = this.products.filter(product => 
+            product.category === categoryName
+        );
+        
+        if (categoryProducts.length === 0) {
+            this.showError(`لا توجد منتجات في فئة "${categoryName}"`);
+            return;
+        }
+        
+        // Update the active tab to "all products"
+        this.switchTabProgrammatically('all-products');
+        
+        // Show filtered products
+        this.renderFilteredProducts(categoryProducts, categoryName);
+        
+        // Scroll to products section
+        document.getElementById('featured').scrollIntoView({ behavior: 'smooth' });
+        
+        // Update page title
+        document.title = `${categoryName} - سوق الإمارات`;
+        
+        // Show success message
+        this.showSuccess(`تم عرض ${categoryProducts.length} منتج من فئة "${categoryName}"`);
+    }
+    
+    switchTabProgrammatically(tabId) {
+        document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
+        document.querySelectorAll('.tab-content').forEach(content => content.classList.remove('active'));
+        
+        const targetTab = document.querySelector(`[data-tab="${tabId}"]`);
+        const targetContent = document.getElementById(tabId);
+        
+        if (targetTab) targetTab.classList.add('active');
+        if (targetContent) targetContent.classList.add('active');
+    }
+    
+    renderFilteredProducts(products, categoryName) {
+        const container = document.getElementById('all-container');
+        if (!container) return;
+        
+        container.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; margin-bottom: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #DAA520, #FFD700); color: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(218, 165, 32, 0.3);">
+                <h3 style="margin-bottom: 0.5rem; font-size: 1.5rem;">${this.getCategoryIcon(categoryName)} ${categoryName}</h3>
+                <p>${products.length} منتج متاح في هذه الفئة</p>
+                <button onclick="window.categoriesHomepage.resetView()" style="background: rgba(255,255,255,0.2); border: 2px solid white; color: white; padding: 0.5rem 1rem; border-radius: 20px; margin-top: 1rem; cursor: pointer; font-weight: 600;">عودة لجميع الفئات</button>
+            </div>
+        `;
+        
+        products.forEach((product, index) => {
+            const productCard = this.createProductCard(product, false);
+            const cardElement = document.createElement('div');
+            cardElement.innerHTML = productCard;
+            cardElement.firstElementChild.style.animationDelay = `${index * 0.1}s`;
+            cardElement.firstElementChild.classList.add('animate-fade-in');
+            container.appendChild(cardElement.firstElementChild);
+        });
+    }
+    
+    resetView() {
+        // Reset to default view
+        this.switchTabProgrammatically('featured-products');
+        document.title = 'سوق الإمارات للهدايا - أفضل المنتجات بأسعار لا تقاوم';
+        this.renderFeaturedProducts();
+        document.getElementById('categories').scrollIntoView({ behavior: 'smooth' });
+    }
+
+    // FIXED: Product details now opens actual product page
+    viewProductDetails(productId) {
+        const product = this.products.find(p => p.id == productId);
+        
+        if (product) {
+            // Create Arabic URL slug for product page
+            const arabicSlug = this.createArabicSlug(product.title, productId);
+            const productPageUrl = `data/pruducts-pages/${arabicSlug}.html`;
+            
+            console.log(`👁 فتح صفحة المنتج: ${productPageUrl}`);
+            
+            // Try to open the actual product page
+            window.open(productPageUrl, '_blank', 'noopener');
+        } else {
+            this.showError('لم يتم العثور على تفاصيل المنتج');
+        }
+    }
+    
+    // Create Arabic URL slug matching the pattern used in product pages
+    createArabicSlug(title, productId) {
+        // Remove extra spaces and normalize
+        let slug = title.trim();
+        
+        // Replace Arabic spaces and common characters
+        slug = slug.replace(/\s+/g, '-');
+        slug = slug.replace(/[_\s\/\\]/g, '-');
+        
+        // Remove multiple dashes
+        slug = slug.replace(/-+/g, '-');
+        
+        // Remove leading/trailing dashes
+        slug = slug.replace(/^-|-$/g, '');
+        
+        // Add product ID at the end
+        return `${slug}-${productId}`;
+    }
+
     // TAB FUNCTIONALITY
     switchTab(tabId, tabButton) {
         document.querySelectorAll('.tab-btn').forEach(btn => btn.classList.remove('active'));
@@ -453,36 +563,74 @@ class CategoriesHomepage3DFixed {
         }
     }
 
-    // SEARCH FUNCTIONALITY
+    // SEARCH FUNCTIONALITY - FIXED
     performSearch() {
         const searchInput = document.getElementById('main-search');
         const query = searchInput ? searchInput.value.trim() : '';
         
-        if (query.length > 0) {
-            window.open(`product.html?search=${encodeURIComponent(query)}`, '_blank');
+        if (query.length === 0) {
+            this.showError('يرجى إدخال كلمة للبحث');
+            return;
         }
+        
+        console.log(`🔍 البحث عن: ${query}`);
+        
+        // Filter products locally
+        const searchResults = this.products.filter(product => 
+            product.title.toLowerCase().includes(query.toLowerCase()) ||
+            product.category.toLowerCase().includes(query.toLowerCase()) ||
+            (product.description && product.description.toLowerCase().includes(query.toLowerCase()))
+        );
+        
+        if (searchResults.length === 0) {
+            this.showError(`لا توجد نتائج للبحث عن "${query}"`);
+            return;
+        }
+        
+        // Show search results in the all products tab
+        this.switchTabProgrammatically('all-products');
+        this.renderSearchResults(searchResults, query);
+        
+        // Scroll to results
+        document.getElementById('featured').scrollIntoView({ behavior: 'smooth' });
+        
+        this.showSuccess(`تم العثور على ${searchResults.length} منتج للبحث عن "${query}"`);
+    }
+    
+    renderSearchResults(products, query) {
+        const container = document.getElementById('all-container');
+        if (!container) return;
+        
+        container.innerHTML = `
+            <div style="grid-column: 1 / -1; text-align: center; margin-bottom: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);">
+                <h3 style="margin-bottom: 0.5rem; font-size: 1.5rem;">🔍 نتائج البحث عن "${query}"</h3>
+                <p>${products.length} منتج تم العثور عليه</p>
+                <button onclick="window.categoriesHomepage.resetView()" style="background: rgba(255,255,255,0.2); border: 2px solid white; color: white; padding: 0.5rem 1rem; border-radius: 20px; margin-top: 1rem; cursor: pointer; font-weight: 600;">مسح البحث</button>
+            </div>
+        `;
+        
+        products.forEach((product, index) => {
+            const productCard = this.createProductCard(product, false);
+            const cardElement = document.createElement('div');
+            cardElement.innerHTML = productCard;
+            cardElement.firstElementChild.style.animationDelay = `${index * 0.1}s`;
+            cardElement.firstElementChild.classList.add('animate-fade-in');
+            container.appendChild(cardElement.firstElementChild);
+        });
     }
 
-    // CATEGORY VIEW
-    viewCategory(categoryName) {
-        window.open(`product.html?category=${encodeURIComponent(categoryName)}`, '_blank');    
-    }
-
-    // PRODUCT ACTIONS
+    // PRODUCT ACTIONS - ENHANCED
     sendWhatsAppInquiry(productId) {
-        const product = this.products.find(p => p.id === productId) || 
-                       this.featuredProducts.find(p => p.id === productId);
+        const product = this.products.find(p => p.id == productId) || 
+                       this.featuredProducts.find(p => p.id == productId);
         
         if (product) {
-            const message = `أريد الاستفسار عن ${product.title} - ${product.sale_price} ${product.currency || 'AED'}`;
+            const message = `السلام عليكم ورحمة الله وبركاته\n\nأريد الاستفسار عن:\n${product.title}\n\nالسعر: ${product.sale_price} ${product.currency || 'AED'}\nالفئة: ${product.category}\n\nأرجو التواصل معي لتأكيد الطلب وتفاصيل التوصيل.\n\nشكراً لكم`;
             const whatsappUrl = `https://wa.me/201110760081?text=${encodeURIComponent(message)}`;
             window.open(whatsappUrl, '_blank', 'noopener');
+        } else {
+            this.showError('لم يتم العثور على معلومات المنتج');
         }
-    }
-
-    viewProductDetails(productId) {
-        const productPageUrl = `product.html?id=${productId}`;
-        window.open(productPageUrl, '_blank', 'noopener');
     }
 
     // LOADING STATES
@@ -510,6 +658,67 @@ class CategoriesHomepage3DFixed {
         });
     }
 
+    // NOTIFICATION FUNCTIONS
+    showError(message) {
+        this.showNotification(message, 'error');
+    }
+    
+    showSuccess(message) {
+        this.showNotification(message, 'success');
+    }
+    
+    showNotification(message, type = 'info') {
+        const colors = {
+            error: { bg: '#EF4444', shadow: 'rgba(239, 68, 68, 0.3)' },
+            success: { bg: '#10B981', shadow: 'rgba(16, 185, 129, 0.3)' },
+            info: { bg: '#3B82F6', shadow: 'rgba(59, 130, 246, 0.3)' }
+        };
+        
+        const color = colors[type] || colors.info;
+        
+        const notificationDiv = document.createElement('div');
+        notificationDiv.style.cssText = `
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: ${color.bg};
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 25px;
+            font-weight: 600;
+            z-index: 10000;
+            animation: slideInRight 0.5s ease-out;
+            box-shadow: 0 4px 20px ${color.shadow};
+            max-width: 300px;
+            cursor: pointer;
+        `;
+        notificationDiv.textContent = message;
+        
+        // Click to dismiss
+        notificationDiv.addEventListener('click', () => {
+            notificationDiv.style.animation = 'slideOutRight 0.5s ease-in forwards';
+            setTimeout(() => {
+                if (notificationDiv.parentNode) {
+                    notificationDiv.parentNode.removeChild(notificationDiv);
+                }
+            }, 500);
+        });
+        
+        document.body.appendChild(notificationDiv);
+        
+        // Auto dismiss after 5 seconds
+        setTimeout(() => {
+            if (notificationDiv.parentNode) {
+                notificationDiv.style.animation = 'slideOutRight 0.5s ease-in forwards';
+                setTimeout(() => {
+                    if (notificationDiv.parentNode) {
+                        notificationDiv.parentNode.removeChild(notificationDiv);
+                    }
+                }, 500);
+            }
+        }, 5000);
+    }
+
     // FALLBACK DATA
     loadFallbackData() {
         console.log('📂 تحميل بيانات احتياطية...');
@@ -520,7 +729,8 @@ class CategoriesHomepage3DFixed {
             { name: 'العناية الشخصية والصحة والجمال', count: 52 },
             { name: 'الأحذية والملابس والإكسسوارات', count: 29 },
             { name: 'الرياضة واللياقة والصحة', count: 21 },
-            { name: 'الأثاث والأدوات المنزلية', count: 33 }
+            { name: 'الأثاث والأدوات المنزلية', count: 33 },
+            { name: 'منتجات متنوعة', count: 67 }
         ];
         
         this.featuredProducts = [
@@ -539,7 +749,21 @@ class CategoriesHomepage3DFixed {
             }
         ];
         
-        this.products = this.featuredProducts;
+        this.products = this.featuredProducts.concat([
+            {
+                id: 'fallback-2',
+                title: 'منتج عادي للاختبار',
+                category: 'منتجات متنوعة',
+                sale_price: 150,
+                regular_price: 200,
+                currency: 'AED',
+                discount_percentage: 25,
+                image_url: 'https://via.placeholder.com/400x300/6B7280/FFFFFF?text=منتج+عادي',
+                average_rating: 4.2,
+                review_count: 23,
+                features: ['🚚 شحن سريع', '⏰ 2-4 أيام عمل', '💳 دفع عند الاستلام', '✅ معتمد في الإمارات']
+            }
+        ]);
         
         this.hideLoadingState();
         this.renderCategories();
@@ -564,36 +788,6 @@ class CategoriesHomepage3DFixed {
                 link.setAttribute('href', newHref);
             }
         });
-    }
-
-    showError(message) {
-        const errorDiv = document.createElement('div');
-        errorDiv.style.cssText = `
-            position: fixed;
-            top: 100px;
-            right: 20px;
-            background: #EF4444;
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 25px;
-            font-weight: 600;
-            z-index: 10000;
-            animation: slideInRight 0.5s ease-out;
-            box-shadow: 0 4px 20px rgba(239, 68, 68, 0.3);
-            max-width: 300px;
-        `;
-        errorDiv.textContent = message;
-        
-        document.body.appendChild(errorDiv);
-        
-        setTimeout(() => {
-            errorDiv.style.animation = 'slideOutRight 0.5s ease-in forwards';
-            setTimeout(() => {
-                if (errorDiv.parentNode) {
-                    errorDiv.parentNode.removeChild(errorDiv);
-                }
-            }, 500);
-        }, 5000);
     }
 
     initializeAnimations() {
