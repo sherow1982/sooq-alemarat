@@ -61,7 +61,7 @@ class ShoppingCart {
                 bottom: 100px;
                 left: 24px;
                 z-index: 1002;
-                background: var(--gradient-gold);
+                background: linear-gradient(135deg, #d4af37, #b8941f);
                 color: white;
                 width: 70px;
                 height: 70px;
@@ -70,7 +70,7 @@ class ShoppingCart {
                 align-items: center;
                 justify-content: center;
                 cursor: pointer;
-                box-shadow: var(--shadow-gold);
+                box-shadow: 0 8px 25px rgba(212, 175, 55, 0.4);
                 transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
                 animation: floatCart 4s ease-in-out infinite;
                 user-select: none;
@@ -79,8 +79,8 @@ class ShoppingCart {
 
             .cart-float:hover {
                 transform: scale(1.2) translateY(-8px) rotateZ(-10deg);
-                box-shadow: var(--shadow-premium);
-                background: var(--gradient-royal);
+                box-shadow: 0 15px 40px rgba(212, 175, 55, 0.6);
+                background: linear-gradient(135deg, #1e40af, #3b82f6);
                 animation: none;
             }
 
@@ -135,7 +135,7 @@ class ShoppingCart {
                 bottom: 180px;
                 left: 24px;
                 z-index: 1002;
-                background: var(--gradient-sky);
+                background: linear-gradient(135deg, #87ceeb, #4682b4);
                 color: white;
                 width: 60px;
                 height: 60px;
@@ -163,7 +163,7 @@ class ShoppingCart {
             .scroll-to-top:hover {
                 transform: scale(1.2) translateY(-8px) rotateZ(15deg);
                 box-shadow: 0 15px 40px rgba(135, 206, 235, 0.6);
-                background: linear-gradient(135deg, #4682B4 0%, #1E90FF 100%);
+                background: linear-gradient(135deg, #4682B4, #1E90FF);
             }
 
             /* شريط السلة الجانبي */
@@ -174,7 +174,7 @@ class ShoppingCart {
                 width: 450px;
                 height: 100vh;
                 background: 
-                    linear-gradient(135deg, var(--pearl-white) 0%, var(--cream-white) 100%),
+                    linear-gradient(135deg, #fefcfb 0%, #f9f7f4 100%),
                     radial-gradient(circle at 50% 0%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
                 backdrop-filter: blur(30px);
                 box-shadow: 8px 0 40px rgba(0, 0, 0, 0.2);
@@ -182,7 +182,7 @@ class ShoppingCart {
                 transition: left 0.5s cubic-bezier(0.25, 0.46, 0.45, 0.94);
                 display: flex;
                 flex-direction: column;
-                border-right: 3px solid var(--gold-primary);
+                border-right: 3px solid #d4af37;
             }
 
             .cart-sidebar.open {
@@ -210,7 +210,7 @@ class ShoppingCart {
 
             .cart-header {
                 padding: 2.5rem;
-                background: var(--gradient-gold);
+                background: linear-gradient(135deg, #d4af37, #b8941f);
                 color: white;
                 position: relative;
                 box-shadow: 0 6px 25px rgba(212, 175, 55, 0.4);
@@ -263,7 +263,7 @@ class ShoppingCart {
                 border: 2px solid rgba(212, 175, 55, 0.2);
                 border-radius: 20px;
                 margin-bottom: 1.2rem;
-                background: var(--bg-card);
+                background: white;
                 box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
                 transition: all 0.3s ease;
             }
@@ -271,7 +271,7 @@ class ShoppingCart {
             .cart-item:hover {
                 transform: translateY(-3px);
                 box-shadow: 0 8px 30px rgba(212, 175, 55, 0.2);
-                border-color: var(--gold-primary);
+                border-color: #d4af37;
             }
 
             .cart-item-image {
@@ -279,7 +279,7 @@ class ShoppingCart {
                 height: 70px;
                 border-radius: 15px;
                 object-fit: cover;
-                border: 3px solid var(--gold-light);
+                border: 3px solid rgba(212, 175, 55, 0.3);
                 box-shadow: 0 4px 15px rgba(212, 175, 55, 0.3);
             }
 
@@ -291,14 +291,14 @@ class ShoppingCart {
                 font-size: 1rem;
                 font-weight: 700;
                 margin-bottom: 0.4rem;
-                color: var(--text-primary);
+                color: #111827;
                 line-height: 1.3;
             }
 
             .cart-item-price {
                 font-size: 1.1rem;
                 font-weight: 800;
-                background: var(--gradient-gold);
+                background: linear-gradient(135deg, #d4af37, #b8941f);
                 background-clip: text;
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
@@ -314,9 +314,9 @@ class ShoppingCart {
             .quantity-btn {
                 width: 35px;
                 height: 35px;
-                border: 2px solid var(--gold-primary);
+                border: 2px solid #d4af37;
                 background: white;
-                color: var(--gold-primary);
+                color: #d4af37;
                 border-radius: 50%;
                 cursor: pointer;
                 display: flex;
@@ -329,7 +329,7 @@ class ShoppingCart {
             }
 
             .quantity-btn:hover {
-                background: var(--gradient-gold);
+                background: linear-gradient(135deg, #d4af37, #b8941f);
                 color: white;
                 transform: scale(1.15);
                 box-shadow: 0 6px 20px rgba(212, 175, 55, 0.4);
@@ -337,7 +337,7 @@ class ShoppingCart {
 
             .cart-quantity {
                 font-weight: 800;
-                color: var(--text-primary);
+                color: #111827;
                 min-width: 25px;
                 text-align: center;
                 font-size: 1.1rem;
@@ -366,7 +366,7 @@ class ShoppingCart {
             .cart-footer {
                 padding: 2rem;
                 background: 
-                    var(--gradient-pearl),
+                    linear-gradient(135deg, #fefcfb 0%, #f9f7f4 100%),
                     radial-gradient(circle at 50% 100%, rgba(212, 175, 55, 0.1) 0%, transparent 50%);
                 border-top: 2px solid rgba(212, 175, 55, 0.3);
                 box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.1);
@@ -381,19 +381,19 @@ class ShoppingCart {
                 background: white;
                 border-radius: 20px;
                 box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
-                border: 3px solid var(--gold-light);
+                border: 3px solid rgba(212, 175, 55, 0.3);
             }
 
             .cart-total-label {
                 font-size: 1.2rem;
                 font-weight: 800;
-                color: var(--text-primary);
+                color: #111827;
             }
 
             .cart-total-price {
                 font-size: 1.8rem;
                 font-weight: 900;
-                background: var(--gradient-gold);
+                background: linear-gradient(135deg, #d4af37, #b8941f);
                 background-clip: text;
                 -webkit-background-clip: text;
                 -webkit-text-fill-color: transparent;
@@ -404,7 +404,7 @@ class ShoppingCart {
             .checkout-btn {
                 width: 100%;
                 padding: 1.6rem;
-                background: var(--gradient-gold);
+                background: linear-gradient(135deg, #d4af37, #b8941f);
                 color: white;
                 border: none;
                 border-radius: 25px;
@@ -441,7 +441,7 @@ class ShoppingCart {
             .checkout-btn:hover {
                 transform: translateY(-5px) scale(1.02);
                 box-shadow: 0 15px 50px rgba(212, 175, 55, 0.6);
-                background: var(--gradient-royal);
+                background: linear-gradient(135deg, #1e40af, #3b82f6);
                 border-color: rgba(255, 255, 255, 0.5);
             }
 
@@ -457,8 +457,8 @@ class ShoppingCart {
             .empty-cart {
                 text-align: center;
                 padding: 4rem 2rem;
-                color: var(--text-secondary);
-                background: var(--bg-card);
+                color: #6b7280;
+                background: white;
                 border-radius: 20px;
                 border: 2px solid rgba(212, 175, 55, 0.1);
             }
@@ -474,12 +474,12 @@ class ShoppingCart {
                 font-size: 1.5rem;
                 font-weight: 700;
                 margin-bottom: 0.8rem;
-                color: var(--text-primary);
+                color: #111827;
             }
 
             .empty-cart p {
                 font-size: 1.1rem;
-                color: var(--text-secondary);
+                color: #6b7280;
                 margin-bottom: 2rem;
             }
 
@@ -512,11 +512,11 @@ class ShoppingCart {
             }
 
             @keyframes cartSuccessLuxury {
-                0% { transform: scale(1); background: var(--gradient-gold); }
-                25% { transform: scale(1.3) rotate(15deg); background: var(--gradient-emerald); }
-                50% { transform: scale(1.1) rotate(-10deg); background: var(--gradient-gold); }
-                75% { transform: scale(1.2) rotate(5deg); background: var(--gradient-emerald); }
-                100% { transform: scale(1); background: var(--gradient-gold); }
+                0% { transform: scale(1); background: linear-gradient(135deg, #d4af37, #b8941f); }
+                25% { transform: scale(1.3) rotate(15deg); background: linear-gradient(135deg, #10b981, #059669); }
+                50% { transform: scale(1.1) rotate(-10deg); background: linear-gradient(135deg, #d4af37, #b8941f); }
+                75% { transform: scale(1.2) rotate(5deg); background: linear-gradient(135deg, #10b981, #059669); }
+                100% { transform: scale(1); background: linear-gradient(135deg, #d4af37, #b8941f); }
             }
         `;
         document.head.appendChild(styles);
@@ -542,37 +542,57 @@ class ShoppingCart {
         document.addEventListener('click', (e) => {
             if (e.target.matches('.add-to-cart') || e.target.closest('.add-to-cart')) {
                 const btn = e.target.matches('.add-to-cart') ? e.target : e.target.closest('.add-to-cart');
-                const productId = btn.dataset.productId || btn.getAttribute('data-product-id');
+                const productCard = btn.closest('[data-product-id]');
+                const productId = productCard?.getAttribute('data-product-id') || 
+                                btn.getAttribute('data-product-id') ||
+                                btn.getAttribute('onclick')?.match(/addToCart\w*\('([^']+)'\)/)?.[1];
+                
                 if (productId) {
                     e.preventDefault();
                     e.stopPropagation();
+                    console.log(`🔍 Attempting to add product: ${productId}`);
                     this.addToCart(productId);
+                } else {
+                    console.warn('⚠️ No product ID found for add to cart button');
                 }
             }
         });
+
+        // ربط الدوال العامة مع المثيل
+        window.addToCartGlobal = (productId) => this.addToCart(productId);
+        window.addToCartFromCategory = (productId) => this.addToCart(productId);
+        window.addToCartFromProduct = () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const productId = urlParams.get('id');
+            if (productId) {
+                this.addToCart(productId);
+            } else {
+                this.showNotification('خطأ: لم يتم تحديد المنتج', 'error');
+            }
+        };
     }
 
-    // إضافة منتج للسلة
-    addToCart(productId) {
+    // إضافة منتج للسلة - محدثة مع ربط أفضل بالبيانات
+    async addToCart(productId) {
         try {
             console.log(`🛒 محاولة إضافة منتج: ${productId}`);
             
             // الحصول على بيانات المنتج
-            const product = this.getProductById(productId);
+            const product = await this.getProductById(productId);
             if (!product) {
                 this.showNotification('خطأ: لم يتم العثور على بيانات المنتج', 'error');
                 return;
             }
 
             // فحص وجود العنصر
-            const existingItem = this.items.find(item => item.id === productId);
+            const existingItem = this.items.find(item => item.id === productId.toString());
 
             if (existingItem) {
                 existingItem.quantity += 1;
                 this.showNotification(`تم زيادة عدد "${product.title}" في السلة ✅`, 'success');
             } else {
                 const cartItem = {
-                    id: product.id,
+                    id: productId.toString(),
                     title: product.title,
                     price: product.sale_price || product.regular_price || 0,
                     image: product.image_url || 'https://via.placeholder.com/70x70/D4AF37/FFFFFF?text=صورة',
@@ -595,27 +615,77 @@ class ShoppingCart {
         }
     }
 
-    // الحصول على بيانات المنتج
-    getProductById(productId) {
-        // محاولة الحصول من المتغير العام
-        if (window.productsData && Array.isArray(window.productsData)) {
-            const product = window.productsData.find(p => p.id == productId);
-            if (product) return product;
+    // الحصول على بيانات المنتج - محدثة ومحسنة
+    async getProductById(productId) {
+        // محاولة الحصول من المتغير العام أولاً
+        if (window.allProducts && Array.isArray(window.allProducts)) {
+            const product = window.allProducts.find(p => p.id == productId);
+            if (product) {
+                console.log(`✅ Found product in window.allProducts: ${product.title}`);
+                return product;
+            }
         }
 
         // محاولة مع فئة الصفحة الرئيسية
+        if (window.categoryProducts && Array.isArray(window.categoryProducts)) {
+            const product = window.categoryProducts.find(p => p.id == productId);
+            if (product) {
+                console.log(`✅ Found product in window.categoryProducts: ${product.title}`);
+                return product;
+            }
+        }
+
+        // محاولة مع المنتجات المفلترة
+        if (window.filteredProducts && Array.isArray(window.filteredProducts)) {
+            const product = window.filteredProducts.find(p => p.id == productId);
+            if (product) {
+                console.log(`✅ Found product in window.filteredProducts: ${product.title}`);
+                return product;
+            }
+        }
+
+        // محاولة مع بيانات الصفحة الرئيسية
         if (window.categoriesHomepage && window.categoriesHomepage.products) {
             const product = window.categoriesHomepage.products.find(p => p.id == productId);
-            if (product) return product;
+            if (product) {
+                console.log(`✅ Found product in homepage data: ${product.title}`);
+                return product;
+            }
+        }
+
+        // محاولة تحميل مباشر من ملف JSON
+        try {
+            console.log('📦 Loading product data from JSON...');
+            
+            const isInEnFolder = window.location.pathname.includes('/en/');
+            const dataPath = isInEnFolder ? '../data/uae-products.json' : './data/uae-products.json';
+            
+            const response = await fetch(dataPath);
+            if (!response.ok) {
+                throw new Error(`HTTP ${response.status}: Failed to fetch data`);
+            }
+            
+            const products = await response.json();
+            const product = products.find(p => p.id == productId);
+            
+            if (product) {
+                console.log(`✅ Found product via direct fetch: ${product.title}`);
+                // حفظ في الذاكرة للاستخدام المستقبلي
+                if (!window.allProducts) window.allProducts = products;
+                return product;
+            }
+        } catch (error) {
+            console.error('❌ Error fetching product data:', error);
         }
 
         // بيانات احتياطية
-        console.warn(`لم يتم العثور على بيانات المنتج: ${productId}`);
+        console.warn(`⚠️ لم يتم العثور على بيانات المنتج: ${productId}`);
         return {
             id: productId,
             title: 'منتج غير محدد',
-            price: 0,
-            image: 'https://via.placeholder.com/70x70/DAA520/FFFFFF?text=منتج',
+            regular_price: 0,
+            sale_price: 0,
+            image_url: 'https://via.placeholder.com/70x70/DAA520/FFFFFF?text=منتج',
             category: 'عام'
         };
     }
@@ -700,15 +770,15 @@ class ShoppingCart {
                         flex: 1;
                         padding: 0.8rem;
                         background: rgba(212, 175, 55, 0.1);
-                        color: var(--gold-primary);
-                        border: 2px solid var(--gold-primary);
+                        color: #d4af37;
+                        border: 2px solid #d4af37;
                         border-radius: 15px;
                         font-weight: 600;
                         text-decoration: none;
                         text-align: center;
                         transition: all 0.3s ease;
-                    " onmouseover="this.style.background='var(--gradient-gold)'; this.style.color='white';" 
-                       onmouseout="this.style.background='rgba(212, 175, 55, 0.1)'; this.style.color='var(--gold-primary)';">
+                    " onmouseover="this.style.background='linear-gradient(135deg, #d4af37, #b8941f)'; this.style.color='white';" 
+                       onmouseout="this.style.background='rgba(212, 175, 55, 0.1)'; this.style.color='#d4af37';">
                         📋 عرض مفصل
                     </a>
                 </div>
@@ -731,7 +801,7 @@ class ShoppingCart {
                     <button onclick="window.cart.closeCart()" style="
                         margin-top: 2rem;
                         padding: 1rem 2rem;
-                        background: var(--gradient-gold);
+                        background: linear-gradient(135deg, #d4af37, #b8941f);
                         color: white;
                         border: none;
                         border-radius: 20px;
@@ -860,7 +930,7 @@ class ShoppingCart {
     renderCheckoutItems(container) {
         if (this.items.length === 0) {
             container.innerHTML = `
-                <div style="text-align: center; padding: 3rem; color: var(--text-secondary);">
+                <div style="text-align: center; padding: 3rem; color: #6b7280;">
                     <div style="font-size: 3rem; margin-bottom: 1rem;">🛒</div>
                     <h4>لا توجد منتجات في السلة</h4>
                     <p>يرجى إضافة منتجات قبل إتمام الطلب</p>
@@ -868,7 +938,7 @@ class ShoppingCart {
                         display: inline-block;
                         margin-top: 1rem;
                         padding: 0.8rem 1.5rem;
-                        background: var(--gradient-gold);
+                        background: linear-gradient(135deg, #d4af37, #b8941f);
                         color: white;
                         text-decoration: none;
                         border-radius: 15px;
