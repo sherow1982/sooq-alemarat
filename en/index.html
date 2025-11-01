@@ -1,353 +1,251 @@
 <!DOCTYPE html>
 <html lang="en" dir="ltr">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Emirates Souq | Best Products & Exclusive Offers 2025</title>
-    <meta name="description" content="Discover the best products and exclusive offers at Emirates Souq. Electronics, home appliances, fashion, and more with fast delivery 1-3 business days and cash on delivery in UAE.">
-    
-    <!-- SEO Meta Tags -->
-    <meta name="keywords" content="online shopping, UAE, exclusive offers, electronics, home appliances, fashion, cash on delivery">
-    <meta name="robots" content="index, follow">
-    <meta name="author" content="Emirates Souq">
-    <link rel="canonical" href="https://sherow1982.github.io/sooq-alemarat/en/">
-    
-    <!-- Open Graph -->
-    <meta property="og:type" content="website">
-    <meta property="og:title" content="Emirates Souq | Best Products & Exclusive Offers">
-    <meta property="og:description" content="Discover the best products and exclusive offers at Emirates Souq. Electronics, home appliances, fashion, and more with fast delivery and cash on delivery.">
-    <meta property="og:url" content="https://sherow1982.github.io/sooq-alemarat/en/">
-    <meta property="og:site_name" content="Emirates Souq">
-    <meta property="og:locale" content="en_AE">
-    
-    <!-- Twitter Cards -->
-    <meta name="twitter:card" content="summary_large_image">
-    <meta name="twitter:title" content="Emirates Souq | Best Products & Exclusive Offers">
-    <meta name="twitter:description" content="Discover the best products and exclusive offers at Emirates Souq. Electronics, home appliances, fashion, and more.">
-    
-    <!-- Language Alternatives -->
-    <link rel="alternate" hreflang="ar-AE" href="https://sherow1982.github.io/sooq-alemarat/">
-    <link rel="alternate" hreflang="en-AE" href="https://sherow1982.github.io/sooq-alemarat/en/">
-    <link rel="alternate" hreflang="x-default" href="https://sherow1982.github.io/sooq-alemarat/">
-    
-    <!-- Favicon -->
-    <link rel="icon" type="image/x-icon" href="../assets/img/favicon.ico">
-    <link rel="apple-touch-icon" href="../assets/img/apple-touch-icon.png">
-    <link rel="manifest" href="../manifest.webmanifest">
-    
-    <!-- Fonts -->
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@100..900&display=swap" rel="stylesheet">
-    
-    <!-- Stylesheets -->
-    <link rel="stylesheet" href="../assets/css/base.css">
-    <link rel="stylesheet" href="../assets/css/theme-3d.css">
-    <link rel="stylesheet" href="../assets/css/responsive.css">
-    
-    <!-- English-specific styles -->
-    <style>
-        body {
-            font-family: var(--font-family-en);
-        }
-        .ltr-layout {
-            direction: ltr;
-            text-align: left;
-        }
-        .search-input::placeholder {
-            text-align: left;
-        }
-    </style>
-    
-    <!-- Service Worker -->
-    <script>
-        if ('serviceWorker' in navigator) {
-            navigator.serviceWorker.register('/sooq-alemarat/service-worker.js');
-        }
-    </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Emirates Souq | Best Products & Exclusive Offers 2025</title>
+  <meta name="description" content="Discover the best products and exclusive offers at Emirates Souq. Electronics, home appliances, fashion, and more with 1-3 days delivery and cash on delivery across the UAE." />
+  <link rel="canonical" href="https://sherow1982.github.io/sooq-alemarat/en/" />
+
+  <!-- Fonts -->
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700;800&display=swap" rel="stylesheet" />
+
+  <!-- Unify theme with Arabic site -->
+  <link rel="stylesheet" href="../css/improved-theme.css" />
+  <style>
+    body { font-family: 'Inter', system-ui, -apple-system, Segoe UI, Roboto, 'Helvetica Neue', Arial, 'Noto Sans', 'Liberation Sans', sans-serif; }
+    .ltr { direction: ltr; text-align: left; }
+    .hero-section { text-align: left; }
+    .section-title { text-align: left; }
+  </style>
 </head>
-<body class="ltr-layout">
-    <!-- Header -->
-    <header class="main-header glass-effect">
-        <div class="container">
-            <div class="header-content">
-                <div class="logo-section">
-                    <h1 class="logo">🛒 Emirates Souq</h1>
-                    <p class="tagline">Best Deals in the United Arab Emirates</p>
-                </div>
-                
-                <div class="search-container">
-                    <div class="search-wrapper floating-3d">
-                        <input type="text" id="searchInput" placeholder="Search for your favorite products..." class="search-input">
-                        <button class="search-btn" onclick="performSearch()">
-                            <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M15.5 14h-.79l-.28-.27A6.471 6.471 0 0 0 16 9.5 6.5 6.5 0 1 0 9.5 16c1.61 0 3.09-.59 4.23-1.57l.27.28v.79l5 4.99L20.49 19l-4.99-5zm-6 0C7.01 14 5 11.99 5 9.5S7.01 5 9.5 5 14 7.01 14 9.5 11.99 14 9.5 14z"/>
-                            </svg>
-                        </button>
-                    </div>
-                </div>
-                
-                <div class="header-actions">
-                    <div class="language-switcher">
-                        <a href="../" class="lang-btn floating-3d">عربي</a>
-                    </div>
-                    <div class="shipping-info">
-                        <span class="shipping-badge">🚚 Fast Shipping 1-3 Days</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </header>
-    
-    <!-- Hero Section -->
-    <section class="hero-section">
-        <div class="hero-3d-bg">
-            <canvas id="heroCanvas" class="hero-canvas"></canvas>
-            <div class="hero-overlay"></div>
-        </div>
-        <div class="container">
-            <div class="hero-content">
-                <h2 class="hero-title animate-slide-up">Welcome to Emirates Souq</h2>
-                <p class="hero-subtitle animate-slide-up delay-1">Discover thousands of products at the best prices with fast shipping and cash on delivery</p>
-                <div class="hero-features animate-slide-up delay-2">
-                    <div class="feature-badge">
-                        <span class="icon">✅</span>
-                        <span class="text">Cash on Delivery</span>
-                    </div>
-                    <div class="feature-badge">
-                        <span class="icon">🚚</span>
-                        <span class="text">Free Shipping over AED 100</span>
-                    </div>
-                    <div class="feature-badge">
-                        <span class="icon">↩️</span>
-                        <span class="text">Free Returns within 14 days</span>
-                    </div>
-                    <div class="feature-badge">
-                        <span class="icon">🇦🇪</span>
-                        <span class="text">UAE Compliant Standards</span>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Categories Section -->
-    <section class="categories-section">
-        <div class="container">
-            <h2 class="section-title">Shop by Category</h2>
-            <div class="categories-grid" id="categoriesGrid">
-                <!-- Categories will be loaded dynamically -->
-            </div>
-        </div>
-    </section>
-    
-    <!-- Featured Products Section -->
-    <section class="products-section">
-        <div class="container">
-            <h2 class="section-title">Featured Products</h2>
-            <div class="products-grid" id="productsGrid">
-                <!-- Products will be loaded dynamically -->
-            </div>
-            <div class="load-more-section">
-                <button class="btn-load-more floating-3d" onclick="loadMoreProducts()">Load More Products</button>
-            </div>
-        </div>
-    </section>
-    
-    <!-- Footer -->
-    <footer class="main-footer">
-        <div class="container">
-            <div class="footer-content">
-                <div class="footer-section">
-                    <h3 class="footer-title">Emirates Souq</h3>
-                    <p class="footer-description">Your trusted platform for online shopping in the United Arab Emirates</p>
-                </div>
-                
-                <div class="footer-section">
-                    <h4 class="footer-subtitle">Customer Service</h4>
-                    <ul class="footer-links">
-                        <li><a href="#">Contact Us</a></li>
-                        <li><a href="#">FAQ</a></li>
-                        <li><a href="#">Return Policy</a></li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4 class="footer-subtitle">Shipping Information</h4>
-                    <ul class="footer-info">
-                        <li>⏱️ Delivery: 1-3 business days</li>
-                        <li>💰 Cash on delivery available</li>
-                        <li>📦 Free shipping for orders over AED 100</li>
-                        <li>↩️ Free returns within 14 days</li>
-                    </ul>
-                </div>
-                
-                <div class="footer-section">
-                    <h4 class="footer-subtitle">Follow Us</h4>
-                    <div class="social-links">
-                        <a href="#" class="social-link">📘 Facebook</a>
-                        <a href="#" class="social-link">📷 Instagram</a>
-                        <a href="#" class="social-link">🐦 Twitter</a>
-                    </div>
-                </div>
-            </div>
-            
-            <div class="footer-bottom">
-                <p>&copy; 2025 Emirates Souq. All rights reserved.</p>
-                <div class="footer-links">
-                    <a href="#">Terms & Conditions</a> |
-                    <a href="#">Privacy Policy</a> |
-                    <a href="../">عربي</a>
-                </div>
-            </div>
-        </div>
-    </footer>
-    
-    <!-- Promotional Popup -->
-    <div id="promoPopup" class="promo-popup hidden">
-        <div class="popup-content floating-3d">
-            <button class="popup-close" onclick="closePromoPopup()">&times;</button>
-            <div class="popup-header">
-                <h3>🎉 Special Offer!</h3>
-                <p>Extra discount on all products</p>
-            </div>
-            <div class="popup-body">
-                <div class="offer-text">Free Shipping + Cash on Delivery</div>
-                <button class="popup-cta" onclick="closePromoPopup()">Shop Now</button>
-            </div>
-        </div>
-        <div class="popup-overlay" onclick="closePromoPopup()"></div>
+<body class="ltr">
+  <!-- Header -->
+  <header class="header">
+    <div class="container">
+      <div class="header-content">
+        <a href="./" class="logo">
+          <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/b1f430c1-8aa0-4082-8bec-59935fddfaa2.png" alt="Emirates Souq" style="height: 40px; margin-right: 12px;" />
+          <span>Emirates Souq</span>
+        </a>
+        <nav>
+          <ul class="nav-list">
+            <li><a href="#categories">Categories</a></li>
+            <li><a href="#featured">Featured</a></li>
+            <li><a href="../cart.html" target="_blank">Cart</a></li>
+            <li><a href="../">العربية</a></li>
+            <li><a href="../legal/terms.html" target="_blank">Terms</a></li>
+            <li><a href="../legal/privacy.html" target="_blank">Privacy</a></li>
+            <li><a href="../legal/shipping.html" target="_blank">Shipping</a></li>
+            <li><a href="../legal/returns.html" target="_blank">Returns</a></li>
+          </ul>
+        </nav>
+      </div>
     </div>
-    
-    <!-- Loading Spinner -->
-    <div id="loadingSpinner" class="loading-spinner hidden">
-        <div class="spinner-3d"></div>
-        <p>Loading...</p>
+  </header>
+
+  <!-- Hero -->
+  <section class="hero-section">
+    <div class="container">
+      <h1 class="hero-title">Welcome to Emirates Souq</h1>
+      <p class="hero-description">Thousands of products at the best prices with fast shipping and cash on delivery across the UAE.</p>
+      <div class="search-box">
+        <input type="search" id="en-search" class="search-input" placeholder="Search products..." />
+        <button class="search-btn" id="en-search-btn">🔍</button>
+      </div>
     </div>
-    
-    <!-- Scripts -->
-    <script src="../assets/js/data-loader.js"></script>
-    <script src="../assets/js/router.js"></script>
-    <script src="../assets/js/seo.js"></script>
-    <script src="../assets/js/i18n.js"></script>
-    
-    <!-- JSON-LD Structured Data -->
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "WebSite",
-        "name": "Emirates Souq",
-        "url": "https://sherow1982.github.io/sooq-alemarat/en/",
-        "potentialAction": {
-            "@type": "SearchAction",
-            "target": {
-                "@type": "EntryPoint",
-                "urlTemplate": "https://sherow1982.github.io/sooq-alemarat/en/?q={search_term_string}"
-            },
-            "query-input": "required name=search_term_string"
-        },
-        "inLanguage": ["en-AE", "ar-AE"]
+  </section>
+
+  <!-- Categories -->
+  <section id="categories" class="section">
+    <div class="container">
+      <h2 class="section-title">Shop by Category</h2>
+      <div class="categories-grid" id="en-categories-container">
+        <div class="loading"><div class="loading-spinner"></div><h3>Loading categories...</h3></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products -->
+  <section id="featured" class="section">
+    <div class="container">
+      <div class="tabs-nav">
+        <button class="tab-btn active" data-tab="en-featured">Featured (AED 300+)</button>
+        <button class="tab-btn" data-tab="en-all">All Products</button>
+      </div>
+
+      <div class="tab-content active" id="en-featured">
+        <div class="products-grid" id="en-featured-container">
+          <div class="loading"><div class="loading-spinner"></div><h3>Loading featured products...</h3></div>
+        </div>
+      </div>
+
+      <div class="tab-content" id="en-all">
+        <div class="products-grid" id="en-all-container">
+          <div class="loading"><div class="loading-spinner"></div><h3>Loading all products...</h3></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-content">
+        <div class="footer-section">
+          <h3>Emirates Souq</h3>
+          <p>Leading digital shopping experience in the UAE.</p>
+        </div>
+        <div class="footer-section">
+          <h3>Links</h3>
+          <div>
+            <a href="../legal/terms.html" target="_blank">Terms</a><br />
+            <a href="../legal/privacy.html" target="_blank">Privacy</a><br />
+            <a href="../legal/shipping.html" target="_blank">Shipping</a><br />
+            <a href="../legal/returns.html" target="_blank">Returns</a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Contact</h3>
+          <div>
+            <a href="https://wa.me/201110760081" target="_blank">WhatsApp</a><br />
+            <a href="tel:+201110760081">Call</a><br />
+            <a href="../cart.html" target="_blank">Cart</a>
+          </div>
+        </div>
+        <div class="footer-section">
+          <h3>Our Services</h3>
+          <div>🚚 Free Shipping<br />💰 Cash on Delivery<br />🔄 7-day Returns<br />⭐ 24/7 Support</div>
+        </div>
+      </div>
+      <div style="border-top:1px solid #666; padding-top:1.5rem; margin-top:1.5rem; text-align:left;">
+        <p>&copy; 2025 Emirates Souq. All rights reserved.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Floating WhatsApp -->
+  <a href="https://wa.me/201110760081?text=Hello%2C%20I%20want%20to%20contact%20Emirates%20Souq%20team" class="whatsapp-float" target="_blank" title="WhatsApp">📱</a>
+
+  <script src="../js/cart.js"></script>
+  <script>
+    // Load Arabic data and render in English UI
+    const DATA_SRC = '../data/uae-products.json';
+    const FEATURED_PRICE = 300;
+
+    function priceOf(p){ return Number(p.sale_price || p.regular_price || 0); }
+
+    function createCategorySlug(name){
+      return name.replace(/\s+/g,'-').replace(/[^\w\-\u0600-\u06FF]/g,'').replace(/--+/g,'-');
     }
-    </script>
-    
-    <script type="application/ld+json">
-    {
-        "@context": "https://schema.org",
-        "@type": "Organization",
-        "name": "Emirates Souq",
-        "description": "Leading e-commerce platform in the United Arab Emirates",
-        "url": "https://sherow1982.github.io/sooq-alemarat/en/",
-        "logo": "https://sherow1982.github.io/sooq-alemarat/assets/img/logo.png",
-        "sameAs": [],
-        "address": {
-            "@type": "PostalAddress",
-            "addressCountry": "AE",
-            "addressRegion": "Dubai"
-        },
-        "areaServed": "AE",
-        "currenciesAccepted": "AED",
-        "priceRange": "$$"
+
+    function renderCategories(products){
+      const container = document.getElementById('en-categories-container');
+      const counts = {};
+      products.forEach(p=>{ counts[p.category] = (counts[p.category]||0)+1; });
+      const entries = Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+      container.innerHTML='';
+      entries.forEach(([name,count])=>{
+        const slug = createCategorySlug(name);
+        const titleEn = name; // keep Arabic category labels; UI is English
+        const card = document.createElement('div');
+        card.className='category-card';
+        card.setAttribute('data-category', name);
+        card.innerHTML = `
+          <div class="category-icon">🏷️</div>
+          <h3 class="category-name">${titleEn}</h3>
+          <div class="category-count">${count} products</div>
+        `;
+        card.onclick = ()=>{
+          // open Arabic SEO category pages for consistency
+          window.open('../'+(window.getCategoryPage?window.getCategoryPage(name):'miscellaneous-products.html'),'_blank','noopener');
+        };
+        container.appendChild(card);
+      });
     }
-    </script>
-    
-    <!-- Initialize App -->
-    <script>
-        // Initialize the application
-        document.addEventListener('DOMContentLoaded', function() {
-            initializeApp();
-            setupPromoPopup();
-            setup3DCanvas();
+
+    function productCard(p){
+      const current = priceOf(p);
+      const original = p.sale_price && p.regular_price>p.sale_price ? `<span class="original-price">${p.regular_price} AED</span>` : '';
+      const title = p.title.length>60 ? p.title.slice(0,60)+'…' : p.title;
+      const img = p.image_url || 'https://via.placeholder.com/400x300/1e40af/FFFFFF?text=Product';
+      const wMsg = `Hello, I'm interested in: ${p.title} (Price: ${current} AED)`;
+      return `
+        <div class="product-card" data-product-id="${p.id}">
+          <div class="product-image" style="cursor:pointer;" onclick="openProduct('${p.id}')">
+            <img src="${img}" alt="${title}" loading="lazy" onerror="this.src='https://via.placeholder.com/400x300/1e40af/FFFFFF?text=Product'" />
+          </div>
+          <div class="product-info">
+            <div class="product-category">${p.category}</div>
+            <h3 class="product-title" onclick="openProduct('${p.id}')" style="cursor:pointer;">${title}</h3>
+            <div class="product-price">
+              <span class="current-price">${current} AED</span>
+              ${original}
+            </div>
+            <div class="product-actions">
+              <button class="btn add-to-cart" onclick="addToCart('${p.id}', '${p.title.replace(/"/g,'&quot;')}', ${current}, '${img.replace(/"/g,'&quot;')}')">🛒 Add</button>
+              <a class="btn whatsapp-btn" href="https://wa.me/201110760081?text=${encodeURIComponent(wMsg)}" target="_blank" rel="noopener">📱 WhatsApp</a>
+              <button class="btn view-details" onclick="openProduct('${p.id}')">👁 View</button>
+            </div>
+          </div>
+        </div>`;
+    }
+
+    function openProduct(id){ window.open('../product.html?id='+encodeURIComponent(id), '_blank', 'noopener'); }
+
+    function addToCart(id,title,price,image){
+      const key='emirates_cart';
+      const items = JSON.parse(localStorage.getItem(key)||'[]');
+      const it = items.find(i=>i.id==id);
+      if(it){ it.quantity=(it.quantity||1)+1; } else { items.push({id,title,price,image,quantity:1,addedAt:Date.now()}); }
+      localStorage.setItem(key, JSON.stringify(items));
+    }
+
+    async function loadData(){
+      const res = await fetch(DATA_SRC);
+      const data = await res.json();
+      return data.map(p=>({ ...p, sale_price: Number(p.sale_price||0), regular_price: Number(p.regular_price||0) }));
+    }
+
+    function renderProducts(data){
+      const featured = data.filter(p=>priceOf(p)>=FEATURED_PRICE).slice(0,12);
+      const enFeatured = document.getElementById('en-featured-container');
+      const enAll = document.getElementById('en-all-container');
+      enFeatured.innerHTML = featured.map(productCard).join('');
+      enAll.innerHTML = data.sort((a,b)=>a.title.localeCompare(b.title,'ar')).map(productCard).join('');
+    }
+
+    document.addEventListener('DOMContentLoaded', async ()=>{
+      // load category routing from Arabic if available
+      const script = document.createElement('script');
+      script.src = '../js/category-routing.js';
+      document.head.appendChild(script);
+
+      const data = await loadData();
+      renderCategories(data);
+      renderProducts(data);
+
+      // tabs
+      document.querySelectorAll('.tab-btn').forEach(btn=>{
+        btn.addEventListener('click',()=>{
+          document.querySelectorAll('.tab-btn').forEach(b=>b.classList.remove('active'));
+          document.querySelectorAll('.tab-content').forEach(c=>c.classList.remove('active'));
+          btn.classList.add('active');
+          document.getElementById(btn.dataset.tab).classList.add('active');
         });
-        
-        // Search functionality
-        function performSearch() {
-            const query = document.getElementById('searchInput').value.trim();
-            if (query) {
-                window.location.href = `?q=${encodeURIComponent(query)}`;
-            }
-        }
-        
-        // Enter key search
-        document.getElementById('searchInput').addEventListener('keypress', function(e) {
-            if (e.key === 'Enter') {
-                performSearch();
-            }
-        });
-        
-        // Promo popup functionality
-        let promoShown = false;
-        
-        function setupPromoPopup() {
-            if (!promoShown) {
-                setTimeout(showPromoPopup, 20000); // Show after 20 seconds
-            }
-        }
-        
-        function showPromoPopup() {
-            if (!promoShown) {
-                document.getElementById('promoPopup').classList.remove('hidden');
-                promoShown = true;
-                // Show again after 20 seconds
-                setTimeout(() => {
-                    promoShown = false;
-                    setupPromoPopup();
-                }, 20000);
-            }
-        }
-        
-        function closePromoPopup() {
-            document.getElementById('promoPopup').classList.add('hidden');
-        }
-        
-        // Simple 3D canvas setup
-        function setup3DCanvas() {
-            const canvas = document.getElementById('heroCanvas');
-            const ctx = canvas.getContext('2d');
-            
-            function resizeCanvas() {
-                canvas.width = canvas.offsetWidth;
-                canvas.height = canvas.offsetHeight;
-            }
-            
-            function animate() {
-                ctx.clearRect(0, 0, canvas.width, canvas.height);
-                
-                // Simple animated gradient background
-                const gradient = ctx.createLinearGradient(0, 0, canvas.width, canvas.height);
-                const time = Date.now() * 0.001;
-                gradient.addColorStop(0, `hsl(${200 + Math.sin(time) * 20}, 70%, 60%)`);
-                gradient.addColorStop(1, `hsl(${280 + Math.cos(time) * 20}, 70%, 40%)`);
-                
-                ctx.fillStyle = gradient;
-                ctx.fillRect(0, 0, canvas.width, canvas.height);
-                
-                requestAnimationFrame(animate);
-            }
-            
-            resizeCanvas();
-            window.addEventListener('resize', resizeCanvas);
-            animate();
-        }
-    </script>
+      });
+
+      // search
+      document.getElementById('en-search-btn').addEventListener('click', doSearch);
+      document.getElementById('en-search').addEventListener('keypress', (e)=>{ if(e.key==='Enter') doSearch(); });
+      function doSearch(){
+        const q = (document.getElementById('en-search').value||'').trim();
+        if(!q||q.length<2) return;
+        const results = data.filter(p=> (p.title+" "+(p.description||"")).toLowerCase().includes(q.toLowerCase()));
+        document.querySelector('[data-tab="en-all"]').click();
+        document.getElementById('en-all-container').innerHTML = results.map(productCard).join('') || '<p>No results found.</p>';
+      }
+    });
+  </script>
 </body>
 </html>
