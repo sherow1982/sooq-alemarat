@@ -1,4 +1,7 @@
-// ===== Fixed JavaScript for Categories and Products Navigation =====
+/**
+ * نظام إدارة المنتجات والفئات للصفحة الرئيسية
+ * Homepage Products and Categories Management System
+ */
 
 class CategoriesHomepage3DFixed {
     constructor() {
@@ -7,6 +10,7 @@ class CategoriesHomepage3DFixed {
         this.featuredProducts = [];
         this.FEATURED_PRICE_THRESHOLD = 300;
         this.isLoading = false;
+        this.currentFilter = null;
         
         this.initializeApp();
         this.setupEventListeners();
@@ -18,6 +22,8 @@ class CategoriesHomepage3DFixed {
         console.log('🚀 Categories Homepage 3D Fixed - Loading...');
         this.initializeAnimations();
         this.updateWhatsAppLinks();
+        this.addScrollEffects();
+        this.addParticles();
     }
 
     setupEventListeners() {
@@ -30,6 +36,16 @@ class CategoriesHomepage3DFixed {
                 if (e.key === 'Enter') {
                     this.performSearch();
                 }
+            });
+            
+            // Real-time search
+            searchInput.addEventListener('input', () => {
+                clearTimeout(this.searchTimeout);
+                this.searchTimeout = setTimeout(() => {
+                    if (searchInput.value.trim().length > 2) {
+                        this.performSearch();
+                    }
+                }, 500);
             });
         }
         
@@ -45,24 +61,35 @@ class CategoriesHomepage3DFixed {
                 this.switchTab(e.target.dataset.tab, e.target);
             }
             
-            // Category card clicks - FIXED: Opens products in same page with category filter
+            // Category card clicks - Shows products in same page with filter
             if (e.target.closest('.category-card')) {
                 const categoryCard = e.target.closest('.category-card');
                 const categoryName = categoryCard.dataset.category;
-                this.viewCategory(categoryName);
+                if (categoryName) {
+                    this.viewCategory(categoryName);
+                }
             }
             
-            // Product actions
-            if (e.target.matches('.whatsapp-btn') || e.target.closest('.whatsapp-btn')) {
-                const btn = e.target.matches('.whatsapp-btn') ? e.target : e.target.closest('.whatsapp-btn');
-                const productId = btn.dataset.productId;
-                this.sendWhatsAppInquiry(productId);
+            // Product image and title clicks - Open product details
+            if (e.target.matches('.product-image') || e.target.closest('.product-image') || 
+                e.target.matches('.product-title') || e.target.closest('.product-title')) {
+                const productCard = e.target.closest('.product-card');
+                if (productCard) {
+                    const productId = productCard.dataset.productId;
+                    this.viewProductDetails(productId);
+                }
             }
             
+            // View details button
             if (e.target.matches('.view-details') || e.target.closest('.view-details')) {
                 const btn = e.target.matches('.view-details') ? e.target : e.target.closest('.view-details');
-                const productId = btn.dataset.productId;
+                const productId = btn.dataset.productId || btn.closest('.product-card').dataset.productId;
                 this.viewProductDetails(productId);
+            }
+            
+            // Back to categories button
+            if (e.target.id === 'back-to-categories' || e.target.closest('#back-to-categories')) {
+                this.resetView();
             }
         });
     }
@@ -76,9 +103,7 @@ class CategoriesHomepage3DFixed {
             // Try multiple data sources
             const dataSources = [
                 './data/uae-products.json',
-                './data/products.json',
-                'data/uae-products.json',
-                'uae-products.json'
+                'data/uae-products.json'
             ];
             
             let rawProducts = null;
@@ -123,6 +148,9 @@ class CategoriesHomepage3DFixed {
                 image_url: this.getWorkingImageUrl(product)
             }));
             
+            // Make products available globally for cart
+            window.productsData = this.products;
+            
             console.log(`✅ تم تحميل ${this.products.length} منتج بنجاح من ${loadedFrom}`);
             
             // Process categories and featured products
@@ -133,7 +161,8 @@ class CategoriesHomepage3DFixed {
                 this.hideLoadingState();
                 this.renderCategories();
                 this.renderFeaturedProducts();
-            }, 1500);
+                this.renderAllProducts();
+            }, 1000);
             
         } catch (error) {
             console.error('❌ خطأ في تحميل المنتجات:', error);
@@ -146,44 +175,6 @@ class CategoriesHomepage3DFixed {
         }
     }
 
-    // Get working image URL with multiple fallbacks
-    getWorkingImageUrl(product) {
-        const originalUrl = product.image_url;
-        
-        // If no URL or invalid URL, create a placeholder based on product name
-        if (!originalUrl || typeof originalUrl !== 'string' || originalUrl.length < 10) {
-            return this.createProductPlaceholder(product.title);
-        }
-        
-        // Check if URL is accessible (basic validation)
-        if (originalUrl.startsWith('http')) {
-            return originalUrl;
-        }
-        
-        // If relative URL, make it absolute
-        if (originalUrl.startsWith('./') || originalUrl.startsWith('/')) {
-            return window.location.origin + originalUrl.replace('./', '/');
-        }
-        
-        // Otherwise return placeholder
-        return this.createProductPlaceholder(product.title);
-    }
-
-    // Create a themed placeholder image based on product title
-    createProductPlaceholder(productTitle) {
-        // Create a category-based placeholder
-        const cleanTitle = encodeURIComponent(productTitle.substring(0, 50));
-        
-        // Use different placeholder services for variety
-        const placeholders = [
-            `https://via.placeholder.com/400x300/DAA520/FFFFFF?text=${cleanTitle}`,
-            `https://dummyimage.com/400x300/DAA520/FFFFFF&text=${cleanTitle}`,
-            `https://picsum.photos/400/300?random=${Math.floor(Math.random() * 1000)}`
-        ];
-        
-        return placeholders[Math.floor(Math.random() * placeholders.length)];
-    }
-
     parsePrice(priceString) {
         if (typeof priceString === 'number') return priceString;
         if (!priceString) return 0;
@@ -193,33 +184,44 @@ class CategoriesHomepage3DFixed {
         return parseFloat(cleaned) || 0;
     }
 
+    getWorkingImageUrl(product) {
+        const originalUrl = product.image_url;
+        
+        // If no URL or invalid URL, create a placeholder
+        if (!originalUrl || typeof originalUrl !== 'string' || originalUrl.length < 10) {
+            return this.createProductPlaceholder(product.title);
+        }
+        
+        // Return original URL - fallbacks handled in HTML
+        return originalUrl;
+    }
+
+    createProductPlaceholder(productTitle) {
+        const cleanTitle = encodeURIComponent(productTitle.substring(0, 30));
+        return `https://via.placeholder.com/400x300/DAA520/FFFFFF?text=${cleanTitle}`;
+    }
+
     generateProductFeatures(product) {
         const features = [];
         
-        // Shipping
-        if (product.free_shipping || (product.sale_price && product.sale_price > 100)) {
-            features.push('📦 شحن مجاني');
-        } else {
-            features.push('🚚 شحن سريع');
+        // UAE compliant
+        if (product.uae_compliant !== false) {
+            features.push('🇦🇪 منتج إماراتي 100%');
+        }
+        
+        // Free shipping
+        const price = product.sale_price || product.regular_price;
+        if (product.free_shipping_threshold && price >= product.free_shipping_threshold) {
+            features.push('🚚 شحن مجاني');
+        }
+        
+        // Cash on delivery
+        if (product.cod_available !== false) {
+            features.push('💰 دفع عند الاستلام');
         }
         
         // Delivery time
         features.push(`⏰ ${product.delivery_time || '1-3 أيام عمل'}`);
-        
-        // Payment method
-        if (product.cod_available !== false) {
-            features.push('💳 دفع عند الاستلام');
-        }
-        
-        // Quality assurance
-        if (product.uae_compliant !== false) {
-            features.push('✅ معتمد في الإمارات');
-        }
-        
-        // Stock status
-        if (product.stock_status === 'in stock' || !product.stock_status) {
-            features.push('⚡ متوفر الآن');
-        }
         
         return features.slice(0, 4);
     }
@@ -233,16 +235,18 @@ class CategoriesHomepage3DFixed {
         
         this.categories = Object.entries(categoryCount)
             .map(([name, count]) => ({ name, count }))
-            .sort((a, b) => b.count - a.count)
-            .slice(0, 12);
+            .sort((a, b) => b.count - a.count);
         
         console.log(`📂 تم العثور على ${this.categories.length} فئة`);
     }
 
     processFeaturedProducts() {
         this.featuredProducts = this.products
-            .filter(product => product.sale_price > this.FEATURED_PRICE_THRESHOLD)
-            .sort((a, b) => b.sale_price - a.sale_price)
+            .filter(product => {
+                const price = product.sale_price || product.regular_price;
+                return price >= this.FEATURED_PRICE_THRESHOLD;
+            })
+            .sort((a, b) => (b.sale_price || b.regular_price) - (a.sale_price || a.regular_price))
             .slice(0, 12);
         
         console.log(`💎 تم العثور على ${this.featuredProducts.length} منتج مميز (أكثر من ${this.FEATURED_PRICE_THRESHOLD} درهم)`);
@@ -258,7 +262,7 @@ class CategoriesHomepage3DFixed {
         if (this.categories.length === 0) {
             container.innerHTML = `
                 <div class="no-categories" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
-                    <h3>🔍 لا توجد فئات متاحة</h3>
+                    <h3>🔍 لا توجد فرئات متاحة</h3>
                     <p>يرجى تحديث الصفحة أو المحاولة لاحقاً</p>
                 </div>
             `;
@@ -293,16 +297,10 @@ class CategoriesHomepage3DFixed {
         const icons = {
             'الأجهزة المنزلية والكهربائية': '🏠',
             'الإلكترونيات والتكنولوجيا': '📱',
-            'إلكترونيات وتكنولوجيا': '💻',
-            'الهواتف وأجهزة الكمبيوتر': '💻',
-            'الأحذية والملابس والإكسسوارات': '👗',
             'العناية الشخصية والصحة والجمال': '💄',
-            'الرياضة واللياقة والصحة': '🏃',
-            'الألعاب والهوايات': '🎮',
-            'الأثاث والأدوات المنزلية': '🪑',
-            'السيارات والإكسسوارات': '🚗',
-            'الكتب والإعلام': '📚',
-            'الطعام والمشروبات': '🍽️',
+            'الأحذية والملابس والإكسسوارات': '👟',
+            'الرياضة واللياقة والصحة': '🏋️',
+            'الأثاث والأدوات المنزلية': '🛋️',
             'الأدوات والصيانة': '🔧',
             'منتجات متنوعة': '🛍️'
         };
@@ -322,9 +320,9 @@ class CategoriesHomepage3DFixed {
                     <div style="font-size: 3rem; margin-bottom: 1rem;">💎</div>
                     <h3>لا توجد منتجات مميزة حالياً</h3>
                     <p>المنتجات المميزة هي التي يزيد سعرها عن ${this.FEATURED_PRICE_THRESHOLD} درهم</p>
-                    <button class="btn whatsapp-btn" onclick="window.open('https://wa.me/201110760081', '_blank')" style="margin-top: 1rem;">
+                    <a href="https://wa.me/201110760081" target="_blank" class="btn whatsapp-btn" style="margin-top: 1rem; text-decoration: none; display: inline-block;">
                         📱 تواصل معنا للمنتجات الخاصة
-                    </button>
+                    </a>
                 </div>
             `;
             return;
@@ -356,9 +354,9 @@ class CategoriesHomepage3DFixed {
             return;
         }
         
+        // Show all products sorted by title
         const productsToShow = this.products
-            .sort((a, b) => a.title.localeCompare(b.title, 'ar'))
-            .slice(0, 24);
+            .sort((a, b) => a.title.localeCompare(b.title, 'ar'));
         
         productsToShow.forEach((product, index) => {
             const productCard = this.createProductCard(product, false);
@@ -371,20 +369,22 @@ class CategoriesHomepage3DFixed {
     }
 
     createProductCard(product, isFeatured = false) {
+        const currentPrice = product.sale_price || product.regular_price;
+        const originalPrice = product.sale_price && product.regular_price > product.sale_price ? product.regular_price : null;
         const discount = product.discount_percentage > 0 
-            ? `<div class="discount-badge">خصم ${Math.round(product.discount_percentage)}%</div>` 
+            ? `<div class="discount-badge">-${Math.round(product.discount_percentage)}%</div>` 
             : '';
             
-        const originalPrice = product.regular_price > product.sale_price 
-            ? `<span class="original-price">${product.regular_price} ${product.currency || 'AED'}</span>` 
+        const originalPriceHTML = originalPrice 
+            ? `<span class="original-price">${originalPrice} درهم</span>` 
             : '';
 
         const stars = this.generateStars(product.average_rating);
         
-        // Enhanced image handling with multiple fallbacks
+        // Image with multiple fallbacks
         const primaryImage = product.image_url;
         const fallback1 = this.createProductPlaceholder(product.title);
-        const fallback2 = `https://via.placeholder.com/400x300/DAA520/FFFFFF?text=${encodeURIComponent(product.title.substring(0, 20))}`;
+        const fallback2 = `https://dummyimage.com/400x300/daa520/ffffff?text=صورة+المنتج`;
         
         const displayTitle = product.title.length > 65 
             ? product.title.substring(0, 65) + '...' 
@@ -393,43 +393,50 @@ class CategoriesHomepage3DFixed {
         const features = product.features || [];
         
         const featuredBadge = isFeatured 
-            ? `<div class="discount-badge" style="background: linear-gradient(135deg, #DAA520 0%, #FFD700 100%); left: 1rem;">⭐ مميز</div>`
+            ? `<div class="discount-badge" style="background: linear-gradient(135deg, #DAA520 0%, #FFD700 100%); left: 1rem; top: 3rem;">⭐ مميز</div>`
             : '';
+
+        // WhatsApp message
+        const whatsappMessage = `مرحبا، أريد الاستفسار عن:\n\n▶️ ${product.title}\n💰 السعر: ${currentPrice} درهم\n📎 الفئة: ${product.category}\n\nأرجو إرسال التفاصيل وطريقة التوصيل.`;
 
         return `
             <div class="product-card card-3d" data-product-id="${product.id}">
                 <div class="card-3d-inner">
-                    <div class="product-image">
+                    ${discount}
+                    ${featuredBadge}
+                    
+                    <div class="product-image" style="cursor: pointer;">
                         <img src="${primaryImage}" 
                              alt="${product.title}" 
                              loading="lazy"
                              onerror="this.onerror=null;this.src='${fallback1}';this.onerror=function(){this.src='${fallback2}'};"
                              style="width: 100%; height: 100%; object-fit: cover;">
-                        ${discount}
-                        ${featuredBadge}
                     </div>
+                    
                     <div class="product-info">
                         <div class="product-category">${product.category}</div>
-                        <h3 class="product-title" title="${product.title}">${displayTitle}</h3>
+                        <h3 class="product-title" title="${product.title}" style="cursor: pointer;">${displayTitle}</h3>
                         <div class="product-rating" style="display: flex; align-items: center; gap: 0.5rem; margin-bottom: 1rem; font-size: 0.9rem; color: var(--text-secondary);">
                             <span style="color: #FCD34D;">${stars}</span>
                             <span>(${product.review_count || 0} تقييم)</span>
                         </div>
                         <div class="product-price">
-                            <span class="current-price">${product.sale_price} ${product.currency || 'AED'}</span>
-                            ${originalPrice}
+                            <span class="current-price">${currentPrice} درهم</span>
+                            ${originalPriceHTML}
                         </div>
                         <div class="product-features">
                             ${features.slice(0, 3).map(feature => `<div class="feature">${feature}</div>`).join('')}
                         </div>
                         <div class="product-actions">
-                            <a href="https://wa.me/201110760081?text=${encodeURIComponent('أريد الاستفسار عن ' + product.title + ' - ' + product.sale_price + ' ' + (product.currency || 'AED'))}" 
-                               class="whatsapp-btn" target="_blank" rel="noopener"
-                               data-product-id="${product.id}">
+                            <button class="btn add-to-cart" data-product-id="${product.id}">
+                                🛒 إضافة
+                            </button>
+                            <a href="https://wa.me/201110760081?text=${encodeURIComponent(whatsappMessage)}" 
+                               class="btn whatsapp-btn" target="_blank" rel="noopener">
                                 📱 واتساب
                             </a>
-                            <button class="view-details" data-product-id="${product.id}">
-                                👁 التفاصيل
+                            <button class="btn view-details" data-product-id="${product.id}">
+                                👁 تفاصيل
                             </button>
                         </div>
                     </div>
@@ -438,9 +445,9 @@ class CategoriesHomepage3DFixed {
         `;
     }
 
-    // NAVIGATION FUNCTIONS - FIXED
+    // NAVIGATION FUNCTIONS
     
-    // FIXED: Category view now shows filtered products in same page
+    // Category view shows filtered products in same page
     viewCategory(categoryName) {
         console.log(`🏷️ عرض فئة: ${categoryName}`);
         
@@ -454,19 +461,29 @@ class CategoriesHomepage3DFixed {
             return;
         }
         
-        // Update the active tab to "all products"
+        this.currentFilter = categoryName;
+        
+        // Show filter bar
+        const filterBar = document.getElementById('filter-bar');
+        const filterText = document.getElementById('filter-text');
+        
+        if (filterBar && filterText) {
+            filterBar.style.display = 'block';
+            filterText.innerHTML = `
+                <span style="color: var(--primary-color); font-weight: bold;">${this.getCategoryIcon(categoryName)} ${categoryName}</span>
+                <span style="color: var(--text-secondary);">(تم العثور على ${categoryProducts.length} منتج)</span>
+            `;
+        }
+        
+        // Switch to all products tab
         this.switchTabProgrammatically('all-products');
         
-        // Show filtered products
+        // Render filtered products
         this.renderFilteredProducts(categoryProducts, categoryName);
         
         // Scroll to products section
         document.getElementById('featured').scrollIntoView({ behavior: 'smooth' });
         
-        // Update page title
-        document.title = `${categoryName} - سوق الإمارات`;
-        
-        // Show success message
         this.showSuccess(`تم عرض ${categoryProducts.length} منتج من فئة "${categoryName}"`);
     }
     
@@ -485,13 +502,7 @@ class CategoriesHomepage3DFixed {
         const container = document.getElementById('all-container');
         if (!container) return;
         
-        container.innerHTML = `
-            <div style="grid-column: 1 / -1; text-align: center; margin-bottom: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #DAA520, #FFD700); color: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(218, 165, 32, 0.3);">
-                <h3 style="margin-bottom: 0.5rem; font-size: 1.5rem;">${this.getCategoryIcon(categoryName)} ${categoryName}</h3>
-                <p>${products.length} منتج متاح في هذه الفئة</p>
-                <button onclick="window.categoriesHomepage.resetView()" style="background: rgba(255,255,255,0.2); border: 2px solid white; color: white; padding: 0.5rem 1rem; border-radius: 20px; margin-top: 1rem; cursor: pointer; font-weight: 600;">عودة لجميع الفئات</button>
-            </div>
-        `;
+        container.innerHTML = '';
         
         products.forEach((product, index) => {
             const productCard = this.createProductCard(product, false);
@@ -504,48 +515,37 @@ class CategoriesHomepage3DFixed {
     }
     
     resetView() {
-        // Reset to default view
+        // Reset filter
+        this.currentFilter = null;
+        
+        // Hide filter bar
+        const filterBar = document.getElementById('filter-bar');
+        if (filterBar) {
+            filterBar.style.display = 'none';
+        }
+        
+        // Clear search
+        const searchInput = document.getElementById('main-search');
+        if (searchInput) {
+            searchInput.value = '';
+        }
+        
+        // Switch to featured tab
         this.switchTabProgrammatically('featured-products');
-        document.title = 'سوق الإمارات للهدايا - أفضل المنتجات بأسعار لا تقاوم';
-        this.renderFeaturedProducts();
+        
+        // Scroll to categories
         document.getElementById('categories').scrollIntoView({ behavior: 'smooth' });
+        
+        this.showSuccess('تم العودة لعرض جميع الفئات');
     }
 
-    // FIXED: Product details now opens actual product page
+    // Product details opens in new tab
     viewProductDetails(productId) {
-        const product = this.products.find(p => p.id == productId);
+        console.log(`👁 فتح معاينة المنتج: ${productId}`);
         
-        if (product) {
-            // Create Arabic URL slug for product page
-            const arabicSlug = this.createArabicSlug(product.title, productId);
-            const productPageUrl = `data/pruducts-pages/${arabicSlug}.html`;
-            
-            console.log(`👁 فتح صفحة المنتج: ${productPageUrl}`);
-            
-            // Try to open the actual product page
-            window.open(productPageUrl, '_blank', 'noopener');
-        } else {
-            this.showError('لم يتم العثور على تفاصيل المنتج');
-        }
-    }
-    
-    // Create Arabic URL slug matching the pattern used in product pages
-    createArabicSlug(title, productId) {
-        // Remove extra spaces and normalize
-        let slug = title.trim();
-        
-        // Replace Arabic spaces and common characters
-        slug = slug.replace(/\s+/g, '-');
-        slug = slug.replace(/[_\s\/\\]/g, '-');
-        
-        // Remove multiple dashes
-        slug = slug.replace(/-+/g, '-');
-        
-        // Remove leading/trailing dashes
-        slug = slug.replace(/^-|-$/g, '');
-        
-        // Add product ID at the end
-        return `${slug}-${productId}`;
+        // Open product details page in new tab
+        const productUrl = `./product.html?id=${productId}`;
+        window.open(productUrl, '_blank', 'noopener,noreferrer');
     }
 
     // TAB FUNCTIONALITY
@@ -555,15 +555,9 @@ class CategoriesHomepage3DFixed {
         
         tabButton.classList.add('active');
         document.getElementById(tabId).classList.add('active');
-        
-        if (tabId === 'all-products' && document.getElementById('all-container').children.length === 1) {
-            setTimeout(() => {
-                this.renderAllProducts();
-            }, 300);
-        }
     }
 
-    // SEARCH FUNCTIONALITY - FIXED
+    // SEARCH FUNCTIONALITY
     performSearch() {
         const searchInput = document.getElementById('main-search');
         const query = searchInput ? searchInput.value.trim() : '';
@@ -573,13 +567,19 @@ class CategoriesHomepage3DFixed {
             return;
         }
         
+        if (query.length < 2) {
+            this.showError('يرجى إدخال حرفين على الأقل للبحث');
+            return;
+        }
+        
         console.log(`🔍 البحث عن: ${query}`);
         
         // Filter products locally
         const searchResults = this.products.filter(product => 
             product.title.toLowerCase().includes(query.toLowerCase()) ||
             product.category.toLowerCase().includes(query.toLowerCase()) ||
-            (product.description && product.description.toLowerCase().includes(query.toLowerCase()))
+            (product.description && product.description.toLowerCase().includes(query.toLowerCase())) ||
+            (product.seo_keywords && product.seo_keywords.toLowerCase().includes(query.toLowerCase()))
         );
         
         if (searchResults.length === 0) {
@@ -587,60 +587,77 @@ class CategoriesHomepage3DFixed {
             return;
         }
         
+        // Update filter bar for search
+        const filterBar = document.getElementById('filter-bar');
+        const filterText = document.getElementById('filter-text');
+        
+        if (filterBar && filterText) {
+            filterBar.style.display = 'block';
+            filterText.innerHTML = `
+                <span style="color: var(--primary-color); font-weight: bold;">🔍 نتائج البحث: "${query}"</span>
+                <span style="color: var(--text-secondary);">(تم العثور على ${searchResults.length} منتج)</span>
+            `;
+        }
+        
         // Show search results in the all products tab
         this.switchTabProgrammatically('all-products');
-        this.renderSearchResults(searchResults, query);
+        this.renderFilteredProducts(searchResults, `بحث: ${query}`);
         
         // Scroll to results
         document.getElementById('featured').scrollIntoView({ behavior: 'smooth' });
         
         this.showSuccess(`تم العثور على ${searchResults.length} منتج للبحث عن "${query}"`);
     }
-    
-    renderSearchResults(products, query) {
-        const container = document.getElementById('all-container');
-        if (!container) return;
+
+    // SCROLL EFFECTS
+    addScrollEffects() {
+        const header = document.querySelector('.header');
         
-        container.innerHTML = `
-            <div style="grid-column: 1 / -1; text-align: center; margin-bottom: 2rem; padding: 1.5rem; background: linear-gradient(135deg, #4F46E5, #7C3AED); color: white; border-radius: 15px; box-shadow: 0 4px 15px rgba(79, 70, 229, 0.3);">
-                <h3 style="margin-bottom: 0.5rem; font-size: 1.5rem;">🔍 نتائج البحث عن "${query}"</h3>
-                <p>${products.length} منتج تم العثور عليه</p>
-                <button onclick="window.categoriesHomepage.resetView()" style="background: rgba(255,255,255,0.2); border: 2px solid white; color: white; padding: 0.5rem 1rem; border-radius: 20px; margin-top: 1rem; cursor: pointer; font-weight: 600;">مسح البحث</button>
-            </div>
-        `;
-        
-        products.forEach((product, index) => {
-            const productCard = this.createProductCard(product, false);
-            const cardElement = document.createElement('div');
-            cardElement.innerHTML = productCard;
-            cardElement.firstElementChild.style.animationDelay = `${index * 0.1}s`;
-            cardElement.firstElementChild.classList.add('animate-fade-in');
-            container.appendChild(cardElement.firstElementChild);
+        window.addEventListener('scroll', () => {
+            if (header) {
+                if (window.pageYOffset > 100) {
+                    header.classList.add('scrolled');
+                } else {
+                    header.classList.remove('scrolled');
+                }
+            }
         });
     }
 
-    // PRODUCT ACTIONS - ENHANCED
-    sendWhatsAppInquiry(productId) {
-        const product = this.products.find(p => p.id == productId) || 
-                       this.featuredProducts.find(p => p.id == productId);
+    // PARTICLES EFFECT
+    addParticles() {
+        const particlesContainer = document.querySelector('.particles');
+        if (!particlesContainer) return;
         
-        if (product) {
-            const message = `السلام عليكم ورحمة الله وبركاته\n\nأريد الاستفسار عن:\n${product.title}\n\nالسعر: ${product.sale_price} ${product.currency || 'AED'}\nالفئة: ${product.category}\n\nأرجو التواصل معي لتأكيد الطلب وتفاصيل التوصيل.\n\nشكراً لكم`;
-            const whatsappUrl = `https://wa.me/201110760081?text=${encodeURIComponent(message)}`;
-            window.open(whatsappUrl, '_blank', 'noopener');
-        } else {
-            this.showError('لم يتم العثور على معلومات المنتج');
+        function createParticle() {
+            const particle = document.createElement('div');
+            particle.className = 'particle';
+            particle.style.left = Math.random() * 100 + '%';
+            particle.style.animationDuration = (Math.random() * 3 + 2) + 's';
+            particle.style.opacity = Math.random() * 0.5 + 0.3;
+            
+            particlesContainer.appendChild(particle);
+            
+            // Remove particle after animation
+            setTimeout(() => {
+                if (particle.parentNode) {
+                    particle.remove();
+                }
+            }, 6000);
         }
+        
+        // Create new particle every 2 seconds
+        setInterval(createParticle, 2000);
     }
 
     // LOADING STATES
     showLoadingState() {
-        const containers = ['categories-container', 'featured-container'];
+        const containers = ['categories-container', 'featured-container', 'all-container'];
         containers.forEach(containerId => {
             const container = document.getElementById(containerId);
             if (container) {
                 container.innerHTML = `
-                    <div class="loading" style="grid-column: 1 / -1;">
+                    <div class="loading" style="grid-column: 1 / -1; text-align: center; padding: 3rem;">
                         <div class="loading-spinner"></div>
                         <h3>جاري التحميل...</h3>
                         <p>يرجى الانتظار قليلاً</p>
@@ -706,7 +723,7 @@ class CategoriesHomepage3DFixed {
         
         document.body.appendChild(notificationDiv);
         
-        // Auto dismiss after 5 seconds
+        // Auto dismiss after 4 seconds
         setTimeout(() => {
             if (notificationDiv.parentNode) {
                 notificationDiv.style.animation = 'slideOutRight 0.5s ease-in forwards';
@@ -716,58 +733,53 @@ class CategoriesHomepage3DFixed {
                     }
                 }, 500);
             }
-        }, 5000);
+        }, 4000);
     }
 
     // FALLBACK DATA
     loadFallbackData() {
         console.log('📂 تحميل بيانات احتياطية...');
         
-        this.categories = [
-            { name: 'الأجهزة المنزلية والكهربائية', count: 45 },
-            { name: 'الإلكترونيات والتكنولوجيا', count: 38 },
-            { name: 'العناية الشخصية والصحة والجمال', count: 52 },
-            { name: 'الأحذية والملابس والإكسسوارات', count: 29 },
-            { name: 'الرياضة واللياقة والصحة', count: 21 },
-            { name: 'الأثاث والأدوات المنزلية', count: 33 },
-            { name: 'منتجات متنوعة', count: 67 }
-        ];
-        
-        this.featuredProducts = [
+        // Sample data
+        this.products = [
             {
-                id: 'fallback-1',
-                title: 'منتج تجريبي مميز',
+                id: 'sample-1',
+                title: 'غسالة محمولة قابلة للطي',
                 category: 'الأجهزة المنزلية والكهربائية',
-                sale_price: 450,
-                regular_price: 600,
-                currency: 'AED',
-                discount_percentage: 25,
-                image_url: 'https://via.placeholder.com/400x300/DAA520/FFFFFF?text=منتج+تجريبي',
-                average_rating: 4.8,
-                review_count: 67,
-                features: ['📦 شحن مجاني', '⏰ 1-3 أيام عمل', '💳 دفع عند الاستلام', '✅ معتمد في الإمارات']
-            }
-        ];
-        
-        this.products = this.featuredProducts.concat([
-            {
-                id: 'fallback-2',
-                title: 'منتج عادي للاختبار',
-                category: 'منتجات متنوعة',
                 sale_price: 150,
                 regular_price: 200,
                 currency: 'AED',
                 discount_percentage: 25,
-                image_url: 'https://via.placeholder.com/400x300/6B7280/FFFFFF?text=منتج+عادي',
-                average_rating: 4.2,
-                review_count: 23,
-                features: ['🚚 شحن سريع', '⏰ 2-4 أيام عمل', '💳 دفع عند الاستلام', '✅ معتمد في الإمارات']
+                image_url: 'https://via.placeholder.com/400x300/DAA520/FFFFFF?text=غسالة+محمولة',
+                average_rating: 4.7,
+                review_count: 70,
+                features: ['🇦🇪 منتج إماراتي 100%', '🚚 شحن مجاني', '💰 دفع عند الاستلام', '⏰ 1-3 أيام عمل']
+            },
+            {
+                id: 'sample-2',
+                title: 'مرطب كهربائي بزيت طبيعي',
+                category: 'العناية الشخصية والصحة والجمال',
+                sale_price: 175,
+                regular_price: 250,
+                currency: 'AED',
+                discount_percentage: 30,
+                image_url: 'https://via.placeholder.com/400x300/25D366/FFFFFF?text=مرطب+كهربائي',
+                average_rating: 5.0,
+                review_count: 75,
+                features: ['🇦🇪 منتج إماراتي 100%', '🚚 شحن مجاني', '💰 دفع عند الاستلام', '⏰ 1-3 أيام عمل']
             }
-        ]);
+        ];
+        
+        this.processCategories();
+        this.processFeaturedProducts();
+        
+        // Make available globally
+        window.productsData = this.products;
         
         this.hideLoadingState();
         this.renderCategories();
         this.renderFeaturedProducts();
+        this.renderAllProducts();
     }
 
     // UTILITY FUNCTIONS
@@ -819,34 +831,11 @@ class CategoriesHomepage3DFixed {
     }
 }
 
-// Initialize with enhanced particle effects
+// Initialize when DOM is ready
 document.addEventListener('DOMContentLoaded', function() {
-    // Create floating particles for 3D effect
-    const particles = document.querySelector('.particles');
-    if (particles) {
-        for (let i = 0; i < 40; i++) {
-            const particle = document.createElement('div');
-            particle.className = 'particle';
-            particle.style.left = Math.random() * 100 + '%';
-            particle.style.animationDelay = Math.random() * 6 + 's';
-            particle.style.opacity = (0.3 + Math.random() * 0.7).toFixed(2);
-            particles.appendChild(particle);
-        }
-    }
-
-    // Initialize the enhanced 3D homepage
-    window.categoriesHomepage = new CategoriesHomepage3DFixed();
-    console.log('🎉 Enhanced 3D Homepage loaded successfully!');
+    console.log('🌟 بدء تحميل المتجر...');
     
-    // Header scroll effect
-    window.addEventListener('scroll', function() {
-        const header = document.querySelector('.header');
-        if (header) {
-            if (window.pageYOffset > 100) {
-                header.classList.add('scrolled');
-            } else {
-                header.classList.remove('scrolled');
-            }
-        }
-    });
+    // Initialize the enhanced homepage
+    window.categoriesHomepage = new CategoriesHomepage3DFixed();
+    console.log('🎉 تم تحميل المتجر بنجاح!');
 });
