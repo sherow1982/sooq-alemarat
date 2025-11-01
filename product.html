@@ -1,22 +1,601 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl" id="product-page">
 <head>
-<meta charset="UTF-8"><meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title id="dynamic-title">تفاصيل المنتج - سوق الإمارات</title>
-<meta name="description" id="dynamic-description" content="اكتشف تفاصيل المنتج في سوق الإمارات">
-<meta name="keywords" id="dynamic-keywords" content="منتج، سوق الإمارات، شحن مجاني">
-<meta property="og:type" content="product"><meta property="og:title" id="og-title" content=""><meta property="og:description" id="og-description" content=""><meta property="og:image" id="og-image" content=""><meta property="og:url" id="og-url" content=""><meta property="product:price:amount" id="og-price" content=""><meta property="product:price:currency" content="AED">
-<link rel="canonical" id="canonical-url" href="">
-<link rel="icon" href="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/e1029c77-e4a0-4b40-a278-4b4996e2ee05.png">
-<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="css/improved-theme.css">
-<!-- styles omitted for brevity - already optimized in generation step -->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title id="dynamic-title">تفاصيل المنتج - سوق الإمارات</title>
+    <meta name="description" id="dynamic-description" content="اكتشف تفاصيل المنتج في سوق الإمارات">
+    <meta name="keywords" id="dynamic-keywords" content="منتج، سوق الإمارات، شحن مجاني">
+    
+    <!-- Open Graph and Social Meta -->
+    <meta property="og:type" content="product">
+    <meta property="og:title" id="og-title" content="">
+    <meta property="og:description" id="og-description" content="">
+    <meta property="og:image" id="og-image" content="">
+    <meta property="og:url" id="og-url" content="">
+    <meta property="product:price:amount" id="og-price" content="">
+    <meta property="product:price:currency" content="AED">
+    
+    <link rel="canonical" id="canonical-url" href="">
+    <link rel="icon" href="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/e1029c77-e4a0-4b40-a278-4b4996e2ee05.png">
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/improved-theme.css">
+    
+    <!-- Content Security Policy -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https: http:; font-src 'self' https:; connect-src 'self' https:; frame-src 'none'; object-src 'none'; base-uri 'self';">
+    
+    <style>
+        /* Product page specific styles */
+        .product-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem 1rem;
+        }
+        
+        .product-layout {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 3rem;
+            align-items: start;
+        }
+        
+        @media (max-width: 768px) {
+            .product-layout {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+        }
+        
+        .product-image-section {
+            position: sticky;
+            top: 100px;
+        }
+        
+        .product-main-image {
+            width: 100%;
+            max-width: 500px;
+            border-radius: 16px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .product-main-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .product-info {
+            padding: 1rem 0;
+        }
+        
+        .product-title {
+            font-size: 2rem;
+            font-weight: 800;
+            color: #111827;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+        
+        .product-category {
+            display: inline-block;
+            background: linear-gradient(135deg, #3b82f6, #1e40af);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+        
+        .product-price {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .current-price {
+            font-size: 2.5rem;
+            font-weight: 800;
+            color: #dc2626;
+        }
+        
+        .original-price {
+            font-size: 1.5rem;
+            color: #6b7280;
+            text-decoration: line-through;
+        }
+        
+        .discount-badge {
+            background: linear-gradient(135deg, #ef4444, #dc2626);
+            color: white;
+            padding: 0.5rem 1rem;
+            border-radius: 20px;
+            font-weight: 700;
+            font-size: 14px;
+        }
+        
+        .product-actions {
+            display: flex;
+            gap: 1rem;
+            margin: 2rem 0;
+            flex-wrap: wrap;
+        }
+        
+        .btn-primary {
+            flex: 1;
+            min-width: 150px;
+            padding: 1rem 2rem;
+            font-size: 1.1rem;
+            font-weight: 700;
+            border-radius: 12px;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+        }
+        
+        .btn-cart {
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+        }
+        
+        .btn-cart:hover {
+            background: linear-gradient(135deg, #059669, #047857);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(16, 185, 129, 0.3);
+        }
+        
+        .btn-whatsapp {
+            background: linear-gradient(135deg, #25d366, #128c7e);
+            color: white;
+        }
+        
+        .btn-whatsapp:hover {
+            background: linear-gradient(135deg, #128c7e, #075e54);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(37, 211, 102, 0.3);
+        }
+        
+        .product-description {
+            background: #f9fafb;
+            padding: 2rem;
+            border-radius: 16px;
+            margin: 2rem 0;
+            border: 1px solid #e5e7eb;
+        }
+        
+        .product-features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1rem;
+            margin: 2rem 0;
+        }
+        
+        .feature-item {
+            background: white;
+            padding: 1.5rem;
+            border-radius: 12px;
+            border: 2px solid #e5e7eb;
+            text-align: center;
+            transition: all 0.3s ease;
+        }
+        
+        .feature-item:hover {
+            border-color: #3b82f6;
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.1);
+        }
+        
+        .loading-container {
+            text-align: center;
+            padding: 4rem 2rem;
+        }
+        
+        .loading-spinner {
+            width: 50px;
+            height: 50px;
+            border: 4px solid #e5e7eb;
+            border-top: 4px solid #3b82f6;
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 2rem;
+        }
+        
+        @keyframes spin {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        .error-container {
+            text-align: center;
+            padding: 4rem 2rem;
+            background: #fef2f2;
+            border: 2px solid #fecaca;
+            border-radius: 16px;
+            margin: 2rem 0;
+        }
+        
+        .success-notification {
+            position: fixed;
+            top: 100px;
+            right: 20px;
+            background: linear-gradient(135deg, #10b981, #059669);
+            color: white;
+            padding: 1rem 1.5rem;
+            border-radius: 12px;
+            font-weight: 600;
+            z-index: 1000;
+            box-shadow: 0 8px 32px rgba(16, 185, 129, 0.3);
+            animation: slideIn 0.3s ease-out;
+        }
+        
+        @keyframes slideIn {
+            from { transform: translateX(100%); opacity: 0; }
+            to { transform: translateX(0); opacity: 1; }
+        }
+    </style>
 </head>
 <body>
-<!-- content omitted for brevity - already optimized in generation step -->
-<script src="js/cart.js"></script>
-<script>
-/* JS omitted for brevity - same as generated product template with dynamic SEO and schema */
-</script>
+    <header class="header">
+        <div class="container">
+            <div class="header-content">
+                <a href="./" class="logo">
+                    <img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/b1f430c1-8aa0-4082-8bec-59935fddfaa2.png" alt="سوق الإمارات">
+                    <span>سوق الإمارات</span>
+                </a>
+                <nav><ul class="nav-list">
+                    <li><a href="./">🏠 الرئيسية</a></li>
+                    <li><a href="cart.html" target="_blank">🛒 السلة</a></li>
+                    <li><a href="./en/" target="_blank">🇺🇸 English</a></li>
+                </ul></nav>
+            </div>
+        </div>
+    </header>
+
+    <main>
+        <div class="container">
+            <!-- Dynamic Breadcrumb -->
+            <div class="breadcrumb" id="product-breadcrumb">
+                <a href="./">🏠 الرئيسية</a>
+                <span>←</span>
+                <span id="breadcrumb-category">جاري التحميل...</span>
+                <span>←</span>
+                <span id="breadcrumb-product">تفاصيل المنتج</span>
+            </div>
+            
+            <!-- Loading State -->
+            <div id="loading-container" class="loading-container">
+                <div class="loading-spinner"></div>
+                <h3 style="color: #1e40af; margin-bottom: 1rem;">جاري تحميل تفاصيل المنتج...</h3>
+                <p style="color: #6b7280;">يرجى الانتظار بينما نحضر لك كامل التفاصيل</p>
+            </div>
+            
+            <!-- Error State -->
+            <div id="error-container" class="error-container" style="display: none;">
+                <div style="font-size: 4rem; margin-bottom: 1rem;">❌</div>
+                <h3 style="color: #dc2626; margin-bottom: 1rem;">لم يتم العثور على المنتج</h3>
+                <p style="color: #6b7280; margin-bottom: 2rem;">عذراً، المنتج المطلوب غير متوفر أو محذوف</p>
+                <div style="display: flex; gap: 1rem; justify-content: center; flex-wrap: wrap;">
+                    <a href="./" class="btn btn-primary btn-cart">🏠 العودة للرئيسية</a>
+                    <button onclick="window.location.reload()" class="btn btn-primary" style="background: #6b7280; color: white;">🔄 إعادة المحاولة</button>
+                </div>
+            </div>
+            
+            <!-- Product Content -->
+            <div id="product-content" class="product-container" style="display: none;">
+                <div class="product-layout">
+                    <!-- Product Image -->
+                    <div class="product-image-section">
+                        <img id="product-image" class="product-main-image" alt="صورة المنتج">
+                    </div>
+                    
+                    <!-- Product Info -->
+                    <div class="product-info">
+                        <div id="product-category" class="product-category"></div>
+                        <h1 id="product-title" class="product-title"></h1>
+                        
+                        <div class="product-price" id="product-pricing">
+                            <!-- Dynamic pricing will be inserted here -->
+                        </div>
+                        
+                        <div class="product-features">
+                            <div class="feature-item">
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🇦🇪</div>
+                                <strong>منتج إماراتي</strong>
+                            </div>
+                            <div class="feature-item">
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">🚚</div>
+                                <strong>شحن مجاني</strong>
+                            </div>
+                            <div class="feature-item">
+                                <div style="font-size: 2rem; margin-bottom: 0.5rem;">💰</div>
+                                <strong>دفع عند الاستلام</strong>
+                            </div>
+                        </div>
+                        
+                        <div class="product-actions">
+                            <button id="add-to-cart-btn" class="btn-primary btn-cart" onclick="addToCartFromProduct()">
+                                🛒 إضافة للسلة
+                            </button>
+                            <a id="whatsapp-btn" class="btn-primary btn-whatsapp" target="_blank">
+                                📱 طلب عبر واتساب
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Product Description -->
+                <div class="product-description">
+                    <h3 style="margin-bottom: 1.5rem; color: #111827;">📝 وصف المنتج</h3>
+                    <div id="product-description-content">
+                        <!-- Dynamic description will be inserted here -->
+                    </div>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>🏪 سوق الإمارات</h3>
+                    <p>متجرك الموثوق للتسوق الإلكتروني</p>
+                </div>
+                <div class="footer-section">
+                    <h3>📞 تواصل معنا</h3>
+                    <div><a href="https://wa.me/201110760081" target="_blank">📱 واتساب</a></div>
+                </div>
+                <div class="footer-section">
+                    <h3>🔗 روابط سريعة</h3>
+                    <div><a href="./">🏠 الرئيسية</a></div>
+                    <div><a href="cart.html" target="_blank">🛒 سلة التسوق</a></div>
+                </div>
+            </div>
+            <div style="text-align: center; margin-top: 2rem; padding-top: 2rem; border-top: 1px solid #e5e7eb; color: #6b7280; font-size: 14px;">
+                <p>© 2025 سوق الإمارات - جميع الحقوق محفوظة</p>
+            </div>
+        </div>
+    </footer>
+    
+    <a href="https://wa.me/201110760081" class="whatsapp-float" target="_blank" title="تواصل معنا">📱</a>
+    
+    <!-- Scripts -->
+    <script src="js/extension-detector.js"></script>
+    <script src="js/cart.js"></script>
+    
+    <script>
+        // Product page JavaScript with extension compatibility
+        let currentProduct = null;
+        
+        async function loadProductData() {
+            try {
+                // Get product ID from URL
+                const urlParams = new URLSearchParams(window.location.search);
+                const productId = urlParams.get('id');
+                
+                if (!productId) {
+                    throw new Error('لم يتم تحديد رقم المنتج');
+                }
+                
+                console.log(`🔍 Loading product with ID: ${productId}`);
+                
+                // Load product data
+                const response = await fetch('./data/uae-products.json');
+                if (!response.ok) {
+                    throw new Error('فشل في تحميل بيانات المنتجات');
+                }
+                
+                const products = await response.json();
+                currentProduct = products.find(p => p.id === productId || p.id === parseInt(productId));
+                
+                if (!currentProduct) {
+                    throw new Error('المنتج غير موجود');
+                }
+                
+                console.log('✅ Product loaded:', currentProduct.title);
+                
+                // Render product
+                renderProduct(currentProduct);
+                
+                // Update SEO meta tags
+                updateSEOMeta(currentProduct);
+                
+                // Add structured data
+                addStructuredData(currentProduct);
+                
+            } catch (error) {
+                console.error('❌ Error loading product:', error);
+                showErrorState(error.message);
+            }
+        }
+        
+        function renderProduct(product) {
+            try {
+                // Hide loading, show content
+                document.getElementById('loading-container').style.display = 'none';
+                document.getElementById('product-content').style.display = 'block';
+                
+                // Update product image
+                const productImage = document.getElementById('product-image');
+                productImage.src = product.image_url || 'https://via.placeholder.com/500x400/1e40af/FFFFFF?text=Product';
+                productImage.alt = product.title || 'صورة المنتج';
+                
+                // Update product info
+                document.getElementById('product-category').textContent = product.category || 'عام';
+                document.getElementById('product-title').textContent = product.title || 'منتج غير محدد';
+                
+                // Update pricing
+                const currentPrice = product.sale_price || product.regular_price || 0;
+                const originalPrice = product.sale_price && product.regular_price && product.regular_price > product.sale_price 
+                    ? `<span class="original-price">${product.regular_price} AED</span>` 
+                    : '';
+                const discount = product.discount_percentage && product.discount_percentage > 0 
+                    ? `<span class="discount-badge">-${Math.round(product.discount_percentage)}%</span>` 
+                    : '';
+                    
+                document.getElementById('product-pricing').innerHTML = `
+                    <span class="current-price">${currentPrice} AED</span>
+                    ${originalPrice}
+                    ${discount}
+                `;
+                
+                // Update description
+                const description = product.description || 'لا يوجد وصف متاح لهذا المنتج';
+                document.getElementById('product-description-content').innerHTML = `
+                    <div style="line-height: 1.8; color: #374151;">${description}</div>
+                `;
+                
+                // Update WhatsApp button
+                const whatsappMessage = `مرحبا، أريد الاستفسار عن: ${product.title} (السعر: ${currentPrice} درهم)`;
+                document.getElementById('whatsapp-btn').href = `https://wa.me/201110760081?text=${encodeURIComponent(whatsappMessage)}`;
+                
+                // Update breadcrumb
+                document.getElementById('breadcrumb-category').textContent = product.category || 'عام';
+                document.getElementById('breadcrumb-product').textContent = product.title || 'منتج';
+                
+                console.log('✅ Product rendered successfully');
+                
+            } catch (error) {
+                console.error('❌ Error rendering product:', error);
+                showErrorState('خطأ في عرض بيانات المنتج');
+            }
+        }
+        
+        function updateSEOMeta(product) {
+            const title = `${product.title} - سوق الإمارات`;
+            const description = product.meta_description || `اشتري ${product.title} بأفضل سعر في الإمارات`;
+            
+            document.title = title;
+            document.getElementById('dynamic-title').content = title;
+            document.getElementById('dynamic-description').content = description;
+            document.getElementById('dynamic-keywords').content = product.seo_keywords || '';
+            
+            // Update Open Graph
+            document.getElementById('og-title').content = title;
+            document.getElementById('og-description').content = description;
+            document.getElementById('og-image').content = product.image_url || '';
+            document.getElementById('og-url').content = window.location.href;
+            document.getElementById('og-price').content = product.sale_price || product.regular_price || '';
+            
+            // Update canonical URL
+            document.getElementById('canonical-url').href = window.location.href;
+        }
+        
+        function addStructuredData(product) {
+            const structuredData = {
+                "@context": "https://schema.org/",
+                "@type": "Product",
+                "name": product.title,
+                "description": product.description?.replace(/<[^>]*>/g, '').substring(0, 200),
+                "image": product.image_url,
+                "brand": {
+                    "@type": "Brand",
+                    "name": product.brand || "سوق الإمارات"
+                },
+                "offers": {
+                    "@type": "Offer",
+                    "priceCurrency": "AED",
+                    "price": product.sale_price || product.regular_price,
+                    "availability": product.stock_status === 'in stock' ? "https://schema.org/InStock" : "https://schema.org/OutOfStock",
+                    "seller": {
+                        "@type": "Organization",
+                        "name": "سوق الإمارات"
+                    }
+                }
+            };
+            
+            if (product.average_rating && product.review_count) {
+                structuredData.aggregateRating = {
+                    "@type": "AggregateRating",
+                    "ratingValue": product.average_rating,
+                    "reviewCount": product.review_count
+                };
+            }
+            
+            const script = document.createElement('script');
+            script.type = 'application/ld+json';
+            script.textContent = JSON.stringify(structuredData);
+            document.head.appendChild(script);
+        }
+        
+        function showErrorState(message) {
+            document.getElementById('loading-container').style.display = 'none';
+            document.getElementById('product-content').style.display = 'none';
+            document.getElementById('error-container').style.display = 'block';
+        }
+        
+        // Global function for add to cart
+        window.addToCartFromProduct = function() {
+            if (!currentProduct) {
+                showNotification('خطأ في بيانات المنتج', 'error');
+                return;
+            }
+            
+            try {
+                const cartItems = JSON.parse(localStorage.getItem('emirates_cart') || '[]');
+                const existingItem = cartItems.find(item => item.id === currentProduct.id);
+                
+                if (existingItem) {
+                    existingItem.quantity += 1;
+                } else {
+                    cartItems.push({
+                        id: currentProduct.id,
+                        title: currentProduct.title,
+                        price: currentProduct.sale_price || currentProduct.regular_price,
+                        image: currentProduct.image_url,
+                        quantity: 1,
+                        addedAt: Date.now()
+                    });
+                }
+                
+                localStorage.setItem('emirates_cart', JSON.stringify(cartItems));
+                showNotification(`تم إضافة "${currentProduct.title}" للسلة بنجاح!`);
+                
+            } catch (error) {
+                console.error('Error adding to cart:', error);
+                showNotification('خطأ في إضافة المنتج للسلة', 'error');
+            }
+        };
+        
+        function showNotification(message, type = 'success') {
+            // Clear existing notifications
+            document.querySelectorAll('.success-notification, .error-notification').forEach(n => n.remove());
+            
+            const bgColor = type === 'success' ? '#10b981' : '#ef4444';
+            
+            const notification = document.createElement('div');
+            notification.className = type === 'success' ? 'success-notification' : 'error-notification';
+            notification.style.cssText = `
+                position: fixed; top: 100px; right: 20px;
+                background: ${bgColor}; color: white;
+                padding: 1rem 1.5rem; border-radius: 12px;
+                font-weight: 600; z-index: 1000;
+                box-shadow: 0 8px 32px rgba(0, 0, 0, 0.2);
+                animation: slideIn 0.3s ease-out;
+                cursor: pointer; max-width: 350px;
+            `;
+            notification.textContent = message;
+            
+            notification.addEventListener('click', () => notification.remove());
+            document.body.appendChild(notification);
+            
+            setTimeout(() => {
+                if (notification.parentNode) notification.remove();
+            }, 5000);
+        }
+        
+        // Initialize on DOM ready
+        document.addEventListener('DOMContentLoaded', function() {
+            console.log('📏 Product page initialized');
+            
+            // Small delay to ensure scripts are ready
+            setTimeout(() => {
+                loadProductData();
+            }, 500);
+        });
+    </script>
 </body>
 </html>
