@@ -1,0 +1,773 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>🇦🇪 محرر سوق الإمارات - محرر عربي للمنتجات</title>
+    <meta name="description" content="محرر عربي متقدم لوصف المنتجات في سوق الإمارات مع ميزات خاصة">
+    
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Cairo', Arial, sans-serif;
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header::before {
+            content: '🇦🇪';
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 3em;
+            opacity: 0.3;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 0 2px 10px rgba(0,0,0,0.3);
+        }
+        
+        .main-content {
+            padding: 40px;
+        }
+        
+        .editor-section {
+            margin: 30px 0;
+            background: #f8f9fa;
+            border-radius: 15px;
+            padding: 25px;
+            border: 2px solid #ff6b6b;
+        }
+        
+        .editor-title {
+            font-size: 1.4em;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .controls {
+            margin: 25px 0;
+            display: flex;
+            gap: 15px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .btn {
+            background: linear-gradient(45deg, #ff6b6b, #ee5a24);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+        }
+        
+        .btn:hover {
+            transform: translateY(-2px) scale(1.05);
+            box-shadow: 0 8px 25px rgba(255, 107, 107, 0.4);
+        }
+        
+        .btn.success {
+            background: linear-gradient(45deg, #00d2d3, #54a0ff);
+        }
+        
+        .btn.uae {
+            background: linear-gradient(45deg, #00b894, #00a085);
+        }
+        
+        .btn.warning {
+            background: linear-gradient(45deg, #fdcb6e, #f39c12);
+        }
+        
+        .info-box {
+            background: linear-gradient(135deg, #74b9ff, #0984e3);
+            color: white;
+            padding: 20px;
+            margin: 20px 0;
+            border-radius: 10px;
+        }
+        
+        .product-demo {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 25px;
+            margin: 30px 0;
+        }
+        
+        .demo-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            border: 3px solid #ff6b6b;
+            box-shadow: 0 10px 25px rgba(255, 107, 107, 0.2);
+            transition: all 0.3s ease;
+        }
+        
+        .demo-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(255, 107, 107, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            body { padding: 10px; }
+            .main-content { padding: 20px; }
+            .header h1 { font-size: 2em; }
+            .controls { flex-direction: column; align-items: center; }
+            .btn { width: 200px; justify-content: center; }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🇦🇪 محرر سوق الإمارات</h1>
+            <p>محرر عربي متقدم لوصف المنتجات مع ميزات إماراتية خاصة</p>
+        </div>
+        
+        <div class="main-content">
+            <div class="info-box">
+                <h3>🎆 ميزات محرر سوق الإمارات:</h3>
+                <ul style="margin-top: 15px; line-height: 2;">
+                    <li>✨ دعم الدرهم الإماراتي وعلم الإمارات</li>
+                    <li>💾 حفظ تلقائي مع قوالب المنتجات</li>
+                    <li>🎨 أنماط خاصة بالمتاجر الإماراتية</li>
+                    <li>🔄 تبديل سريع عربي/إنجليزي</li>
+                </ul>
+            </div>
+            
+            <div class="product-demo">
+                <div class="demo-card">
+                    <div class="editor-section">
+                        <div class="editor-title">📱 محرر وصف المنتجات</div>
+                        <textarea class="sooq-editor" name="product-description">
+                            <h2>🇦🇪 مرحباً بكم في سوق الإمارات!</h2>
+                            
+                            <div class="product-highlight">
+                                <h3>📱 iPhone 15 Pro Max - الإصدار الجديد</h3>
+                                <ul>
+                                    <li><strong>الذاكرة:</strong> 256GB / 512GB / 1TB</li>
+                                    <li><strong>اللون:</strong> تيتانيوم طبيعي / أزرق / أبيض / أسود</li>
+                                    <li><strong>الضمان:</strong> ضمان Apple رسمي سنة كاملة</li>
+                                    <li><strong>التوصيل:</strong> مجاني في جميع أنحاء الإمارات</li>
+                                </ul>
+                            </div>
+                            
+                            <div class="price-box">
+                                السعر: 4,299 درهم إماراتي 🇦🇪
+                            </div>
+                            
+                            <h3>🎯 ميزات خاصة:</h3>
+                            <ul>
+                                <li>✨ معالج A17 Pro - الأقوى عالمياً</li>
+                                <li>📷 نظام كاميرا ثلاثي متقدم</li>
+                                <li>🔋 شحن لاسلكي سريع</li>
+                                <li>💪 مقاوم للماء والغبار</li>
+                            </ul>
+                            
+                            <blockquote>
+                                <p>"أحدث الهواتف في العالم مع أحدث تقنيات الذكاء الاصطناعي"</p>
+                            </blockquote>
+                            
+                            <h3>📞 اطلب الآن:</h3>
+                            <p>📱 واتساب: <strong>+971501234567</strong></p>
+                            <p>🏪 الزيارة: دبي مول - الطابق الأول</p>
+                        </textarea>
+                    </div>
+                </div>
+                
+                <div class="demo-card">
+                    <div class="editor-section">
+                        <div class="editor-title">👜 محرر منتجات الأزياء</div>
+                        <textarea class="sooq-editor" name="fashion-description">
+                            <h3>👗 فستان عربي فاخر - تصميم إماراتي</h3>
+                            
+                            <div class="product-highlight">
+                                <h4>✨ تفاصيل المنتج:</h4>
+                                <ul>
+                                    <li><strong>الخامة:</strong> حرير طبيعي 100%</li>
+                                    <li><strong>الألوان:</strong> ذهبي / أزرق ملكي / أحمر برجوندي</li>
+                                    <li><strong>المقاسات:</strong> S / M / L / XL / XXL</li>
+                                    <li><strong>المنشأ:</strong> تصميم إماراتي أصيل</li>
+                                </ul>
+                            </div>
+                            
+                            <table border="1" style="width: 100%; border-collapse: collapse; margin: 15px 0;">
+                                <thead>
+                                    <tr style="background: #ff6b6b; color: white;">
+                                        <th style="padding: 10px;">المقاس</th>
+                                        <th style="padding: 10px;">الطول</th>
+                                        <th style="padding: 10px;">العرض</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    <tr>
+                                        <td style="padding: 8px;">S</td>
+                                        <td style="padding: 8px;">140 سم</td>
+                                        <td style="padding: 8px;">65 سم</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px;">M</td>
+                                        <td style="padding: 8px;">145 سم</td>
+                                        <td style="padding: 8px;">70 سم</td>
+                                    </tr>
+                                    <tr>
+                                        <td style="padding: 8px;">L</td>
+                                        <td style="padding: 8px;">150 سم</td>
+                                        <td style="padding: 8px;">75 سم</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                            
+                            <div class="price-box">
+                                السعر الخاص: 899 درهم إماراتي 🇦🇪
+                            </div>
+                        </textarea>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="controls">
+                <button class="btn uae" onclick="getContent('product-description')">
+                    📱 عرض وصف الهاتف
+                </button>
+                <button class="btn success" onclick="saveContent('product-description', 'هاتف-إماراتي')">
+                    💾 حفظ المنتج
+                </button>
+                <button class="btn" onclick="previewContent('product-description')">
+                    👁️ معاينة
+                </button>
+            </div>
+            
+            <div class="controls">
+                <button class="btn uae" onclick="getContent('fashion-description')">
+                    👗 عرض وصف الفستان
+                </button>
+                <button class="btn success" onclick="saveContent('fashion-description', 'فستان-عربي')">
+                    💾 حفظ المنتج
+                </button>
+                <button class="btn warning" onclick="clearContent('fashion-description')">
+                    🗺️ مسح
+                </button>
+            </div>
+            
+            <div class="controls">
+                <button class="btn uae" onclick="addUAEFlag()">
+                    🇦🇪 علم الإمارات
+                </button>
+                <button class="btn" onclick="addDirham()">
+                    AED درهم
+                </button>
+                <button class="btn success" onclick="exportAllProducts()">
+                    📦 تصدير شامل
+                </button>
+            </div>
+            
+            <div class="info-box">
+                <h4>🔧 طريقة الاستخدام في متجرك:</h4>
+                <ol style="margin-top: 15px; line-height: 2;">
+                    <li><code>&lt;script src="./js/editor.js"&gt;&lt;/script&gt;</code></li>
+                    <li><code>&lt;textarea class="sooq-editor"&gt;وصف منتجك...&lt;/textarea&gt;</code></li>
+                    <li>ابدأ بوصف منتجاتك بالعربية!</li>
+                </ol>
+            </div>
+        </div>
+    </div>
+    
+    <!-- روابط سريعة -->
+    <div style="position: fixed; bottom: 20px; left: 20px; display: flex; gap: 10px; z-index: 1000;">
+        <a href="https://wa.me/971501234567" class="btn uae" style="border-radius: 50px;">
+            📱 واتساب
+        </a>
+        <a href="./" class="btn" style="border-radius: 50px;">
+            🏠 الرئيسية
+        </a>
+    </div>
+    
+    <!-- تحميل محرر سوق الإمارات -->
+    <script src="./js/editor.js"></script>
+    
+    <script>
+        // وظائف التحكم بالمحرر
+        function getContent(editorName) {
+            const editor = tinymce.get(editorName);
+            if (editor) {
+                const content = editor.getContent();
+                alert('محتوى المنتج:\n\n' + content.substring(0, 200) + '...');
+                console.log('المحتوى الكامل:', content);
+            } else {
+                alert('المحرر غير جاهز بعد. انتظر قليلاً...');
+            }
+        }
+        
+        function saveContent(editorName, productType) {
+            const editor = tinymce.get(editorName);
+            if (!editor) {
+                alert('المحرر غير جاهز بعد. انتظر قليلاً...');
+                return;
+            }
+            
+            const content = editor.getContent();
+            const filename = `${productType}-uae-${Date.now()}.html`;
+            
+            const fullHtml = `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>${productType} - سوق الإمارات</title>
+    <style>
+        body {
+            font-family: 'Cairo', Arial, sans-serif;
+            direction: rtl;
+            text-align: right;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px 20px;
+            line-height: 1.7;
+            color: #2c3e50;
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            min-height: 100vh;
+        }
+        .container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .product-highlight {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+        }
+        .price-box {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 8px;
+            color: #155724;
+        }
+        .uae-flag {
+            display: inline-block;
+            width: 20px;
+            height: 15px;
+            background: linear-gradient(to bottom, #009639 33%, #ffffff 33%, #ffffff 66%, #ce1126 66%);
+            margin-left: 5px;
+            border: 1px solid #ccc;
+        }
+        h1, h2, h3 { color: #2c3e50; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
+        th { background: #ff6b6b; color: white; }
+        .header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding: 25px;
+            background: linear-gradient(135deg, #00d2d3, #54a0ff);
+            color: white;
+            border-radius: 10px;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>🇦🇪 ${productType} - سوق الإمارات</h1>
+            <p>منتج أصلي من دولة الإمارات العربية المتحدة</p>
+        </div>
+        
+        ${content}
+        
+        <div class="footer">
+            <h3>🏠 سوق الإمارات - أفضل المنتجات 🇦🇪</h3>
+            <p><strong>واتساب:</strong> <a href="https://wa.me/971501234567" style="color: #ffd700;">+971 50 123 4567</a></p>
+            <p><strong>العنوان:</strong> دبي مول - الطابق الأول</p>
+            <p><strong>مواعيد العمل:</strong> يومياً من 10 ص - 10 م</p>
+            <p><small>تم الإنشاء: ${new Date().toLocaleDateString('ar-AE')} - ${new Date().toLocaleTimeString('ar-AE')}</small></p>
+        </div>
+    </div>
+</body>
+</html>`;
+            
+            const blob = new Blob([fullHtml], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = filename;
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            alert(`🇦🇪 تم حفظ ${productType} بنجاح!`);
+        }
+        
+        function previewContent(editorName) {
+            const editor = tinymce.get(editorName);
+            if (!editor) {
+                alert('المحرر غير جاهز بعد. انتظر قليلاً...');
+                return;
+            }
+            
+            const content = editor.getContent();
+            const previewWindow = window.open('', '_blank', 'width=900,height=700');
+            previewWindow.document.write(`
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <title>معاينة - سوق الإمارات</title>
+    <style>
+        body {
+            font-family: 'Cairo', Arial, sans-serif;
+            direction: rtl;
+            text-align: right;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 30px;
+            line-height: 1.7;
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            min-height: 100vh;
+        }
+        .preview-container {
+            background: white;
+            padding: 40px;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.2);
+        }
+        .preview-header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 25px;
+            text-align: center;
+            border-radius: 10px;
+            margin-bottom: 30px;
+        }
+        .product-highlight {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+        }
+        .price-box {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            padding: 10px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 16px;
+            border-radius: 8px;
+            color: #155724;
+        }
+        .uae-flag {
+            display: inline-block;
+            width: 20px;
+            height: 15px;
+            background: linear-gradient(to bottom, #009639 33%, #ffffff 33%, #ffffff 66%, #ce1126 66%);
+            margin-left: 5px;
+            border: 1px solid #ccc;
+        }
+        h1, h2, h3 { color: #2c3e50; }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 10px; text-align: right; }
+        th { background: #ff6b6b; color: white; }
+    </style>
+</head>
+<body>
+    <div class="preview-container">
+        <div class="preview-header">
+            <h1>👁️ معاينة مباشرة 🇦🇪</h1>
+            <p>سوق الإمارات - محرر TinyMCE العربي</p>
+        </div>
+        
+        ${content}
+        
+        <hr style="margin: 30px 0; border: 2px solid #ff6b6b;">
+        <p style="text-align: center; color: #666; font-size: 14px;">
+            تم إنشاؤه بواسطة محرر سوق الإمارات العربي المتقدم<br>
+            🇦🇪 منتجات أصلية من دولة الإمارات العربية المتحدة
+        </p>
+    </div>
+</body>
+</html>
+            `);
+            previewWindow.document.close();
+        }
+        
+        function clearContent(editorName) {
+            const editor = tinymce.get(editorName);
+            if (editor && confirm('هل تريد مسح وصف المنتج؟')) {
+                editor.setContent('');
+                alert('✅ تم مسح وصف المنتج!');
+            }
+        }
+        
+        function addUAEFlag() {
+            // إضافة علم الإمارات للمحرر النشط
+            const activeEditor = tinymce.activeEditor;
+            if (activeEditor) {
+                activeEditor.insertContent('🇦🇪 ');
+                alert('✅ تم إضافة علم الإمارات!');
+            } else {
+                alert('يرجى التركيز على أحد المحررات أولاً.');
+            }
+        }
+        
+        function addDirham() {
+            // إضافة رمز الدرهم
+            const activeEditor = tinymce.activeEditor;
+            if (activeEditor) {
+                activeEditor.insertContent(' درهم ');
+                alert('✅ تم إضافة رمز الدرهم!');
+            } else {
+                alert('يرجى التركيز على أحد المحررات أولاً.');
+            }
+        }
+        
+        function exportAllProducts() {
+            const phoneEditor = tinymce.get('product-description');
+            const fashionEditor = tinymce.get('fashion-description');
+            
+            if (!phoneEditor || !fashionEditor) {
+                alert('يرجى انتظار تحميل جميع المحررات...');
+                return;
+            }
+            
+            const phoneContent = phoneEditor.getContent();
+            const fashionContent = fashionEditor.getContent();
+            
+            const catalogHtml = `<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>كتالوج سوق الإمارات - منتجات مميزة 🇦🇪</title>
+    <style>
+        body {
+            font-family: 'Cairo', Arial, sans-serif;
+            direction: rtl;
+            text-align: right;
+            max-width: 1000px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.7;
+            background: linear-gradient(135deg, #ff7e5f 0%, #feb47b 100%);
+            min-height: 100vh;
+        }
+        .catalog-container {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            box-shadow: 0 25px 50px rgba(0,0,0,0.2);
+        }
+        .catalog-header {
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+            border-radius: 15px;
+            margin-bottom: 40px;
+            position: relative;
+        }
+        .catalog-header::before {
+            content: '🇦🇪';
+            position: absolute;
+            top: 20px;
+            right: 30px;
+            font-size: 4em;
+            opacity: 0.3;
+        }
+        .product-section {
+            margin: 50px 0;
+            padding: 30px;
+            border: 3px solid #ff6b6b;
+            border-radius: 15px;
+            background: #fafafa;
+        }
+        .product-section h2 {
+            background: linear-gradient(135deg, #00d2d3, #54a0ff);
+            color: white;
+            padding: 20px;
+            margin: -30px -30px 25px -30px;
+            border-radius: 12px 12px 0 0;
+            text-align: center;
+        }
+        .product-highlight {
+            background: #fff3cd;
+            border: 1px solid #ffeaa7;
+            padding: 8px 12px;
+            border-radius: 6px;
+            margin: 8px 0;
+        }
+        .price-box {
+            background: #d4edda;
+            border: 2px solid #28a745;
+            padding: 12px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 18px;
+            border-radius: 8px;
+            color: #155724;
+            margin: 20px 0;
+        }
+        .uae-flag {
+            display: inline-block;
+            width: 20px;
+            height: 15px;
+            background: linear-gradient(to bottom, #009639 33%, #ffffff 33%, #ffffff 66%, #ce1126 66%);
+            margin-left: 5px;
+            border: 1px solid #ccc;
+        }
+        table { border-collapse: collapse; width: 100%; margin: 20px 0; }
+        th, td { border: 1px solid #ddd; padding: 12px; text-align: right; }
+        th { background: #ff6b6b; color: white; font-weight: bold; }
+        .footer {
+            text-align: center;
+            margin-top: 50px;
+            padding: 40px;
+            background: linear-gradient(135deg, #ff6b6b 0%, #ee5a24 100%);
+            color: white;
+            border-radius: 15px;
+        }
+    </style>
+</head>
+<body>
+    <div class="catalog-container">
+        <div class="catalog-header">
+            <h1>📊 كتالوج سوق الإمارات</h1>
+            <p>مجموعة منتقاة من أفضل المنتجات في دولة الإمارات العربية المتحدة</p>
+            <p><strong>أنشئ بتاريخ:</strong> ${new Date().toLocaleDateString('ar-AE')}</p>
+        </div>
+        
+        <div class="product-section">
+            <h2>📱 قسم الإلكترونيات</h2>
+            ${phoneContent}
+        </div>
+        
+        <div class="product-section">
+            <h2>👗 قسم الأزياء</h2>
+            ${fashionContent}
+        </div>
+        
+        <div class="footer">
+            <h2>🏠 سوق الإمارات - وجهتك المثالية 🇦🇪</h2>
+            <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 20px; margin: 25px 0;">
+                <div>
+                    <h4>📞 اتصال</h4>
+                    <p>واتساب: +971 50 123 4567</p>
+                    <p>هاتف: +971 4 123 4567</p>
+                </div>
+                <div>
+                    <h4>📍 العنوان</h4>
+                    <p>دبي مول</p>
+                    <p>الطابق الأول</p>
+                </div>
+                <div>
+                    <h4>🕰️ مواعيد العمل</h4>
+                    <p>يومياً: 10 ص - 10 م</p>
+                    <p>جميع أيام الأسبوع</p>
+                </div>
+            </div>
+            <p style="margin-top: 30px; font-size: 14px; opacity: 0.9;">
+                ✨ تم إنشاء هذا الكتالوج بواسطة محرر TinyMCE العربي المتقدم ✨<br>
+                🗺️ جميع الحقوق محفوظة لـ سوق الإمارات 2025
+            </p>
+        </div>
+    </div>
+</body>
+</html>`;
+            
+            const blob = new Blob([catalogHtml], { type: 'text/html;charset=utf-8' });
+            const url = URL.createObjectURL(blob);
+            const link = document.createElement('a');
+            link.href = url;
+            link.download = `كتالوج-سوق-الإمارات-${Date.now()}.html`;
+            link.click();
+            URL.revokeObjectURL(url);
+            
+            alert('🇦🇪 تم تصدير كتالوج سوق الإمارات بنجاح!');
+        }
+        
+        // رسالة ترحيب
+        window.addEventListener('load', function() {
+            setTimeout(() => {
+                console.log('\n🇦🇪 مرحباً بسوق الإمارات!');
+                console.log('🚀 محرر المنتجات العربي جاهز!');
+                console.log('📞 واتساب: +971 50 123 4567');
+                
+                // عرض رسالة ترحيب إماراتية
+                const welcomeMsg = document.createElement('div');
+                welcomeMsg.style.cssText = `
+                    position: fixed;
+                    top: 20px;
+                    left: 20px;
+                    background: linear-gradient(135deg, #00d2d3, #54a0ff);
+                    color: white;
+                    padding: 15px 20px;
+                    border-radius: 10px;
+                    box-shadow: 0 8px 25px rgba(0, 210, 211, 0.3);
+                    z-index: 10000;
+                    max-width: 300px;
+                    text-align: center;
+                    font-weight: bold;
+                `;
+                welcomeMsg.innerHTML = '🇦🇪 محرر سوق الإمارات جاهز!';
+                
+                document.body.appendChild(welcomeMsg);
+                
+                setTimeout(() => {
+                    welcomeMsg.style.opacity = '0';
+                    welcomeMsg.style.transform = 'translateX(-100px)';
+                    setTimeout(() => welcomeMsg.remove(), 500);
+                }, 3000);
+            }, 2000);
+        });
+    </script>
+</body>
+</html>
