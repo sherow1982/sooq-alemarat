@@ -1,23 +1,31 @@
 /**
  * محرر TinyMCE لسوق الإمارات
  * محرر عربي متخصص للمتاجر الإلكترونية
+ * تم إصلاح مشكلة التحميل
  */
 
-// تحميل TinyMCE
+// تحميل TinyMCE مع معالجة الأخطاء
 function loadTinyMCE() {
   if (window.tinymce) return Promise.resolve();
   
   return new Promise((resolve, reject) => {
     const script = document.createElement('script');
-    script.src = 'https://cdn.jsdelivr.net/npm/tinymce@7/tinymce.min.js';
+    script.src = 'https://cdn.jsdelivr.net/npm/tinymce@6/tinymce.min.js';
     script.crossOrigin = 'anonymous';
-    script.onload = resolve;
-    script.onerror = reject;
+    script.referrerPolicy = 'origin';
+    script.onload = () => {
+      console.log('✅ TinyMCE تم تحميله بنجاح');
+      resolve();
+    };
+    script.onerror = () => {
+      console.error('❌ فشل في تحميل TinyMCE');
+      reject(new Error('Failed to load TinyMCE'));
+    };
     document.head.appendChild(script);
   });
 }
 
-// إعداد محرر سوق الإمارات
+// إعداد محرر سوق الإمارات مع إصلاح الأخطاء
 function initSooqEditor() {
   const config = {
     selector: '.sooq-editor, .product-editor, textarea.arabic-text',
@@ -31,14 +39,15 @@ function initSooqEditor() {
     toolbar: [
       'undo redo | bold italic underline | fontsize',
       'forecolor backcolor | alignleft aligncenter alignright | ltr rtl',
-      'bullist numlist | link image table | preview fullscreen'
+      'bullist numlist | link image table | preview fullscreen | saveProduct'
     ].join(' | '),
     
     menubar: 'edit view insert format table',
     
-    // إعدادات عربية
+    // إعدادات عربية محسنة
     directionality: 'rtl',
     language: 'ar',
+    language_url: false, // تجنب تحميل ملف اللغة الخارجي
     
     height: 350,
     resize: 'vertical',
@@ -46,10 +55,13 @@ function initSooqEditor() {
     branding: false,
     promotion: false,
     
-    // حفظ تلقائي
+    // حفظ تلقائي محسن
     autosave_interval: '30s',
     autosave_retention: '20m',
+    autosave_ask_before_unload: true,
     
+    // إعدادات المحتوى
+    content_css: false,
     content_style: `
       body {
         font-family: 'Cairo', Arial, sans-serif;
@@ -58,6 +70,8 @@ function initSooqEditor() {
         direction: rtl;
         text-align: right;
         color: #333;
+        background: #fff;
+        margin: 10px;
       }
       .product-highlight {
         background: #fff3cd;
@@ -75,6 +89,7 @@ function initSooqEditor() {
         font-size: 16px;
         border-radius: 8px;
         color: #155724;
+        margin: 10px 0;
       }
       .uae-flag {
         display: inline-block;
@@ -83,6 +98,18 @@ function initSooqEditor() {
         background: linear-gradient(to bottom, #009639 33%, #ffffff 33%, #ffffff 66%, #ce1126 66%);
         margin-left: 5px;
         border: 1px solid #ccc;
+        border-radius: 2px;
+      }
+      h1, h2, h3, h4, h5, h6 {
+        color: #2c3e50;
+        font-weight: bold;
+      }
+      blockquote {
+        border-right: 4px solid #3498db;
+        padding: 10px 15px;
+        margin: 15px 0;
+        background: #f8f9fa;
+        border-radius: 4px;
       }
     `,
     
@@ -97,8 +124,38 @@ function initSooqEditor() {
       }
     ],
     
+    // إعدادات التحميل
+    init_instance_callback: function(editor) {
+      console.log('✅ تم تهيئة المحرر:', editor.id);
+      
+      // إظهار رسالة نجاح
+      setTimeout(() => {
+        const notification = document.createElement('div');
+        notification.style.cssText = `
+          position: fixed;
+          top: 20px;
+          right: 20px;
+          background: linear-gradient(45deg, #27ae60, #2ecc71);
+          color: white;
+          padding: 15px 20px;
+          border-radius: 8px;
+          box-shadow: 0 4px 15px rgba(39, 174, 96, 0.3);
+          z-index: 10000;
+          font-weight: bold;
+        `;
+        notification.textContent = '✅ محرر سوق الإمارات جاهز للعمل! 🇦🇪';
+        document.body.appendChild(notification);
+        
+        setTimeout(() => {
+          notification.style.opacity = '0';
+          notification.style.transition = 'opacity 0.5s ease';
+          setTimeout(() => notification.remove(), 500);
+        }, 3000);
+      }, 500);
+    },
+    
     setup: function(editor) {
-      // زر حفظ منتج
+      // زر حفظ منتج إماراتي
       editor.ui.registry.addButton('saveProduct', {
         text: '💾 حفظ',
         tooltip: 'حفظ وصف المنتج',
@@ -136,6 +193,14 @@ function initSooqEditor() {
             border-radius: 8px;
             color: #155724;
         }
+        .uae-flag {
+            display: inline-block;
+            width: 20px;
+            height: 15px;
+            background: linear-gradient(to bottom, #009639 33%, #ffffff 33%, #ffffff 66%, #ce1126 66%);
+            margin-left: 5px;
+            border: 1px solid #ccc;
+        }
     </style>
 </head>
 <body>
@@ -155,35 +220,158 @@ function initSooqEditor() {
           link.click();
           URL.revokeObjectURL(url);
           
+          // إشعار نجاح
           editor.notificationManager.open({
-            text: 'تم حفظ المنتج بنجاح! 🇦🇪',
-            type: 'success'
+            text: 'تم حفظ المنتج الإماراتي بنجاح! 🇦🇪',
+            type: 'success',
+            timeout: 3000
           });
         }
       });
       
       // زر إضافة علم الإمارات
       editor.ui.registry.addButton('addUAEFlag', {
-        text: '🇦🇪 علم',
+        text: '🇦🇪',
         tooltip: 'إضافة علم الإمارات',
         onAction: function() {
-          editor.insertContent('<span class="uae-flag"></span> ');
+          editor.insertContent('🇦🇪 ');
         }
+      });
+      
+      // زر إضافة الدرهم
+      editor.ui.registry.addButton('addDirham', {
+        text: 'AED',
+        tooltip: 'إضافة رمز الدرهم الإماراتي',
+        onAction: function() {
+          editor.insertContent(' درهم ');
+        }
+      });
+      
+      // إضافة الأزرار للشريط
+      editor.on('init', function() {
+        console.log('🚀 محرر سوق الإمارات مُهيأ بنجاح');
       });
     }
   };
   
-  tinymce.init(config);
+  // تهيئة TinyMCE مع معالجة الأخطاء
+  try {
+    tinymce.init(config);
+    console.log('🔄 جاري تهيئة محرر سوق الإمارات...');
+  } catch (error) {
+    console.error('❌ خطأ في تهيئة المحرر:', error);
+  }
+}
+
+// تهيئة تلقائية مع إعادة المحاولة
+let retryCount = 0;
+const maxRetries = 3;
+
+function initWithRetry() {
+  loadTinyMCE()
+    .then(() => {
+      initSooqEditor();
+      console.log('✅ تم تهيئة محرر سوق الإمارات بنجاح');
+    })
+    .catch(error => {
+      console.error('❌ خطأ في التحميل:', error);
+      
+      if (retryCount < maxRetries) {
+        retryCount++;
+        console.log(`🔄 إعادة المحاولة ${retryCount}/${maxRetries}...`);
+        setTimeout(initWithRetry, 2000);
+      } else {
+        console.error('❌ فشل في تحميل المحرر بعد عدة محاولات');
+        
+        // عرض رسالة خطأ للمستخدم
+        const errorMsg = document.createElement('div');
+        errorMsg.style.cssText = `
+          position: fixed;
+          top: 50%;
+          left: 50%;
+          transform: translate(-50%, -50%);
+          background: #e74c3c;
+          color: white;
+          padding: 20px 30px;
+          border-radius: 10px;
+          box-shadow: 0 10px 25px rgba(231, 76, 60, 0.3);
+          z-index: 10000;
+          text-align: center;
+          max-width: 400px;
+        `;
+        errorMsg.innerHTML = `
+          <h3>⚠️ تعذر تحميل المحرر</h3>
+          <p>يرجى إعادة تحميل الصفحة أو التحقق من الاتصال</p>
+          <button onclick="this.parentElement.remove(); initWithRetry();" 
+                  style="background: white; color: #e74c3c; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; margin-top: 10px;">
+            🔄 إعادة المحاولة
+          </button>
+        `;
+        document.body.appendChild(errorMsg);
+      }
+    });
 }
 
 // تهيئة تلقائية
 if (document.readyState === 'loading') {
-  document.addEventListener('DOMContentLoaded', () => {
-    loadTinyMCE().then(initSooqEditor).catch(console.error);
-  });
+  document.addEventListener('DOMContentLoaded', initWithRetry);
 } else {
-  loadTinyMCE().then(initSooqEditor).catch(console.error);
+  initWithRetry();
 }
 
-// تصدير
-window.SooqEditor = { loadTinyMCE, initSooqEditor };
+// تصدير الوظائف
+window.SooqEditor = { 
+  loadTinyMCE, 
+  initSooqEditor, 
+  initWithRetry 
+};
+
+// وظائف مساعدة إضافية
+window.SooqEditorHelpers = {
+  // إدراج قالب منتج
+  insertProductTemplate: function(editorId) {
+    const editor = tinymce.get(editorId);
+    if (editor) {
+      const template = `
+        <div class="product-highlight">
+          <h3>🛍️ [اسم المنتج]</h3>
+          <ul>
+            <li><strong>النوع:</strong> [نوع المنتج]</li>
+            <li><strong>المقاس:</strong> [المقاس المتاح]</li>
+            <li><strong>اللون:</strong> [الألوان المتاحة]</li>
+            <li><strong>الضمان:</strong> [فترة الضمان]</li>
+          </ul>
+        </div>
+        
+        <div class="price-box">
+          السعر: [السعر] درهم إماراتي 🇦🇪
+        </div>
+      `;
+      
+      editor.insertContent(template);
+      editor.notificationManager.open({
+        text: 'تم إضافة قالب المنتج! 📦',
+        type: 'success'
+      });
+    }
+  },
+  
+  // تغيير اتجاه النص
+  toggleDirection: function(editorId) {
+    const editor = tinymce.get(editorId);
+    if (editor) {
+      const body = editor.getBody();
+      const isRTL = body.style.direction === 'rtl';
+      
+      body.style.direction = isRTL ? 'ltr' : 'rtl';
+      body.style.textAlign = isRTL ? 'left' : 'right';
+      
+      editor.notificationManager.open({
+        text: `تم التبديل إلى ${isRTL ? 'الإنجليزية' : 'العربية'}`,
+        type: 'info'
+      });
+    }
+  }
+};
+
+console.log('📦 تم تحميل ملف محرر سوق الإمارات');
