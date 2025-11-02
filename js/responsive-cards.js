@@ -1,6 +1,6 @@
 /**
- * نظام بطاقات المنتج المحسن - إصلاح الأزرار
- * Enhanced Product Cards System - Button Fix
+ * نظام بطاقات المنتج المحسن - بدون نوافذ منبثقة
+ * Enhanced Product Cards System - No Popups
  */
 
 class ResponsiveProductCards {
@@ -11,7 +11,7 @@ class ResponsiveProductCards {
     init() {
         this.addResponsiveStyles();
         this.setupGlobalEventListeners();
-        console.log('✨ تم تفعيل بطاقات المنتج المحسنة مع إصلاح الأزرار');
+        console.log('✨ تم تفعيل بطاقات المنتج المحسنة بدون نوافذ منبثقة');
     }
     
     addResponsiveStyles() {
@@ -478,7 +478,7 @@ class ResponsiveProductCards {
                 return;
             }
             
-            // Handle view details buttons
+            // Handle view details buttons - فتح في نفس النافذة
             if (target.matches('.view-details') || target.closest('.view-details')) {
                 e.preventDefault();
                 e.stopPropagation();
@@ -495,7 +495,7 @@ class ResponsiveProductCards {
                 return;
             }
             
-            // Handle product image/title clicks
+            // Handle product image/title clicks - فتح في نفس النافذة
             const card = target.closest('.product-card');
             if (card && (target.matches('.product-image') || target.closest('.product-image') ||
                 target.matches('.product-title') || target.closest('.product-title'))) {
@@ -523,7 +523,7 @@ class ResponsiveProductCards {
             }
         });
         
-        console.log('✅ تم تفعيل مستمعات الأحداث العامة');
+        console.log('✅ تم تفعيل مستمعات الأحداث العامة بدون نوافذ منبثقة');
     }
     
     handleAddToCart(productId, buttonElement) {
@@ -594,16 +594,14 @@ class ResponsiveProductCards {
                 return;
             }
             
-            // فتح صفحة التفاصيل
+            // الانتقال في نفس النافذة بدلاً من النافذة المنبثقة
             const detailsUrl = `./product.html?id=${encodeURIComponent(productId)}`;
-            const newWindow = window.open(detailsUrl, '_blank', 'noopener,noreferrer');
+            this.showNotification(`🎯 جاري الانتقال لتفاصيل "${product.title.substring(0, 30)}..."`, 'info');
             
-            if (newWindow) {
-                this.showNotification(`🎯 جاري فتح تفاصيل "${product.title.substring(0, 30)}..."`, 'success');
-            } else {
-                // Fallback: show modal if popup blocked
-                this.showProductModal(product);
-            }
+            // انتقال مباشر بدون popup
+            setTimeout(() => {
+                window.location.href = detailsUrl;
+            }, 500);
             
         } catch (error) {
             console.error('خطأ في فتح تفاصيل المنتج:', error);
@@ -687,115 +685,8 @@ class ResponsiveProductCards {
         }, 200);
     }
     
-    showProductModal(product) {
-        // Create modal for blocked popups
-        const modal = document.createElement('div');
-        modal.style.cssText = `
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100vw;
-            height: 100vh;
-            background: rgba(0, 0, 0, 0.8);
-            backdrop-filter: blur(10px);
-            z-index: 10000;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            padding: 2rem;
-        `;
-        
-        const modalContent = document.createElement('div');
-        modalContent.style.cssText = `
-            background: white;
-            border-radius: 20px;
-            padding: 2rem;
-            max-width: 500px;
-            width: 100%;
-            max-height: 80vh;
-            overflow-y: auto;
-            position: relative;
-            box-shadow: 0 25px 50px rgba(0, 0, 0, 0.3);
-        `;
-        
-        modalContent.innerHTML = `
-            <button onclick="this.closest('div[style*=\"position: fixed\"]').remove()" style="
-                position: absolute;
-                top: 1rem;
-                right: 1rem;
-                background: #ff6b6b;
-                color: white;
-                border: none;
-                width: 40px;
-                height: 40px;
-                border-radius: 50%;
-                cursor: pointer;
-                font-size: 1.2rem;
-                font-weight: bold;
-                transition: all 0.3s ease;
-            ">×</button>
-            
-            <div style="text-align: center;">
-                <img src="${product.image_url || 'https://via.placeholder.com/200x150/D4AF37/FFFFFF?text=صورة'}" alt="${product.title}" style="
-                    width: 200px;
-                    height: 150px;
-                    object-fit: cover;
-                    border-radius: 15px;
-                    margin-bottom: 1.5rem;
-                    border: 3px solid #d4af37;
-                " onerror="this.src='https://via.placeholder.com/200x150/D4AF37/FFFFFF?text=صورة'">
-                <h3 style="color: #111827; margin-bottom: 1rem; font-family: 'Cairo', sans-serif;">${product.title}</h3>
-                <div style="font-size: 1.5rem; color: #d4af37; font-weight: 800; margin-bottom: 2rem; font-family: 'Cairo', sans-serif;">
-                    ${product.sale_price || product.regular_price || 0} درهم
-                </div>
-                
-                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 1rem;">
-                    <button onclick="
-                        window.responsiveCards.handleAddToCart('${product.id}', this);
-                        this.closest('div[style*=\"position: fixed\"]').remove();
-                    " style="
-                        padding: 1rem;
-                        background: linear-gradient(135deg, #d4af37, #b8941f);
-                        color: white;
-                        border: none;
-                        border-radius: 15px;
-                        font-weight: 700;
-                        cursor: pointer;
-                        font-family: 'Cairo', sans-serif;
-                        transition: all 0.3s ease;
-                    " onmouseover="this.style.transform='scale(1.05)'" 
-                       onmouseout="this.style.transform='scale(1)'">🛒 إضافة للسلة</button>
-                    
-                    <a href="https://wa.me/201110760081?text=${encodeURIComponent(`أريد الاستفسار عن: ${product.title}`)}"
-                       target="_blank" style="
-                        padding: 1rem;
-                        background: linear-gradient(135deg, #25D366, #128C7E);
-                        color: white;
-                        text-decoration: none;
-                        border-radius: 15px;
-                        font-weight: 700;
-                        text-align: center;
-                        display: flex;
-                        align-items: center;
-                        justify-content: center;
-                        font-family: 'Cairo', sans-serif;
-                        transition: all 0.3s ease;
-                    " onmouseover="this.style.transform='scale(1.05)'" 
-                       onmouseout="this.style.transform='scale(1)'">📱 واتساب</a>
-                </div>
-            </div>
-        `;
-        
-        modal.appendChild(modalContent);
-        document.body.appendChild(modal);
-        
-        // Close on background click
-        modal.addEventListener('click', (e) => {
-            if (e.target === modal) {
-                modal.remove();
-            }
-        });
-    }
+    // إزالة النافذة المنبثقة نهائياً - استبدالها بانتقال مباشر
+    // showProductModal() method removed completely
     
     showNotification(message, type = 'info') {
         const colors = {
@@ -843,7 +734,7 @@ class ResponsiveProductCards {
         
         document.body.appendChild(notification);
         
-        // Auto dismiss after 4 seconds
+        // Auto dismiss after 3 seconds (shortened)
         setTimeout(() => {
             if (document.body.contains(notification)) {
                 notification.style.animation = 'slideOut 0.4s ease-in forwards';
@@ -853,7 +744,7 @@ class ResponsiveProductCards {
                     }
                 }, 400);
             }
-        }, 4000);
+        }, 3000);
         
         // Add animation styles if not exist
         if (!document.getElementById('notification-animations')) {
