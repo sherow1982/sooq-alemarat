@@ -1,17 +1,20 @@
 {
-  "name": "sooq-alemarat-cms",
+  "name": "sooq-alemarat",
   "version": "1.0.0",
+  "description": "متجر إلكتروني - سوق الإمارات",
   "scripts": {
-    "dev": "tinacms dev -c \"serve .\"",
-    "build": "tinacms build && npm run build:site",
-    "build:site": "mkdir -p dist && cp -r *.html assets css js images data legal pages dist/ && cp manifest.json robots.txt sitemap.xml google*.html CNAME dist/",
-    "serve": "serve ."
+    "dev": "serve .",
+    "build": "echo 'Static site - no build needed'",
+    "start": "serve ."
   },
   "dependencies": {
-    "tinacms": "^1.5.0",
-    "@tinacms/cli": "^1.5.0"
+    "@tinacms/cli": "^1.5.0",
+    "tinacms": "^1.5.0"
   },
   "devDependencies": {
-    "serve": "^14.0.0"
-  }
+    "serve": "^14.2.0"
+  },
+  "keywords": ["ecommerce", "uae", "marketplace"],
+  "author": "Sherif Salama",
+  "license": "MIT"
 }
