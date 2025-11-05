@@ -1,74 +1,103 @@
 <!DOCTYPE html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title id="page-title">فئة منتجات - سوق الإمارات</title>
-    <meta name="description" id="page-description" content="تسوق منتجات مميزة مع شحن مجاني ودفع عند الاستلام داخل الإمارات">
-    <link rel="canonical" id="page-canonical" href="https://sherow1982.github.io/sooq-alemarat/category.html">
-    <link rel="icon" href="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/e1029c77-e4a0-4b40-a278-4b4996e2ee05.png">
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="css/improved-theme.css">
-    
-    <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https: http:; font-src 'self' https:; connect-src 'self' https:; frame-src 'none'; object-src 'none'; base-uri 'self';">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title id="page-title">فئة منتجات - سوق الإمارات</title>
+  <meta name="description" id="page-description" content="تسوق منتجات مميزة مع شحن مجاني ودفع عند الاستلام داخل الإمارات">
+  <link rel="canonical" id="page-canonical" href="https://sherow1982.github.io/sooq-alemarat/category.html">
+  <link rel="icon" href="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/e1029c77-e4a0-4b40-a278-4b4996e2ee05.png">
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/improved-theme.css">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' data: https:; script-src 'self' 'unsafe-inline' https:; style-src 'self' 'unsafe-inline' https:; img-src 'self' data: https: http:; font-src 'self' https:; connect-src 'self' https:; frame-src 'none'; object-src 'none'; base-uri 'self';">
+  <style>
+    .diag{font-size:12px;background:#fff7ed;border:1px dashed #fb923c;padding:.5rem 1rem;border-radius:10px;margin:10px 0;color:#7c2d12;display:none}
+    .diag.show{display:block}
+    .banner-empty{background:#fef3c7;border:1px solid #fde68a;color:#7c2d12;padding:1rem;border-radius:12px;margin:1rem 0}
+    .products-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:2rem;padding:1rem 0}
+    .filter-bar{display:flex;gap:.5rem;flex-wrap:wrap;margin:10px 0}
+    .filter-btn{padding:.5rem 1rem;border:1px solid #e5e7eb;border-radius:999px;background:#fff;cursor:pointer}
+    .filter-btn.active{background:#111827;color:#fff}
+  </style>
 </head>
 <body>
-    <!-- ... بقية الهيدر والمحتوى بدون تغيير ... -->
+  <header class="header">
+    <div class="container"><div class="header-content">
+      <a href="./" class="logo"><img src="https://user-gen-media-assets.s3.amazonaws.com/seedream_images/b1f430c1-8aa0-4082-8bec-59935fddfaa2.png" alt="سوق الإمارات"><span>سوق الإمارات</span></a>
+      <nav><ul class="nav-list"><li><a href="./">🏠 الرئيسية</a></li><li><a href="cart.html">🛒 السلة</a></li></ul></nav>
+    </div></div>
+  </header>
+  <main class="container">
+    <div id="diag" class="diag"></div>
+    <h1 id="cat-title" style="margin-top:1rem"></h1>
+    <div class="filter-bar">
+      <button class="filter-btn active" onclick="filterByPrice('all', this)">الكل</button>
+      <button class="filter-btn" onclick="filterByPrice('low', this)">الأقل سعراً</button>
+      <button class="filter-btn" onclick="filterByPrice('high', this)">الأعلى سعراً</button>
+      <button class="filter-btn" onclick="filterByPrice('sale', this)">العروض</button>
+    </div>
+    <div id="empty-banner" class="banner-empty" style="display:none"></div>
+    <div id="category-products" class="products-grid"></div>
+  </main>
+  <footer class="footer"><div class="container"><div class="footer-content"><div class="footer-section"><h3>🏪 سوق الإمارات</h3><p>متجرك الموثوق للتسوق الإلكتروني</p></div></div></div></footer>
 
-    <!-- Scripts: ترتيب التحميل الصحيح -->
-    <script src="js/extension-detector.js"></script>
-    <script src="js/cart.js"></script>
-    <script src="js/responsive-cards.js"></script>
-    
-    <script>
-        class UniversalCategoryPage {
-            constructor() {
-                this.categoryName = '';
-                this.categorySlug = '';
-                this.products = [];
-                this.filteredProducts = [];
-                this.currentFilter = 'all';
-                // بدلاً من this.init()
-                this.bootstrap();
-            }
-            
-            bootstrap(){
-                try{
-                  this.extractCategoryInfo?.();
-                  this.updatePageElements?.();
-                  this.loadProducts?.();
-                  this.setupFilters?.();
-                }catch(e){ console.error('Bootstrap error:', e); }
-            }
-            
-            renderProducts() {
-                const container = document.getElementById('category-products');
-                if (!container) return;
-                if (this.filteredProducts.length === 0) { this.showEmptyState?.(); return; }
-                const productsHTML = this.filteredProducts.map(p => this.createProductCard?.(p) || '').join('');
-                container.innerHTML = productsHTML;
-                container.classList.add('products-fade-in');
-                try {
-                    if (window.responsiveCards && typeof window.responsiveCards.setupProductCardEvents === 'function') {
-                        window.responsiveCards.setupProductCardEvents();
-                    }
-                } catch (e) {
-                    console.warn('responsiveCards not available, skipping enhancements');
-                }
-            }
-        }
-        window.filterByPrice = function(filter, button) {
-            if (window.categoryPage) {
-                window.categoryPage.applyFilter?.(filter);
-                window.categoryPage.renderProducts?.();
-                document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
-                button.classList.add('active');
-            }
-        };
-        document.addEventListener('DOMContentLoaded', function() {
-            window.categoryPage = new UniversalCategoryPage();
-        });
-    </script>
-    <!-- أنماط إضافية كما هي -->
+  <script src="js/extension-detector.js"></script>
+  <script src="js/cart.js"></script>
+  <script src="js/responsive-cards.js"></script>
+  <script>
+    function safeDecode(v){ try{ return decodeURIComponent(v||'').replace(/\+/g,' '); }catch{ return v||''; } }
+    function stripDiacritics(s){ return s.replace(/[\u064B-\u0652]/g,''); }
+    function normalizeArabic(s){ if(!s) return ''; s = s.toString().trim(); s = safeDecode(s); s = s.toLowerCase(); s = stripDiacritics(s);
+      s = s.replace(/[\u0622\u0623\u0625]/g,'ا').replace(/ى/g,'ي').replace(/ة/g,'ه').replace(/[^\p{L}\p{N}]+/gu,' ').replace(/\s+/g,' ').trim(); return s; }
+
+    class UniversalCategoryPage{
+      constructor(){ this.categoryParamRaw=''; this.categoryParamNorm=''; this.products=[]; this.filteredProducts=[]; this.mode=''; this.debug=false; this.bootstrap(); }
+      bootstrap(){ this.extractCategoryInfo(); this.updateHeadings(); this.loadProducts(); }
+      extractCategoryInfo(){ const qp=new URLSearchParams(location.search); const debug=qp.get('debug'); this.debug = debug==='true' || debug==='1';
+        const key = ['name','slug','category'].find(k=> qp.get(k)); const raw = key? qp.get(key):''; this.categoryParamRaw = safeDecode(raw); this.categoryParamNorm = normalizeArabic(this.categoryParamRaw);
+      }
+      updateHeadings(){ const title = this.categoryParamRaw? `فئة: ${this.categoryParamRaw}`: 'كل المنتجات'; document.getElementById('cat-title').textContent=title; document.title = `${title} - سوق الإمارات`; }
+      async loadProducts(){ try{ const res = await fetch('./data/uae-products.json'); const data = await res.json(); this.products = Array.isArray(data)? data:[]; this.applyCategory(); this.renderProducts(); this.showDiag(); }
+        catch(e){ console.error(e); this.showEmpty('تعذر تحميل البيانات.'); this.showDiag(e.message); }
+      }
+      matchByCategory(p){ return normalizeArabic(p.category) === this.categoryParamNorm; }
+      matchPartial(p){ const nc = normalizeArabic(p.category); return nc.includes(this.categoryParamNorm); }
+      matchBySlugOrSEO(p){ const slug = normalizeArabic(p.url_slug); const seo = normalizeArabic(p.seo_title); return slug===this.categoryParamNorm || seo.includes(this.categoryParamNorm); }
+      applyCategory(){ if(!this.categoryParamNorm){ this.filteredProducts = this.products.slice(); this.mode='all'; return; }
+        let out = this.products.filter(p=> this.matchByCategory(p)); if(out.length===0) { out = this.products.filter(p=> this.matchPartial(p)); this.mode='partial'; }
+        if(out.length===0){ out = this.products.filter(p=> this.matchBySlugOrSEO(p)); this.mode='slug'; }
+        if(out.length===0){ this.mode='fallback'; this.filteredProducts = this.products.slice(0,12); this.showEmpty('لم يتم العثور على منتجات لهذه الفئة. تم عرض مقترحات.'); return; }
+        this.filteredProducts = out; this.mode = this.mode || 'exact';
+      }
+      createProductCard(p){ const discount = p.discount_percentage? `<span class="discount-badge">-${Math.round(p.discount_percentage)}%</span>`:'';
+        const price = `<div class="product-price"><span class="current-price">${p.sale_price||p.regular_price} AED</span>${p.regular_price&&p.sale_price&&p.regular_price>p.sale_price?`<span class='original-price'>${p.regular_price} AED</span>`:''}</div>`;
+        return `<div class="product-card" data-product-id="${p.id}">
+          <div class="product-image"><img src="${p.image_url}" alt="${p.title}">${discount}</div>
+          <div class="product-info">
+            <div class="product-category">${p.category||''}</div>
+            <div class="product-title">${p.title||''}</div>
+            ${price}
+            <div class="product-actions">
+              <a href="#" class="btn add-to-cart" data-product-id="${p.id}">🛒 إضافة للسلة</a>
+              <a href="#" class="btn whatsapp-btn" onclick="event.preventDefault();window.open('https://wa.me/201110760081?text='+encodeURIComponent('مرحبا، أريد الاستفسار عن: ${p.title} (السعر: ${p.sale_price||p.regular_price} درهم)'))">📱 واتساب</a>
+              <a href="#" class="btn view-details" data-product-id="${p.id}">عرض التفاصيل</a>
+            </div>
+          </div>
+        </div>`; }
+      renderProducts(){ const container=document.getElementById('category-products'); container.innerHTML = this.filteredProducts.map(p=> this.createProductCard(p)).join('');
+        if(window.responsiveCards && typeof window.responsiveCards.setupGlobalEventListeners==='function'){ /* already attached globally */ }
+      }
+      showEmpty(msg){ const b=document.getElementById('empty-banner'); b.textContent=msg; b.style.display='block'; }
+      showDiag(extra){ if(!this.debug) return; const d=document.getElementById('diag'); d.classList.add('show'); d.innerHTML = `paramRaw: ${this.categoryParamRaw || '(none)'}<br>paramNorm: ${this.categoryParamNorm || '(none)'}<br>total: ${this.products.length}<br>matched: ${this.filteredProducts.length}<br>mode: ${this.mode||''}<br>${extra||''}`; }
+      applyFilter(filter){ let list = [...(this.categoryParamNorm? this.filteredProducts: this.products)];
+        if(filter==='low'){ list.sort((a,b)=>(a.sale_price||a.regular_price)-(b.sale_price||b.regular_price)); }
+        else if(filter==='high'){ list.sort((a,b)=>(b.sale_price||b.regular_price)-(a.sale_price||a.regular_price)); }
+        else if(filter==='sale'){ list = list.filter(p=> (p.discount_percentage||0)>0); }
+        this.filteredProducts = list; }
+    }
+
+    window.filterByPrice = function(filter, btn){ if(window.categoryPage){ window.categoryPage.applyFilter(filter); window.categoryPage.renderProducts(); document.querySelectorAll('.filter-btn').forEach(b=>b.classList.remove('active')); btn.classList.add('active'); } }
+    document.addEventListener('DOMContentLoaded',()=>{ window.categoryPage = new UniversalCategoryPage(); });
+  </script>
 </body>
 </html>
