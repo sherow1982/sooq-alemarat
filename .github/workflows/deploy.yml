@@ -1,9 +1,9 @@
-name: Build and Deploy to GitHub Pages
+name: Deploy to GitHub Pages
 
 on:
   push:
-    branches:
-      - main
+    branches: [main]
+  workflow_dispatch:
 
 permissions:
   contents: read
@@ -11,11 +11,11 @@ permissions:
   id-token: write
 
 concurrency:
-  group: "pages"
+  group: pages
   cancel-in-progress: false
 
 jobs:
-  build-and-deploy:
+  deploy:
     runs-on: ubuntu-latest
     environment:
       name: github-pages
@@ -23,58 +23,79 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
-        with:
-          fetch-depth: 0
 
       - name: Setup Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20'
-          cache: 'npm'
+          node-version: 20
+          cache: npm
 
       - name: Install dependencies
         run: |
-          npm ci || npm install
+          if [ -f package-lock.json ]; then
+            npm ci
+          else
+            npm install
+          fi
 
-      - name: Make build script executable
-        run: chmod +x build.sh
+      - name: Create build directory
+        run: mkdir -p _site
 
-      - name: Run build script
-        run: ./build.sh
+      - name: Copy all website files
+        run: |
+          # Copy HTML files
+          find . -maxdepth 1 -name "*.html" -exec cp {} _site/ \;
+          
+          # Copy directories
+          for dir in assets css js images data legal pages; do
+            if [ -d "$dir" ]; then
+              cp -r "$dir" _site/
+              echo "✅ Copied $dir"
+            fi
+          done
+          
+          # Copy important files
+          for file in manifest.json robots.txt sitemap.xml CNAME; do
+            if [ -f "$file" ]; then
+              cp "$file" _site/
+              echo "✅ Copied $file"
+            fi
+          done
+          
+          # Copy Google verification files
+          find . -maxdepth 1 -name "google*.html" -exec cp {} _site/ \;
+          
+          # Ensure index.html exists
+          if [ ! -f "_site/index.html" ]; then
+            echo "❌ Error: index.html not found!"
+            exit 1
+          fi
+          
+          echo "📁 Build directory contents:"
+          ls -la _site/
 
-      - name: Build TinaCMS Admin (if secrets available)
+      - name: Build TinaCMS (Optional)
         env:
           TINA_PUBLIC_CLIENT_ID: ${{ secrets.TINA_PUBLIC_CLIENT_ID }}
           TINA_TOKEN: ${{ secrets.TINA_TOKEN }}
         run: |
           if [ -n "$TINA_PUBLIC_CLIENT_ID" ] && [ -n "$TINA_TOKEN" ]; then
-            echo "Building TinaCMS admin..."
-            npx tinacms build || echo "TinaCMS build failed, continuing without admin panel"
+            echo "🔧 Building TinaCMS admin panel..."
+            npx tinacms build || {
+              echo "⚠️ TinaCMS build failed, continuing without admin panel"
+            }
           else
-            echo "TinaCMS credentials not found, skipping admin build"
-            echo "Add TINA_PUBLIC_CLIENT_ID and TINA_TOKEN secrets to enable admin panel"
-          fi
-
-      - name: Verify dist contents
-        run: |
-          echo "Contents of dist directory:"
-          ls -la dist/
-          echo "Total files: $(find dist -type f | wc -l)"
-          if [ -f "dist/index.html" ]; then
-            echo "✅ index.html found"
-          else
-            echo "❌ index.html missing"
-            exit 1
+            echo "ℹ️ TinaCMS secrets not configured, skipping admin panel"
           fi
 
       - name: Setup Pages
-        uses: actions/configure-pages@v4
+        uses: actions/configure-pages@v3
 
-      - name: Upload to GitHub Pages
-        uses: actions/upload-pages-artifact@v3
+      - name: Upload artifact
+        uses: actions/upload-pages-artifact@v2
         with:
-          path: './dist'
+          path: ./_site
 
       - name: Deploy to GitHub Pages
         id: deployment
-        uses: actions/deploy-pages@v4
+        uses: actions/deploy-pages@v2
