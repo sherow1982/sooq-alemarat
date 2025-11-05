@@ -28,17 +28,26 @@
                 this.products = [];
                 this.filteredProducts = [];
                 this.currentFilter = 'all';
-                this.init();
+                // بدلاً من this.init()
+                this.bootstrap();
             }
-            // ... بقية الكلاس كما هو ...
+            
+            bootstrap(){
+                try{
+                  this.extractCategoryInfo?.();
+                  this.updatePageElements?.();
+                  this.loadProducts?.();
+                  this.setupFilters?.();
+                }catch(e){ console.error('Bootstrap error:', e); }
+            }
+            
             renderProducts() {
                 const container = document.getElementById('category-products');
                 if (!container) return;
-                if (this.filteredProducts.length === 0) { this.showEmptyState(); return; }
-                const productsHTML = this.filteredProducts.map(p => this.createProductCard(p)).join('');
+                if (this.filteredProducts.length === 0) { this.showEmptyState?.(); return; }
+                const productsHTML = this.filteredProducts.map(p => this.createProductCard?.(p) || '').join('');
                 container.innerHTML = productsHTML;
                 container.classList.add('products-fade-in');
-                // استدعاء اختياري لـ responsive-cards
                 try {
                     if (window.responsiveCards && typeof window.responsiveCards.setupProductCardEvents === 'function') {
                         window.responsiveCards.setupProductCardEvents();
@@ -50,8 +59,8 @@
         }
         window.filterByPrice = function(filter, button) {
             if (window.categoryPage) {
-                window.categoryPage.applyFilter(filter);
-                window.categoryPage.renderProducts();
+                window.categoryPage.applyFilter?.(filter);
+                window.categoryPage.renderProducts?.();
                 document.querySelectorAll('.filter-btn').forEach(btn => btn.classList.remove('active'));
                 button.classList.add('active');
             }
