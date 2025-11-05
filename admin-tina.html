@@ -20,6 +20,8 @@
     input,select{width:100%;background:#0b1220;color:#e5e7eb;border:1px solid #1f2a44;border-radius:10px;padding:10px}
     .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
     .card{background:#0b1220;border:1px solid #1f2a44;border-radius:12px;padding:12px}
+    .notice{background:#111827;border:1px dashed #334155;color:#cbd5e1;border-radius:12px;padding:12px;margin-bottom:10px}
+    .small{font-size:13px;color:#9aa4b2}
   </style>
 </head>
 <body>
@@ -34,7 +36,8 @@
         <button class="btn" onclick="openGithubSave()">💾 حفظ إلى GitHub</button>
         <a class="btn" target="_blank" href="https://github.com/sherow1982/sooq-alemarat/edit/main/data/uae-products.json">✏️ فتح ملف JSON في GitHub</a>
       </div>
-      <p class="muted">سيتم فتح صفحة تحرير uae-products.json في GitHub مع نسخ المحتوى الجديد تلقائياً إلى الحافظة لتقوم بلصقه ثم حفظه.</p>
+      <div id="helper" class="notice" style="display:none;">القائمة فارغة. يمكنك الضغط على "إضافة منتج" مباشرة لإنشاء أول عنصر، أو اضغط "تحميل بيانات المنتجات" لجلب البيانات الحالية.</div>
+      <p class="small">سيتم فتح صفحة تحرير uae-products.json في GitHub مع نسخ المحتوى الجديد تلقائياً إلى الحافظة لتقوم بلصقه ثم حفظه.</p>
     </div>
 
     <div id="editor" class="grid"></div>
@@ -48,31 +51,40 @@
 <script>
   let data = { products: [] };
 
+  function ensureInitialized(){
+    if(!data || !Array.isArray(data.products)){
+      data = { products: [] };
+    }
+  }
+
   async function loadProducts(){
     try{
       const res = await fetch('./data/uae-products.json', {cache:'no-store'});
       data = await res.json();
       if(!Array.isArray(data.products)){
-        // توافق مع صيغة قديمة [array]
         if(Array.isArray(data)) data = { products: data }; else data = { products: [] };
       }
       renderEditor();
       updateOutput();
     }catch(e){
       alert('تعذر تحميل البيانات: '+e.message);
+      ensureInitialized();
+      renderEditor();
+      updateOutput();
     }
   }
 
   function renderEditor(){
     const root = document.getElementById('editor');
     root.innerHTML = '';
+    document.getElementById('helper').style.display = (data.products.length === 0) ? 'block' : 'none';
     data.products.forEach((p,idx)=>{
       const card = document.createElement('div');
       card.className='card';
       card.innerHTML = `
         <div class="field"><label>المعرف</label><input value="${p.id||''}" oninput="edit(${idx},'id',this.value)"/></div>
         <div class="field"><label>الاسم</label><input value="${p.title||''}" oninput="edit(${idx},'title',this.value)"/></div>
-        <div class="field"><label>الوصف</label><input value="${(p.description||'').toString().replace(/"/g,'&quot;')}" oninput="edit(${idx},'description',this.value)"/></div>
+        <div class="field"><label>الوصف</label><input value="${(p.description||'').toString().replace(/\"/g,'&quot;')}" oninput="edit(${idx},'description',this.value)"/></div>
         <div class="field"><label>الفئة</label><input value="${p.category||''}" oninput="edit(${idx},'category',this.value)"/></div>
         <div class="field"><label>السعر العادي</label><input type="number" step="0.01" value="${p.regular_price||''}" oninput="edit(${idx},'regular_price',parseFloat(this.value)||0)"/></div>
         <div class="field"><label>سعر البيع</label><input type="number" step="0.01" value="${p.sale_price||''}" oninput="edit(${idx},'sale_price',parseFloat(this.value)||0)"/></div>
@@ -88,18 +100,23 @@
     });
   }
 
-  function edit(i,k,v){ data.products[i] = { ...data.products[i], [k]: v }; updateOutput(); }
-  function addProduct(){ data.products.push({id:'',title:'',description:'',category:'',regular_price:0,sale_price:0,currency:'AED',image_url:''}); renderEditor(); updateOutput(); }
-  function removeProduct(i){ if(confirm('حذف المنتج؟')){ data.products.splice(i,1); renderEditor(); updateOutput(); } }
-  function moveUp(i){ if(i>0){ const t=data.products[i]; data.products[i]=data.products[i-1]; data.products[i-1]=t; renderEditor(); updateOutput(); } }
-  function moveDown(i){ if(i<data.products.length-1){ const t=data.products[i]; data.products[i]=data.products[i+1]; data.products[i+1]=t; renderEditor(); updateOutput(); } }
+  function edit(i,k,v){ ensureInitialized(); data.products[i] = { ...data.products[i], [k]: v }; updateOutput(); }
+  function addProduct(){ ensureInitialized(); data.products.push({id:'',title:'',description:'',category:'',regular_price:0,sale_price:0,currency:'AED',image_url:''}); renderEditor(); updateOutput(); }
+  function removeProduct(i){ ensureInitialized(); if(confirm('حذف المنتج؟')){ data.products.splice(i,1); renderEditor(); updateOutput(); } }
+  function moveUp(i){ ensureInitialized(); if(i>0){ const t=data.products[i]; data.products[i]=data.products[i-1]; data.products[i-1]=t; renderEditor(); updateOutput(); } }
+  function moveDown(i){ ensureInitialized(); if(i<data.products.length-1){ const t=data.products[i]; data.products[i]=data.products[i+1]; data.products[i+1]=t; renderEditor(); updateOutput(); } }
 
   function updateOutput(){ document.getElementById('jsonOutput').value = JSON.stringify(data, null, 2); }
 
   function openGithubSave(){
+    ensureInitialized();
     const json = JSON.stringify(data, null, 2);
-    // نسخ إلى الحافظة لتلصقها في محرر GitHub
-    navigator.clipboard?.writeText(json).then(()=>{ alert('تم نسخ JSON إلى الحافظة\nافتح صفحة GitHub والصق ثم احفظ'); });
+    if(navigator.clipboard && navigator.clipboard.writeText){
+      navigator.clipboard.writeText(json).then(()=>{ alert('تم نسخ JSON إلى الحافظة\nافتح صفحة GitHub والصق ثم احفظ'); });
+    } else {
+      // متصفحات لا تدعم clipboard API
+      const ta = document.getElementById('jsonOutput'); ta.focus(); ta.select(); document.execCommand('copy'); alert('تم نسخ JSON إلى الحافظة (وضع التوافق)');
+    }
     window.open('https://github.com/sherow1982/sooq-alemarat/edit/main/data/uae-products.json','_blank');
   }
 
