@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Tina Read-only Admin - سوق الإمارات</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;800&display=swap" rel="stylesheet">
+  <style>
+    body{font-family:'Cairo',sans-serif;background:#0b1220;color:#fff;margin:0}
+    .wrap{max-width:1200px;margin:0 auto;padding:28px}
+    h1{margin:0 0 16px;font-weight:900}
+    .panel{background:#0f172a;border:1px solid #1f2a44;border-radius:16px;padding:20px;margin-bottom:16px}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{background:#2563eb;border:none;color:#fff;border-radius:10px;padding:10px 12px;font-weight:800;cursor:pointer}
+    .btn:hover{background:#1d4ed8}
+    textarea{width:100%;min-height:260px;background:#0b1220;color:#e5e7eb;border:1px solid #1f2a44;border-radius:12px;padding:12px}
+    .muted{color:#9aa4b2;font-size:14px}
+    .field{margin-bottom:10px}
+    label{display:block;margin-bottom:6px;color:#cbd5e1;font-weight:700}
+    input,select{width:100%;background:#0b1220;color:#e5e7eb;border:1px solid #1f2a44;border-radius:10px;padding:10px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:12px}
+    .card{background:#0b1220;border:1px solid #1f2a44;border-radius:12px;padding:12px}
+  </style>
+</head>
+<body>
+  <div class="wrap">
+    <h1>🎨 Tina واجهة تحرير مرئية (بدون مفاتيح)</h1>
+    <p class="muted">تحرير المنتجات مرئياً داخل المتصفح، ثم حفظ المحتوى إلى GitHub يدوياً بضغطة زر.</p>
+
+    <div class="panel">
+      <div class="row">
+        <button class="btn" onclick="loadProducts()">📥 تحميل بيانات المنتجات</button>
+        <button class="btn" onclick="addProduct()">➕ إضافة منتج</button>
+        <button class="btn" onclick="openGithubSave()">💾 حفظ إلى GitHub</button>
+        <a class="btn" target="_blank" href="https://github.com/sherow1982/sooq-alemarat/edit/main/data/uae-products.json">✏️ فتح ملف JSON في GitHub</a>
+      </div>
+      <p class="muted">سيتم فتح صفحة تحرير uae-products.json في GitHub مع نسخ المحتوى الجديد تلقائياً إلى الحافظة لتقوم بلصقه ثم حفظه.</p>
+    </div>
+
+    <div id="editor" class="grid"></div>
+
+    <div class="panel">
+      <h2>📦 محتوى JSON النهائي</h2>
+      <textarea id="jsonOutput" readonly></textarea>
+    </div>
+  </div>
+
+<script>
+  let data = { products: [] };
+
+  async function loadProducts(){
+    try{
+      const res = await fetch('./data/uae-products.json', {cache:'no-store'});
+      data = await res.json();
+      if(!Array.isArray(data.products)){
+        // توافق مع صيغة قديمة [array]
+        if(Array.isArray(data)) data = { products: data }; else data = { products: [] };
+      }
+      renderEditor();
+      updateOutput();
+    }catch(e){
+      alert('تعذر تحميل البيانات: '+e.message);
+    }
+  }
+
+  function renderEditor(){
+    const root = document.getElementById('editor');
+    root.innerHTML = '';
+    data.products.forEach((p,idx)=>{
+      const card = document.createElement('div');
+      card.className='card';
+      card.innerHTML = `
+        <div class="field"><label>المعرف</label><input value="${p.id||''}" oninput="edit(${idx},'id',this.value)"/></div>
+        <div class="field"><label>الاسم</label><input value="${p.title||''}" oninput="edit(${idx},'title',this.value)"/></div>
+        <div class="field"><label>الوصف</label><input value="${(p.description||'').toString().replace(/"/g,'&quot;')}" oninput="edit(${idx},'description',this.value)"/></div>
+        <div class="field"><label>الفئة</label><input value="${p.category||''}" oninput="edit(${idx},'category',this.value)"/></div>
+        <div class="field"><label>السعر العادي</label><input type="number" step="0.01" value="${p.regular_price||''}" oninput="edit(${idx},'regular_price',parseFloat(this.value)||0)"/></div>
+        <div class="field"><label>سعر البيع</label><input type="number" step="0.01" value="${p.sale_price||''}" oninput="edit(${idx},'sale_price',parseFloat(this.value)||0)"/></div>
+        <div class="field"><label>العملة</label><input value="${p.currency||'AED'}" oninput="edit(${idx},'currency',this.value)"/></div>
+        <div class="field"><label>الرابط للصورة</label><input value="${p.image_url||''}" oninput="edit(${idx},'image_url',this.value)"/></div>
+        <div class="row">
+          <button class="btn" onclick="moveUp(${idx})">⬆️</button>
+          <button class="btn" onclick="moveDown(${idx})">⬇️</button>
+          <button class="btn" onclick="removeProduct(${idx})">🗑️ حذف</button>
+        </div>
+      `;
+      root.appendChild(card);
+    });
+  }
+
+  function edit(i,k,v){ data.products[i] = { ...data.products[i], [k]: v }; updateOutput(); }
+  function addProduct(){ data.products.push({id:'',title:'',description:'',category:'',regular_price:0,sale_price:0,currency:'AED',image_url:''}); renderEditor(); updateOutput(); }
+  function removeProduct(i){ if(confirm('حذف المنتج؟')){ data.products.splice(i,1); renderEditor(); updateOutput(); } }
+  function moveUp(i){ if(i>0){ const t=data.products[i]; data.products[i]=data.products[i-1]; data.products[i-1]=t; renderEditor(); updateOutput(); } }
+  function moveDown(i){ if(i<data.products.length-1){ const t=data.products[i]; data.products[i]=data.products[i+1]; data.products[i+1]=t; renderEditor(); updateOutput(); } }
+
+  function updateOutput(){ document.getElementById('jsonOutput').value = JSON.stringify(data, null, 2); }
+
+  function openGithubSave(){
+    const json = JSON.stringify(data, null, 2);
+    // نسخ إلى الحافظة لتلصقها في محرر GitHub
+    navigator.clipboard?.writeText(json).then(()=>{ alert('تم نسخ JSON إلى الحافظة\nافتح صفحة GitHub والصق ثم احفظ'); });
+    window.open('https://github.com/sherow1982/sooq-alemarat/edit/main/data/uae-products.json','_blank');
+  }
+
+  // تحميل تلقائي عند فتح الصفحة
+  loadProducts();
+</script>
+</body>
+</html>
