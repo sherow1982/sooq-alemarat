@@ -4,7 +4,7 @@
   "scripts": {
     "dev": "tinacms dev -c \"serve .\"",
     "build": "tinacms build && npm run build:site",
-    "build:site": "echo 'Building static site'",
+    "build:site": "mkdir -p dist && cp -r *.html assets css js images data legal pages dist/ && cp manifest.json robots.txt sitemap.xml google*.html CNAME dist/",
     "serve": "serve ."
   },
   "dependencies": {
